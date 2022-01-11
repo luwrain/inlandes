@@ -5,6 +5,7 @@
   <artifactId>luwrain-inlandes</artifactId>
   <version>0.1.0</version>
   <name>Inlandes: Intellectual language description</name>
+  <description>A library for NLP by high-level descriptive notation</description>
   <url>https://luwrain.org/?lang=en</url>
     <properties>
     <maven.compiler.target>1.8</maven.compiler.target>

@@ -6,20 +6,32 @@ notation
     : ruleStatement* EOF
     ;
 
-ruleStatement
-    : ruleWord
+cons
+    : ConsCyril | ConsLatin
     ;
 
-ruleWord
+ruleKeyword
     : 'RULE' | 'Rule' | 'rule'
     ;
 
-Cyril
-    : [а-яА-ЯёЁ]+
+ruleStatement
+    : ruleKeyword whereStatement*
     ;
 
-Latin
-    : [a-zA-Z]+
+whereKeyword
+    : 'WHERE' | 'Where' | 'where'
+    ;
+
+whereStatement
+    : whereKeyword cons+
+    ;
+
+ConsCyril
+    : [а-яА-ЯёЁ]*
+    ;
+
+ConsLatin
+    : [a-zA-Z]*
     ;
 
 Num
@@ -30,6 +42,7 @@ Punc
     : [.,?!:;$%@()_+=\-—–°£€/]
     ;
 
-Space
-    :   [ \t\r\n]+
+WS
+    : ' '
+    -> skip
     ;

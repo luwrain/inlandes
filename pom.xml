@@ -2,19 +2,20 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.luwrain</groupId>
-  <artifactId>inlandes</artifactId>
+  <artifactId>luwrain-inlandes</artifactId>
   <version>0.1.0</version>
-  <name>Inlandes</name>
-  <url>https://books.luwrain.org</url>
+  <name>Inlandes: Intellectual language description</name>
+  <url>https://luwrain.org/?lang=en</url>
     <properties>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.compiler.source>1.8</maven.compiler.source>
+    <antlr.version>4.8</antlr.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4</artifactId>
-      <version>4.8</version>
+      <version>${antlr.version}</version>
     </dependency>
     <dependency>
       <groupId>org.antlr</groupId>
@@ -38,7 +39,7 @@
       <plugin>
 	<groupId>org.antlr</groupId>
 	<artifactId>antlr4-maven-plugin</artifactId>
-	<version>4.8</version>
+	<version>${antlr.version}</version>
 	<executions>
           <execution>
             <goals>

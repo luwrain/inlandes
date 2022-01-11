@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -20,6 +20,7 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import org.luwrain.antlr.inlandes.*;
+import org.luwrain.antlr.inlandes.InlandesParser.*;
 
 public class SyntaxParser
 {
@@ -30,7 +31,38 @@ public class SyntaxParser
 	final InlandesParser p = new InlandesParser(tokens);
 	final ParseTree tree = p.notation();
 	final ParseTreeWalker walker = new ParseTreeWalker();
-	final SyntaxListener listener = new SyntaxListener();
+	final Listener listener = new Listener();
 	walker.walk(listener, tree);
+    }
+
+    static private final class Listener extends InlandesBaseListener
+    {
+	List<RuleStatement> rules = new ArrayList<RuleStatement>();
+	private RuleStatement rule = null;
+
+	@Override public void enterRuleStatement(RuleStatementContext ctx)
+	{
+	    rule = new RuleStatement();
+	}
+
+		@Override public void exitRuleStatement(RuleStatementContext ctx)
+	{
+	    if (rule == null)
+		throw new NullPointerException("rule can't be null");
+	    rules.add(rule);
+	    rule = null;
+	}
+
+	@Override public void enterWhereStatement(WhereStatementContext ctx)
+	{
+	    for(WhereItemContext i: ctx.whereItem())
+	    {
+	    }
+	}
+
+			@Override public void exitWhereStatement(WhereStatementContext ctx)
+	{
+
+			}
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,17 +16,6 @@ package org.luwrain.inlandes;
 
 import java.util.*;
 
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.*;
-
-import org.luwrain.antlr.inlandes.*;
-
-import org.luwrain.antlr.inlandes.InlandesParser.*;
-
-final class SyntaxListener extends EmptyInlandesListener
+public final class WhereStatement
 {
-    				@Override public void enterRuleStatement(RuleStatementContext c)
-		{
-		    //		    if (c.Cyril() != null)
-		}
 }

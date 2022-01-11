@@ -22,8 +22,12 @@ whereKeyword
     : 'WHERE' | 'Where' | 'where'
     ;
 
+whereItem
+    : cons
+    ;
+
 whereStatement
-    : whereKeyword cons+
+    : whereKeyword whereItem+
     ;
 
 ConsCyril
@@ -31,7 +35,7 @@ ConsCyril
     ;
 
 ConsLatin
-    : [a-zA-Z]*
+    : '[a-zA-Z]*'
     ;
 
 Num

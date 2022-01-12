@@ -33,7 +33,6 @@ private final class Listener extends InlandesBaseListener
 	{
 	    rule = new RuleStatement();
 	}
-
 		@Override public void exitRuleStatement(RuleStatementContext ctx)
 	{
 	    if (rule == null)
@@ -42,20 +41,14 @@ private final class Listener extends InlandesBaseListener
 	    rule = null;
 	}
 
-	@Override public void enterWhereStatement(WhereStatementContext ctx)
+			@Override public void exitWhereStatement(WhereStatementContext c)
 	{
-	    for(WhereItemContext i: ctx.whereItem())
-	    {
-	    }
-	}
-
-			@Override public void exitWhereStatement(WhereStatementContext ctx)
-	{
-
+	    final List<WhereStatement.Item> res = new ArrayList<>();
+	    for(WhereItemContext i: c.whereItem())
+		res.add(createWhereItem(i));
+	    this.rule.setWhere(new WhereStatement(res));
 			}
     }
-
-    
 
     private WhereStatement.Item createWhereItem(WhereItemContext c)
     {
@@ -66,15 +59,14 @@ private final class Listener extends InlandesBaseListener
 	    {
 		final ConsContext cons = fixed.cons();
 		if (cons.ConsCyril() != null)
-		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.ConsCyril().toString()); });
+		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.ConsCyril().toString()); }, cons.ConsCyril().toString().toUpperCase());
 	    }
-	    
 	    return null;
 	}
 	return null;
     }
 
-        public void parse(String text)
+        public RuleStatement[] parse(String text)
     {
 	final InlandesLexer l = new InlandesLexer(CharStreams.fromString(text));
 	final CommonTokenStream tokens = new CommonTokenStream(l);
@@ -83,6 +75,7 @@ private final class Listener extends InlandesBaseListener
 	final ParseTreeWalker walker = new ParseTreeWalker();
 	final Listener listener = new Listener();
 	walker.walk(listener, tree);
+		return listener.rules.toArray(new RuleStatement[listener.rules.size()]);
     }
 
     static private final boolean noCaseEquals(String s1, String s2)

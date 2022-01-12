@@ -18,5 +18,17 @@ import java.util.*;
 
 public final class RuleStatement
 {
-    List<WhereStatement> where = new ArrayList<WhereStatement>();
+    private WhereStatement where = null;
+
+    public void setWhere(WhereStatement where)
+    {
+	if (where == null)
+	    throw new NullPointerException("where can't be null");
+	this.where = where;
+    }
+
+    public WhereStatement getWhere()
+    {
+	return this.where;
+    }
 }

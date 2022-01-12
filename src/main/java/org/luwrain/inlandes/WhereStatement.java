@@ -29,10 +29,25 @@ public final class WhereStatement
 
     static public final class Fixed implements Item
     {
-	public Fixed(Matcher matcher)
+	private final Matcher matcher;
+	private final String hint;
+	public Fixed(Matcher matcher, String hint)
 	{
+	    if (matcher == null)
+		throw new NullPointerException("matcher can't be null");
+	    this.matcher = matcher;
+	    this.hint = hint != null?hint:"";
+	}
+	@Override public String toString()
+	{
+	    return hint;
 	}
     }
 
-    public final List<Item> items = new ArrayList<Item>();
+    public final List<Item> items;
+
+    public WhereStatement(List<Item> items)
+    {
+	this.items = new ArrayList<>(items);
+    }
 }

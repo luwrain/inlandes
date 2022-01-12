@@ -22,16 +22,20 @@ whereKeyword
     : 'WHERE' | 'Where' | 'where'
     ;
 
-whereAlternative
-    : '(' whereFixed ')'
+whereFixed
+    : cons Ref*
     ;
 
-whereFixed
-    : cons
+whereAlternative
+    : '(' whereFixed ')' Ref*
+    ;
+
+whereBlock
+    : '{' whereFixed '}' Ref*
     ;
 
 whereItem
-    : whereFixed | whereAlternative
+    : whereFixed | whereAlternative | whereBlock Ref
     ;
 
 whereStatement
@@ -52,6 +56,10 @@ Num
 
 Punc
     : [.,?!:;$%@()_+=\-—–°£€/]
+    ;
+
+Ref
+    : .[123456789]
     ;
 
 WS

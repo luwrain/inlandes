@@ -16,23 +16,11 @@ package org.luwrain.inlandes;
 
 import java.util.*;
 
-public final class WhereStatement
+public interface Token
 {
-    public interface Matcher
-    {
-	boolean match(Token token);
-    }
-
-    public interface Item
-    {
-    }
-
-    static public final class Fixed implements Item
-    {
-	public Fixed(Matcher matcher)
-	{
-	}
-    }
-
-    public final List<Item> items = new ArrayList<Item>();
+    boolean isLatin();
+    boolean isCyril();
+    boolean isNum();
+    boolean isPunc();
+    String getText();
 }

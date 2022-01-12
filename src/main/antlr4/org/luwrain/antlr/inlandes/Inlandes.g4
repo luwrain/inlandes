@@ -22,8 +22,16 @@ whereKeyword
     : 'WHERE' | 'Where' | 'where'
     ;
 
-whereItem
+whereAlternative
+    : '(' whereFixed ')'
+    ;
+
+whereFixed
     : cons
+    ;
+
+whereItem
+    : whereFixed | whereAlternative
     ;
 
 whereStatement

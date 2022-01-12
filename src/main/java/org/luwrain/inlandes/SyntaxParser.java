@@ -24,18 +24,7 @@ import org.luwrain.antlr.inlandes.InlandesParser.*;
 
 public class SyntaxParser
 {
-    public void parse(String text)
-    {
-	final InlandesLexer l = new InlandesLexer(CharStreams.fromString(text));
-	final CommonTokenStream tokens = new CommonTokenStream(l);
-	final InlandesParser p = new InlandesParser(tokens);
-	final ParseTree tree = p.notation();
-	final ParseTreeWalker walker = new ParseTreeWalker();
-	final Listener listener = new Listener();
-	walker.walk(listener, tree);
-    }
-
-    static private final class Listener extends InlandesBaseListener
+private final class Listener extends InlandesBaseListener
     {
 	List<RuleStatement> rules = new ArrayList<RuleStatement>();
 	private RuleStatement rule = null;
@@ -64,5 +53,40 @@ public class SyntaxParser
 	{
 
 			}
+    }
+
+    
+
+    private WhereStatement.Item createWhereItem(WhereItemContext c)
+    {
+	if (c.whereFixed() != null)
+	{
+	    final WhereFixedContext fixed = c.whereFixed();
+	    if (fixed.cons() != null)
+	    {
+		final ConsContext cons = fixed.cons();
+		if (cons.ConsCyril() != null)
+		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.ConsCyril().toString()); });
+	    }
+	    
+	    return null;
+	}
+	return null;
+    }
+
+        public void parse(String text)
+    {
+	final InlandesLexer l = new InlandesLexer(CharStreams.fromString(text));
+	final CommonTokenStream tokens = new CommonTokenStream(l);
+	final InlandesParser p = new InlandesParser(tokens);
+	final ParseTree tree = p.notation();
+	final ParseTreeWalker walker = new ParseTreeWalker();
+	final Listener listener = new Listener();
+	walker.walk(listener, tree);
+    }
+
+    static private final boolean noCaseEquals(String s1, String s2)
+    {
+	return s1.toUpperCase().equals(s2.toUpperCase());
     }
 }

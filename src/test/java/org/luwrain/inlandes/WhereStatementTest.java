@@ -55,4 +55,9 @@ public class WhereStatementTest extends Assert
 	assertEquals("НА", w.items.get(1).toString());
 	assertEquals("СТУЛЕ", w.items.get(2).toString());
     }
+
+        @Test public void blockSpaces() { p.parse("RULE WHERE { домой }"); }
+            @Test public void blockNoSpaces() { p.parse("RULE WHERE{домой}"); }
+    @Test(expected = RuntimeException.class) public void blockUnbalancedRightError() { p.parse("RULE WHERE { иду домой }}"); }
+        @Test(expected = RuntimeException.class) public void blockUnbalancedLeftError() { p.parse("RULE WHERE {{ иду домой }"); }
 }

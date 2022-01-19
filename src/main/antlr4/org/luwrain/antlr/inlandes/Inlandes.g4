@@ -23,19 +23,19 @@ whereKeyword
     ;
 
 whereFixed
-    : cons Ref*
+    : cons
     ;
 
 whereAlternative
-    : '(' whereFixed ')' Ref*
+    : '(' whereItem ')'
     ;
 
 whereBlock
-    : '{' whereFixed '}' Ref*
+    : '{' whereItem* '}' 
     ;
 
 whereItem
-    : whereFixed | whereAlternative | whereBlock Ref
+    : whereFixed | whereAlternative | whereBlock Ref*
     ;
 
 whereStatement

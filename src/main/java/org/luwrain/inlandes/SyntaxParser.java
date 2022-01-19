@@ -29,6 +29,11 @@ private final class Listener extends InlandesBaseListener
 	List<RuleStatement> rules = new ArrayList<RuleStatement>();
 	private RuleStatement rule = null;
 
+		@Override public void visitErrorNode(ErrorNode node)
+	{
+	    throw new RuntimeException(node.toString());
+		}
+
 	@Override public void enterRuleStatement(RuleStatementContext ctx)
 	{
 	    rule = new RuleStatement();

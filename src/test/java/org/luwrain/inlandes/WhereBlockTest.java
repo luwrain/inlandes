@@ -16,45 +16,9 @@ package org.luwrain.inlandes;
 
 import org.junit.*;
 
-public class WhereStatementTest extends Assert
+public class WhereBlockTest extends Assert
 {
     private final SyntaxParser p = new SyntaxParser();
-
-    @Test public void oneToThreeCyril()
-    {
-	RuleStatement[] r = p.parse("RULE WHERE табуретка");
-	WhereStatement w = null;
-	assertNotNull(r);
-	assertEquals(1, r.length);
-	assertNotNull(r[0]);
-	w = r[0].getWhere();
-	assertNotNull(w);
-	assertEquals(1, w.items.length);
-	assertEquals("ТАБУРЕТКА", w.items[0].toString());
-
-	r = p.parse("RULE WHERE иду домой");
-	w = null;
-	assertNotNull(r);
-	assertEquals(1, r.length);
-	assertNotNull(r[0]);
-	w = r[0].getWhere();
-	assertNotNull(w);
-	assertEquals(2, w.items.length);
-	assertEquals("ИДУ", w.items[0].toString());
-	assertEquals("ДОМОЙ", w.items[1].toString());
-
-	r = p.parse("RULE WHERE сижу на стуле");
-	w = null;
-	assertNotNull(r);
-	assertEquals(1, r.length);
-	assertNotNull(r[0]);
-	w = r[0].getWhere();
-	assertNotNull(w);
-	assertEquals(3, w.items.length);
-	assertEquals("СИЖУ", w.items[0].toString());
-	assertEquals("НА", w.items[1].toString());
-	assertEquals("СТУЛЕ", w.items[2].toString());
-    }
 
     @Test public void emptyBlock()
     {

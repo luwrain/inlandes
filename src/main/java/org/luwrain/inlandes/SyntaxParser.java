@@ -63,6 +63,15 @@ public class SyntaxParser
 	    return new WhereStatement.Block(items);
 	}
 
+	if (c.whereAlternative() != null)
+	{
+	    final WhereAlternativeContext alt = c.whereAlternative();
+	    final List<WhereStatement.Item> items = new ArrayList<>();
+	    for(WhereItemContext i: alt.whereItem()) 
+		items.add(createWhereItem(i));
+	    return new WhereStatement.Alternative(items);
+	}
+
 	if (c.whereFixed() != null)
 	{
 	    final WhereFixedContext fixed = c.whereFixed();

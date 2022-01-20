@@ -23,12 +23,14 @@ public final class WhereIterator
         private final Matching matching;
     final ArrayList<Level> levels = new ArrayList<>();
 
-    public WhereIterator(Matching matching, Item[] items)
+    public WhereIterator(Matching matching, WhereStatement whereStatement)
     {
 	if (matching == null)
 	    throw new NullPointerException("matching can't be null");
+	if (whereStatement == null)
+	    throw new NullPointerException("whereStatement can't be null");
 	this.matching = matching;
-	this.levels.add(new Level(items));
+	this.levels.add(new Level(whereStatement.items));
     }
 
     WhereIterator(WhereIterator it)
@@ -46,6 +48,17 @@ public final class WhereIterator
     public void check()
     {
 	final Level level = getLevel();
+	if (level.pos >= level.items.length)
+	{
+	    if (levels.size() == 1)
+	    {
+		matching.success(this);
+		return;
+	    }
+	    levels.remove(levels.size() - 1);
+	    matching.addCurrentPos(this);
+	    return;
+	}
 	final Item item = level.items[level.pos];
 
 	if (item instanceof Alternative)

@@ -27,7 +27,7 @@ whereFixed
     ;
 
 whereAlternative
-    : '(' whereItem ')'
+    : '(' whereItem* ')'
     ;
 
 whereBlock

@@ -19,6 +19,7 @@ import java.util.*;
 public final class Matching
 {
     private final RuleStatement[] rules;
+    private List<WhereIterator> current = null, next = null;
     Token token = null;
 
     public Matching(RuleStatement[] rules)
@@ -30,15 +31,38 @@ public final class Matching
 
     public void match(Token[] tokens)
     {
-	
+	List<WhereIterator> a = new ArrayList<>();
+	for(RuleStatement r: rules)
+	    a.add(new WhereIterator(this, r.getWhere()));
+	this.current = new ArrayList<>();
+	this.next = new ArrayList<>();
+	for(Token t: tokens)
+	{
+	    this.token = t;
+	    while(!a.isEmpty())
+	    {
+		for(WhereIterator i: a)
+		    i.check();
+		a = this.current;
+		this.current = new ArrayList<>();
+	    }
+	    a = this.next;
+	    this.next = new ArrayList<>();
+	}
     }
 
     void addCurrentPos(WhereIterator it)
     {
+	this.current.add(it);
     }
 
     void addNextPos(WhereIterator it)
     {
+	this.next.add(it);
     }
-    
+
+    void success(WhereIterator it)
+    {
+	
+    }
 }

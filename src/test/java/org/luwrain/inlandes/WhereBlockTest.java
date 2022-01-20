@@ -16,6 +16,8 @@ package org.luwrain.inlandes;
 
 import org.junit.*;
 
+import org.luwrain.inlandes.WhereStatement.*;
+
 public class WhereBlockTest extends Assert
 {
     private final SyntaxParser p = new SyntaxParser();
@@ -30,7 +32,7 @@ public class WhereBlockTest extends Assert
 	assertNotNull(w);
 	assertEquals(1, w.items.length);
 	assertTrue(w.items[0] instanceof WhereStatement.Block);
-	final WhereStatement.Block b = (WhereStatement.Block)w.items[0];
+	final Block b = (Block)w.items[0];
 	assertEquals(0, b.items.length);
     }
 
@@ -44,9 +46,31 @@ public class WhereBlockTest extends Assert
 	assertNotNull(w);
 	assertEquals(1, w.items.length);
 	assertTrue(w.items[0] instanceof WhereStatement.Block);
-	final WhereStatement.Block b = (WhereStatement.Block)w.items[0];
+	final Block b = (Block)w.items[0];
 	assertEquals(0, b.items.length);
     }
+
+            @Test public void coupleWords()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE{ иду домой }");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+	final WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertTrue(w.items[0] instanceof WhereStatement.Block);
+	final Block b = (Block)w.items[0];
+	assertEquals(2, b.items.length);
+	final Item i1 = b.items[0], i2 = b.items[1];
+	assertNotNull(i1);
+	assertNotNull(i2);
+	assertTrue(i1 instanceof Fixed);
+	assertTrue(i2 instanceof Fixed);
+	assertEquals("ИДУ", i1.toString());
+		assertEquals("ДОМОЙ", i2.toString());
+    }
+
 
 
         @Test public void blockSpaces() { p.parse("RULE WHERE { домой }"); }

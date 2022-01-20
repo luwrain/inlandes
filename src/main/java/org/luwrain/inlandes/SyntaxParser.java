@@ -24,61 +24,45 @@ import org.luwrain.antlr.inlandes.InlandesParser.*;
 
 public class SyntaxParser
 {
-private final class Listener extends InlandesBaseListener
+    private final class Listener extends InlandesBaseListener
     {
 	List<RuleStatement> rules = new ArrayList<RuleStatement>();
 	private RuleStatement rule = null;
-
 	@Override public void visitErrorNode(ErrorNode node)
 	{
 	    throw new RuntimeException(node.toString());
 	}
-
 	@Override public void enterRuleStatement(RuleStatementContext ctx)
 	{
 	    rule = new RuleStatement();
 	}
-		@Override public void exitRuleStatement(RuleStatementContext ctx)
+	@Override public void exitRuleStatement(RuleStatementContext ctx)
 	{
 	    if (rule == null)
 		throw new NullPointerException("rule can't be null");
 	    rules.add(rule);
 	    rule = null;
 	}
-
-	/*
-				@Override public void exitWhereBlock(WhereBlockContext c)
-	{
-	    final List<WhereStatement.Item> items = new ArrayList<>();
-	    
-	    for(WhereItemContext i: c.whereItem()) {}
-	    		items.add(createWhereItem(i));
-			//	    this.rule.setWhere(new WhereStatement(res));
-			}
-	*/
-
-
-			@Override public void exitWhereStatement(WhereStatementContext c)
+	@Override public void exitWhereStatement(WhereStatementContext c)
 	{
 	    final List<WhereStatement.Item> res = new ArrayList<>();
 	    for(WhereItemContext i: c.whereItem())
 		res.add(createWhereItem(i));
 	    this.rule.setWhere(new WhereStatement(res));
-			}
+	}
     }
 
     private WhereStatement.Item createWhereItem(WhereItemContext c)
     {
-		if (c.whereBlock() != null)
-		{
-		    final WhereBlockContext block = c.whereBlock();
-		    	    final List<WhereStatement.Item> items = new ArrayList<>();
+	if (c.whereBlock() != null)
+	{
+	    final WhereBlockContext block = c.whereBlock();
+	    final List<WhereStatement.Item> items = new ArrayList<>();
 	    for(WhereItemContext i: block.whereItem()) 
-	    		items.add(createWhereItem(i));
+		items.add(createWhereItem(i));
 	    return new WhereStatement.Block(items);
-		}
+	}
 
-	
 	if (c.whereFixed() != null)
 	{
 	    final WhereFixedContext fixed = c.whereFixed();

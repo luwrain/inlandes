@@ -19,6 +19,7 @@ import java.util.*;
 public final class Matching
 {
     private final RuleStatement[] rules;
+    Token token = null;
 
     public Matching(RuleStatement[] rules)
     {
@@ -30,6 +31,14 @@ public final class Matching
     public void match(Token[] tokens)
     {
 	
+    }
+
+    void addCurrentPos(WhereIterator it)
+    {
+    }
+
+    void addNextPos(WhereIterator it)
+    {
     }
     
 }

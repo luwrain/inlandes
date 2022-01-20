@@ -36,6 +36,16 @@ public final class WhereStatement
 	    }
 	}
 
+            static public final class Alternative implements Item
+	{
+	    final Item[] items;
+	    Alternative(List<Item> items)
+	    {
+		this.items = items.toArray(new Item[items.size()]);
+	    }
+	}
+
+
     static public final class Fixed implements Item
     {
 	private final Matcher matcher;
@@ -47,6 +57,7 @@ public final class WhereStatement
 	    this.matcher = matcher;
 	    this.hint = hint != null?hint:"";
 	}
+	public boolean match(Token token) { return matcher.match(token); }
 	@Override public String toString()
 	{
 	    return hint;

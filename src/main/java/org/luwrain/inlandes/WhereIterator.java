@@ -16,18 +16,88 @@ package org.luwrain.inlandes;
 
 import java.util.*;
 
-import org.luwrain.inlandes.WhereStatement.Item;
+import org.luwrain.inlandes.WhereStatement.*;
 
 public final class WhereIterator
 {
-    private final Item[] items = null;
-    private final Token[] tokens = null;
-    private int itemIndex = 0;
-    private int tokenIndex = 0;
+        private final Matching matching;
+    final ArrayList<Level> levels = new ArrayList<>();
+
+    public WhereIterator(Matching matching, Item[] items)
+    {
+	if (matching == null)
+	    throw new NullPointerException("matching can't be null");
+	this.matching = matching;
+	this.levels.add(new Level(items));
+    }
+
+    WhereIterator(WhereIterator it)
+    {
+	if (it == null)
+	    throw new NullPointerException("it can't be null");
+	if (it.matching == null)
+	    throw new NullPointerException("it.matching can't be null");
+	this.matching = it.matching;
+	this.levels.ensureCapacity(it.levels.size());
+	for(Level l: it.levels)
+	    this.levels.add(l.clone());
+    }
 
     public void check()
     {
-	
+	final Level level = getLevel();
+	final Item item = level.items[level.pos];
+
+	if (item instanceof Alternative)
+	{
+	    level.pos++;
+	    final Alternative alt = (Alternative)item;
+	    for(int i = 0;i < alt.items.length;i++)
+	    {
+final WhereIterator newIt = new WhereIterator(this);
+		newIt.levels.add(new Level(new Item[]{ alt.items[i] }));
+		matching.addCurrentPos(newIt);
+	    }
+	    return;
+	}
+
+		if (item instanceof Block)
+		{
+		    final Block block = (Block)item;
+		    levels.add(new Level(block.items));
+		    matching.addCurrentPos(this);
+		    return;
+		}
+
+	if (item instanceof Fixed)
+	{
+	    final Fixed fixed = (Fixed)item;
+	    fixed.match(matching.token);
+	}
     }
-    
+
+    private Level getLevel()
+    {
+	return this.levels.get(this.levels.size() - 1);
+    }
+
+    static private final class Level
+{
+    final Item[] items;
+    int pos;
+    Level(Item[] items, int pos)
+    {
+	this.items = items;
+	this.pos = pos;
+    }
+    Level(Item[] items)
+    {
+	this(items, 0);
+    }
+    @Override public Level clone()
+    {
+	return new Level(items, pos);
+    }
+}
+
 }

@@ -29,8 +29,8 @@ public class WhereStatementTest extends Assert
 	assertNotNull(r[0]);
 	w = r[0].getWhere();
 	assertNotNull(w);
-	assertEquals(1, w.items.size());
-	assertEquals("ТАБУРЕТКА", w.items.get(0).toString());
+	assertEquals(1, w.items.length);
+	assertEquals("ТАБУРЕТКА", w.items[0].toString());
 
 	r = p.parse("RULE WHERE иду домой");
 	w = null;
@@ -39,9 +39,9 @@ public class WhereStatementTest extends Assert
 	assertNotNull(r[0]);
 	w = r[0].getWhere();
 	assertNotNull(w);
-	assertEquals(2, w.items.size());
-	assertEquals("ИДУ", w.items.get(0).toString());
-	assertEquals("ДОМОЙ", w.items.get(1).toString());
+	assertEquals(2, w.items.length);
+	assertEquals("ИДУ", w.items[0].toString());
+	assertEquals("ДОМОЙ", w.items[1].toString());
 
 	r = p.parse("RULE WHERE сижу на стуле");
 	w = null;
@@ -50,11 +50,40 @@ public class WhereStatementTest extends Assert
 	assertNotNull(r[0]);
 	w = r[0].getWhere();
 	assertNotNull(w);
-	assertEquals(3, w.items.size());
-	assertEquals("СИЖУ", w.items.get(0).toString());
-	assertEquals("НА", w.items.get(1).toString());
-	assertEquals("СТУЛЕ", w.items.get(2).toString());
+	assertEquals(3, w.items.length);
+	assertEquals("СИЖУ", w.items[0].toString());
+	assertEquals("НА", w.items[1].toString());
+	assertEquals("СТУЛЕ", w.items[2].toString());
     }
+
+    @Test public void emptyBlock()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE {}");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+	final WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertTrue(w.items[0] instanceof WhereStatement.Block);
+	final WhereStatement.Block b = (WhereStatement.Block)w.items[0];
+	assertEquals(0, b.items.length);
+    }
+
+        @Test public void emptyBlockWithSpace()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE{ }");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+	final WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertTrue(w.items[0] instanceof WhereStatement.Block);
+	final WhereStatement.Block b = (WhereStatement.Block)w.items[0];
+	assertEquals(0, b.items.length);
+    }
+
 
         @Test public void blockSpaces() { p.parse("RULE WHERE { домой }"); }
             @Test public void blockNoSpaces() { p.parse("RULE WHERE{домой}"); }

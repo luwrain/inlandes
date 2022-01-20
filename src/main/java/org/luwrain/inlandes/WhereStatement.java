@@ -27,6 +27,15 @@ public final class WhereStatement
     {
     }
 
+        static public final class Block implements Item
+	{
+	    final Item[] items;
+	    Block(List<Item> items)
+	    {
+		this.items = items.toArray(new Item[items.size()]);
+	    }
+	}
+
     static public final class Fixed implements Item
     {
 	private final Matcher matcher;
@@ -44,10 +53,10 @@ public final class WhereStatement
 	}
     }
 
-    public final List<Item> items;
+    final Item[] items ;
 
     public WhereStatement(List<Item> items)
     {
-	this.items = new ArrayList<>(items);
+	this.items = items.toArray(new Item[items.size()]);
     }
 }

@@ -14,29 +14,6 @@
 
 package org.luwrain.inlandes;
 
-import java.util.*;
-
-public final class RuleStatement
+public class Operation
 {
-    private WhereStatement where = null;
-    final List<Operation> operations = new ArrayList<>();
-
-    public void setWhere(WhereStatement where)
-    {
-	if (where == null)
-	    throw new NullPointerException("where can't be null");
-	this.where = where;
-    }
-
-    public WhereStatement getWhere()
-    {
-	return this.where;
-    }
-
-    public void addOperation(Operation op)
-    {
-	if (op == null)
-	    throw new NullPointerException("op can't be null");
-	this.operations.add(op);
-    }
 }

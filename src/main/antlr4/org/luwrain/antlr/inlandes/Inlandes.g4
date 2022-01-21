@@ -6,21 +6,27 @@ notation
     : ruleStatement* EOF
     ;
 
-cons
-    : ConsCyril | ConsLatin
+ruleStatement
+    : ruleKeyword whereStatement? doStatement?
     ;
 
 ruleKeyword
     : 'RULE' | 'Rule' | 'rule'
     ;
 
-ruleStatement
-    : ruleKeyword whereStatement*
-    ;
-
 whereKeyword
     : 'WHERE' | 'Where' | 'where'
     ;
+
+doKeyword
+    : 'DO' | 'Do' | 'do'
+    ;
+
+cons
+    : ConsCyril | ConsLatin
+    ;
+
+
 
 whereFixed
     : cons
@@ -42,6 +48,21 @@ whereStatement
     : whereKeyword whereItem+
     ;
 
+assignment
+    : Ref '=' Js
+    ;
+
+operation
+    : assignment ';'
+    ;
+
+doStatement
+    : doKeyword operation+
+    ;
+
+
+
+
 ConsCyril
     : [а-яА-ЯёЁ]*
     ;
@@ -59,7 +80,11 @@ Punc
     ;
 
 Ref
-    : .[123456789]
+    : '.'[123456789]
+    ;
+
+Js
+    : '``'.+'``'
     ;
 
 WS

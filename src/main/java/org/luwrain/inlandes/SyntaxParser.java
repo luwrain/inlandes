@@ -16,11 +16,14 @@ package org.luwrain.inlandes;
 
 import java.util.*;
 
+import static java.lang.Integer.*;
+
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.*;
 
 import org.luwrain.antlr.inlandes.*;
 import org.luwrain.antlr.inlandes.InlandesParser.*;
+import org.luwrain.inlandes.operations.*;
 
 public class SyntaxParser
 {
@@ -50,6 +53,17 @@ public class SyntaxParser
 		res.add(createWhereItem(i));
 	    this.rule.setWhere(new WhereStatement(res));
 	}
+
+		@Override public void exitAssignment(AssignmentContext c)
+	{
+	    if (c.Js() != null)
+	    {
+		final String js = c.Js().toString();
+		rule.addOperation(new Assignment(new Ref(parseInt(c.Ref().toString().substring(1))), Assignment.ValueType.JS, js.substring(2, js.length() - 2)));
+	    }
+	}
+
+	
     }
 
     private WhereStatement.Item createWhereItem(WhereItemContext c)

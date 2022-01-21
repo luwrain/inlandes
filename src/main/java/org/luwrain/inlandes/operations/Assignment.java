@@ -12,31 +12,27 @@
  * the License.
  */
 
-package org.luwrain.inlandes;
+package org.luwrain.inlandes.operations;
 
-import java.util.*;
+import org.luwrain.inlandes.*;
 
-public final class RuleStatement
+public final class Assignment extends Operation
 {
-    private WhereStatement where = null;
-    final List<Operation> operations = new ArrayList<>();
+    public enum ValueType { STRING, JS };
+    public final Ref ref;
+public final ValueType valueType;
+    public final String value;
 
-    public void setWhere(WhereStatement where)
+    public Assignment(Ref ref, ValueType valueType, String value)
     {
-	if (where == null)
-	    throw new NullPointerException("where can't be null");
-	this.where = where;
-    }
-
-    public WhereStatement getWhere()
-    {
-	return this.where;
-    }
-
-    public void addOperation(Operation op)
-    {
-	if (op == null)
-	    throw new NullPointerException("op can't be null");
-	this.operations.add(op);
+	if (ref == null)
+	    throw new NullPointerException("ref can't be null");
+	if (valueType == null)
+	    throw new NullPointerException("valueType can't be null");
+	if (value == null)
+	    throw new NullPointerException("value can't be null");
+	this.ref = ref;
+	this.valueType = valueType;
+	this.value = value;
     }
 }

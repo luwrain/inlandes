@@ -33,7 +33,7 @@ whereFixed
     ;
 
 whereAlternative
-    : '(' whereItem* ')'
+    : '(' whereItem+ ')'
     ;
 
 whereBlock
@@ -41,7 +41,7 @@ whereBlock
     ;
 
 whereItem
-    : whereFixed | whereAlternative | whereBlock Ref?
+    : whereFixed | whereAlternative Ref? | whereBlock Ref?
     ;
 
 whereStatement

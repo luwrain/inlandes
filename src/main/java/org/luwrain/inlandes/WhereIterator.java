@@ -71,7 +71,6 @@ public final class WhereIterator
 		this.refsEnd[level.ref] = matcher.tokenIndex;
 	    levels.remove(levels.size() - 1);
 	    matcher.addCurrentPos(this);
-	    System.out.println("closed level");
 	    return;
 	}
 	final Item item = level.items[level.pos];
@@ -139,7 +138,7 @@ newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?ite
     }
     @Override public Level clone()
     {
-	return new Level(items, pos);
+	return new Level(items, pos, ref);
     }
 }
 }

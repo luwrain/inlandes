@@ -67,11 +67,29 @@ public class MatchingTest extends Assert
 	    assertTrue(res[0].getRefEnd(i) > res[0].getRefBegin(i));
 	    assertEquals("день", text(copyOfRange(TEXT, res[0].getRefBegin(i), res[0].getRefEnd(i))));
 	}
+    }
 
-		
+	    @Test public void alternativeSingleWordWithRef()
+    {
+	final RuleStatement[] rr = parser.parse("RULE WHERE (холодный прекрасный замечательный знойный)_1");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(1, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.match(TEXT);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertFalse(res[0].getRefBegin(1) == NO_REF);
+	assertFalse(res[0].getRefEnd(1) == NO_REF);
+	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
+	assertEquals("замечательный", text(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
 
+		
     @Before public void createParser()
     {
 	parser = new SyntaxParser();

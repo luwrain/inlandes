@@ -72,7 +72,6 @@ static public final class Matching
 	this.current = new ArrayList<>();
 	this.next = new ArrayList<>();
 		List<WhereIterator> a = new ArrayList<>();
-		System.out.println("proba");
 	for(tokenIndex = 0;tokenIndex < tokens.length;tokenIndex++)
 	{
 	    this.token = tokens[tokenIndex];
@@ -84,7 +83,7 @@ static public final class Matching
 		for(WhereIterator i: a)
 		    i.check();
 		a = this.current;
-		System.out.println("it, " + a.size() + " items");
+				System.out.println("it, " + a.size() + " items");
 		this.current = new ArrayList<>();
 	    }
 	    a = this.next;

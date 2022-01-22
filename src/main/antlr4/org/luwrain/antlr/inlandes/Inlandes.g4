@@ -23,13 +23,11 @@ doKeyword
     ;
 
 cons
-    : ConsCyril | ConsLatin
+    : CyrilPlain | ConsLatin
     ;
 
-
-
 whereFixed
-    : cons
+    : cons | Space | JsObj | Dict
     ;
 
 whereAlternative
@@ -60,11 +58,8 @@ doStatement
     : doKeyword operation+
     ;
 
-
-
-
-ConsCyril
-    : [а-яА-ЯёЁ]*
+CyrilPlain
+    : [а-яА-ЯёЁ]+
     ;
 
 ConsLatin
@@ -77,6 +72,19 @@ Num
 
 Punc
     : [.,?!:;$%@()_+=\-—–°£€/]
+    ;
+
+Space
+    : '.'
+    ;
+
+
+JsObj
+    : '@'[a-aA-A][a-aA-A0-9_]*
+    ;
+
+Dict
+    : '#'[a-aA-A][a-aA-A0-9_]*
     ;
 
 Ref

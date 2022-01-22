@@ -88,15 +88,18 @@ public class SyntaxParser
 	    final WhereFixedContext fixed = c.whereFixed();
 
 	    if (fixed.Space() != null)
-	    {
-	    }
+				    return new WhereStatement.Fixed((token)->token.isSpace(), " ");
 
 	    
 	    if (fixed.cons() != null)
 	    {
 		final ConsContext cons = fixed.cons();
 		if (cons.CyrilPlain() != null)
-		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.CyrilPlain().toString()); }, cons.CyrilPlain().toString().toUpperCase());
+		{
+		    final String textUpper = cons.CyrilPlain().toString().toUpperCase();
+		    //		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.CyrilPlain().toString()); }, cons.CyrilPlain().toString().toUpperCase());
+		    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toUpperCase().equals(textUpper)), textUpper);
+		}
 	    }
 	    return null;
 	}
@@ -113,10 +116,5 @@ public class SyntaxParser
 	final Listener listener = new Listener();
 	walker.walk(listener, tree);
 		return listener.rules.toArray(new RuleStatement[listener.rules.size()]);
-    }
-
-    static private final boolean noCaseEquals(String s1, String s2)
-    {
-	return s1.toUpperCase().equals(s2.toUpperCase());
     }
 }

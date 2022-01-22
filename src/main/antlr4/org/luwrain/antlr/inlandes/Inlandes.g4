@@ -27,7 +27,7 @@ cons
     ;
 
 whereFixed
-    : cons | Space | JsObj | Dict
+    : cons | Space
     ;
 
 whereAlternative
@@ -70,14 +70,15 @@ Num
     : [0-9]+
     ;
 
+/*
 Punc
     : [.,?!:;$%@()_+=\-—–°£€/]
     ;
+    */
 
 Space
     : '.'
     ;
-
 
 JsObj
     : '@'[a-aA-A][a-aA-A0-9_]*

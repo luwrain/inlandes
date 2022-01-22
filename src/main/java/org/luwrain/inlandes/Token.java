@@ -22,5 +22,6 @@ public interface Token
     boolean isCyril();
     boolean isNum();
     boolean isPunc();
+    boolean isSpace();
     String getText();
 }

@@ -53,6 +53,11 @@ public final class Token implements org.luwrain.inlandes.Token
 	return type == Type.NUM;
     }
 
+        @Override public boolean isSpace()
+    {
+	return type == Type.SPACE;
+    }
+
     @Override public boolean isPunc()
     {
 	return type == Type.PUNC;

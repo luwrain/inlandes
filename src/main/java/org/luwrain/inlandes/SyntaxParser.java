@@ -86,11 +86,17 @@ public class SyntaxParser
 	if (c.whereFixed() != null)
 	{
 	    final WhereFixedContext fixed = c.whereFixed();
+
+	    if (fixed.Space() != null)
+	    {
+	    }
+
+	    
 	    if (fixed.cons() != null)
 	    {
 		final ConsContext cons = fixed.cons();
-		if (cons.ConsCyril() != null)
-		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.ConsCyril().toString()); }, cons.ConsCyril().toString().toUpperCase());
+		if (cons.CyrilPlain() != null)
+		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.CyrilPlain().toString()); }, cons.CyrilPlain().toString().toUpperCase());
 	    }
 	    return null;
 	}

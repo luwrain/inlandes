@@ -21,6 +21,7 @@ public final class Matching
     private final RuleStatement[] rules;
     private List<WhereIterator> current = null, next = null;
     Token token = null;
+    int tokenIndex = -1;
 
     public Matching(RuleStatement[] rules)
     {

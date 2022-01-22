@@ -18,15 +18,17 @@ import org.graalvm.polyglot.*;
 
 public final class Script implements AutoCloseable
 {
-    private final Bindings bindings;
+    public final String text;
     private Context context = null;
 
-    Script(Bindings bindings)
+    public Script(String text)
     {
-	this.bindings = bindings;
+	if (text == null)
+	    throw new NullPointerException("text can't be null");
+	this.text = text;
     }
 
-    void run(String text)
+    public Object eval(Bindings bindings)
     {
 	close();
 	this.context = Context.newBuilder()
@@ -34,7 +36,12 @@ public final class Script implements AutoCloseable
 	.build();
 	if (bindings != null)
 	    bindings.onBindings(context.getBindings("js"));
-	context.eval("js", text);
+	return context.eval("js", text);
+    }
+
+    public Object eval()
+    {
+	return eval(null);
     }
 
     @Override public void close()

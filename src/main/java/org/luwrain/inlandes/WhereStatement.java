@@ -25,39 +25,51 @@ public final class WhereStatement
 
     public interface Item
     {
+	Ref getRef();
     }
 
         static public final class Block implements Item
 	{
 	    final Item[] items;
-	    Block(List<Item> items)
+	    final Ref ref;
+	    Block(List<Item> items, Ref ref)
 	    {
 		this.items = items.toArray(new Item[items.size()]);
+		this.ref = ref;
 	    }
+	    Block(List<Item> items) { this(items, null); }
+	    @Override public Ref getRef() { return ref; }
 	}
 
             static public final class Alternative implements Item
 	{
 	    final Item[] items;
-	    Alternative(List<Item> items)
+	    final Ref ref;
+	    Alternative(List<Item> items, Ref ref)
 	    {
 		this.items = items.toArray(new Item[items.size()]);
+		this.ref = ref;
 	    }
+	    Alternative(List<Item> items) { this(items, null); }
+	    @Override public Ref getRef() { return ref; }
 	}
-
 
     static public final class Fixed implements Item
     {
 	private final Matcher matcher;
 	private final String hint;
-	public Fixed(Matcher matcher, String hint)
+	final Ref ref;
+	Fixed(Matcher matcher, String hint, Ref ref)
 	{
 	    if (matcher == null)
 		throw new NullPointerException("matcher can't be null");
 	    this.matcher = matcher;
 	    this.hint = hint != null?hint:"";
+	    this.ref = ref;
 	}
+	Fixed(Matcher matcher, String hint) { this(matcher, hint, null); }
 	public boolean match(Token token) { return matcher.match(token); }
+	@Override public Ref getRef() { return ref; }
 	@Override public String toString()
 	{
 	    return hint;

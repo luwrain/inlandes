@@ -53,8 +53,7 @@ public class SyntaxParser
 		res.add(createWhereItem(i));
 	    this.rule.setWhere(new WhereStatement(res));
 	}
-
-		@Override public void exitAssignment(AssignmentContext c)
+	@Override public void exitAssignment(AssignmentContext c)
 	{
 	    if (c.Js() != null)
 	    {
@@ -62,8 +61,6 @@ public class SyntaxParser
 		rule.addOperation(new Assignment(new Ref(parseInt(c.Ref().toString().substring(1))), Assignment.ValueType.JS, js.substring(2, js.length() - 2)));
 	    }
 	}
-
-	
     }
 
     private WhereStatement.Item createWhereItem(WhereItemContext c)
@@ -74,7 +71,7 @@ public class SyntaxParser
 	    final List<WhereStatement.Item> items = new ArrayList<>();
 	    for(WhereItemContext i: block.whereItem()) 
 		items.add(createWhereItem(i));
-	    return new WhereStatement.Block(items);
+	    return new WhereStatement.Block(items, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
 	}
 
 	if (c.whereAlternative() != null)
@@ -83,7 +80,7 @@ public class SyntaxParser
 	    final List<WhereStatement.Item> items = new ArrayList<>();
 	    for(WhereItemContext i: alt.whereItem()) 
 		items.add(createWhereItem(i));
-	    return new WhereStatement.Alternative(items);
+	    return new WhereStatement.Alternative(items, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
 	}
 
 	if (c.whereFixed() != null)

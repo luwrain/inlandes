@@ -20,8 +20,11 @@ import org.luwrain.inlandes.WhereStatement.*;
 
 public final class WhereIterator
 {
+    static private final int NO_REF = -1;
+
         private final Matching matching;
-    final ArrayList<Level> levels = new ArrayList<>();
+    private final ArrayList<Level> levels = new ArrayList<>();
+    private final int[] refsBegin, refsEnd;
 
     public WhereIterator(Matching matching, WhereStatement whereStatement)
     {
@@ -31,6 +34,10 @@ public final class WhereIterator
 	    throw new NullPointerException("whereStatement can't be null");
 	this.matching = matching;
 	this.levels.add(new Level(whereStatement.items));
+	this.refsBegin = new int[10];
+		this.refsEnd = new int[10];
+		Arrays.fill(refsBegin, NO_REF);
+		Arrays.fill(refsEnd, NO_REF);
     }
 
     WhereIterator(WhereIterator it)
@@ -43,6 +50,8 @@ public final class WhereIterator
 	this.levels.ensureCapacity(it.levels.size());
 	for(Level l: it.levels)
 	    this.levels.add(l.clone());
+	this.refsBegin = it.refsEnd.clone ();
+	this.refsEnd = it.refsEnd.clone();
     }
 
     public void check()
@@ -55,6 +64,8 @@ public final class WhereIterator
 		matching.success(this);
 		return;
 	    }
+	    if (level.ref != NO_REF)
+		this.refsEnd[level.ref] = matching.tokenIndex;
 	    levels.remove(levels.size() - 1);
 	    matching.addCurrentPos(this);
 	    return;
@@ -68,7 +79,9 @@ public final class WhereIterator
 	    for(int i = 0;i < alt.items.length;i++)
 	    {
 final WhereIterator newIt = new WhereIterator(this);
-		newIt.levels.add(new Level(new Item[]{ alt.items[i] }));
+newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?item.getRef().num:NO_REF));
+		if (item.getRef() != null)
+		    newIt.refsBegin[item.getRef().num] = matching.tokenIndex;
 		matching.addCurrentPos(newIt);
 	    }
 	    return;
@@ -77,7 +90,9 @@ final WhereIterator newIt = new WhereIterator(this);
 		if (item instanceof Block)
 		{
 		    final Block block = (Block)item;
-		    levels.add(new Level(block.items));
+		    levels.add(new Level(block.items, item.getRef() != null?item.getRef().num:NO_REF));
+		    if (item.getRef() != null)
+			this.refsBegin[item.getRef().num] = matching.tokenIndex;
 		    matching.addCurrentPos(this);
 		    return;
 		}
@@ -98,19 +113,24 @@ final WhereIterator newIt = new WhereIterator(this);
 {
     final Item[] items;
     int pos;
-    Level(Item[] items, int pos)
+    final int ref;
+    Level(Item[] items, int pos, int ref)
     {
 	this.items = items;
 	this.pos = pos;
+	this.ref = ref;
+    }
+    Level(Item[] items, int ref)
+    {
+	this(items, 0, ref);
     }
     Level(Item[] items)
     {
-	this(items, 0);
+	this(items, 0, NO_REF);
     }
     @Override public Level clone()
     {
 	return new Level(items, pos);
     }
 }
-
 }

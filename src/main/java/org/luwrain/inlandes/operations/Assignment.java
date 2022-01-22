@@ -35,4 +35,9 @@ public final ValueType valueType;
 	this.valueType = valueType;
 	this.value = value;
     }
+
+    public Script createScript()
+    {
+	return new Script(value);
+    }
 }

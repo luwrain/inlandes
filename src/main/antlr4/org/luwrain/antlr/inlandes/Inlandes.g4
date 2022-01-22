@@ -41,7 +41,7 @@ whereBlock
     ;
 
 whereItem
-    : whereFixed | whereAlternative | whereBlock Ref*
+    : whereFixed | whereAlternative | whereBlock Ref?
     ;
 
 whereStatement
@@ -80,7 +80,7 @@ Punc
     ;
 
 Ref
-    : '.'[123456789]
+    : '_'[123456789]
     ;
 
 Js

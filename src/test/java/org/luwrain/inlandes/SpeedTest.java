@@ -20,7 +20,6 @@ import java.io.*;
 import org.junit.*;
 
 import org.luwrain.inlandes.Matcher.*;
-import static org.luwrain.inlandes.Matcher.NO_REF;
 import static org.luwrain.inlandes.util.Tokenizer.*;
 import static org.luwrain.inlandes.util.Token.*;
 
@@ -34,7 +33,7 @@ public class SpeedTest extends Assert
 	if (text == null)
 	    return;
 	final Token[] tokens = tokenize(text);
-		final RuleStatement[] rr = parser.parse("RULE WHERE (холодный прекрасный замечательный знойный)_1");
+	final RuleStatement[] rr = parser.parse("RULE WHERE (холодный прекрасный замечательный знойный)_1");
 	assertNotNull(rr);
 	assertEquals(1, rr.length);
 	assertNotNull(rr[0]);
@@ -46,25 +45,24 @@ public class SpeedTest extends Assert
 	final long elapsed = System.currentTimeMillis() - startTime;
 	assertNotNull(res);
 	System.out.println("Processed " + String.valueOf(tokens.length) + " tokens in " + String.valueOf(elapsed) + "ms, " + String.valueOf(res.length) + " matching(s)");
-	
     }
 
     private String readResource(String resName)
     {
 	try {
-	final InputStream is = getClass().getResourceAsStream(resName);
-	if (is == null)
-	    return null;
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
-	    final StringBuilder b = new StringBuilder();
-	    String line = r.readLine();
-	    while (line != null)
-	    {
-		b.append(line).append(System.lineSeparator());
-		line = r.readLine();
+	    final InputStream is = getClass().getResourceAsStream(resName);
+	    if (is == null)
+		return null;
+	    try (final BufferedReader r = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+		final StringBuilder b = new StringBuilder();
+		String line = r.readLine();
+		while (line != null)
+		{
+		    b.append(line).append(System.lineSeparator());
+		    line = r.readLine();
+		}
+		return new String(b);
 	    }
-	    return new String(b);
-	}
 	}
 	catch(IOException e)
 	{
@@ -72,8 +70,6 @@ public class SpeedTest extends Assert
 	}
     }
 
-
-    
     @Before public void createParser()
     {
 	parser = new SyntaxParser();

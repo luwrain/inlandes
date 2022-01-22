@@ -89,52 +89,6 @@ public class MatchingTest extends Assert
 	assertEquals("замечательный", text(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
-    @Ignore @Test public void speed01()
-    {
-	final String text = readResource("speed01.txt");
-	if (text == null)
-	    return;
-	final Token[] tokens = tokenize(text);
-
-		final RuleStatement[] rr = parser.parse("RULE WHERE (холодный прекрасный замечательный знойный)_1");
-	assertNotNull(rr);
-	assertEquals(1, rr.length);
-	assertNotNull(rr[0]);
-	assertNotNull(rr[0].getWhere());
-	assertEquals(1, rr[0].getWhere().items.length);
-	final Matcher m = new Matcher(rr);
-	final Matching[] res = m.match(tokens);
-	assertNotNull(res);
-	
-	System.out.println("proba " + tokens.length);
-	
-    }
-
-    private String readResource(String resName)
-    {
-	try {
-	final InputStream is = getClass().getResourceAsStream(resName);
-	if (is == null)
-	    return null;
-	try (final BufferedReader r = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
-	    final StringBuilder b = new StringBuilder();
-	    String line = r.readLine();
-	    while (line != null)
-	    {
-		b.append(line).append(System.lineSeparator());
-		line = r.readLine();
-	    }
-	    return new String(b);
-	}
-	}
-	catch(IOException e)
-	{
-	    throw new RuntimeException(e);
-	}
-    }
-
-
-    
     @Before public void createParser()
     {
 	parser = new SyntaxParser();

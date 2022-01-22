@@ -22,12 +22,8 @@ doKeyword
     : 'DO' | 'Do' | 'do'
     ;
 
-cons
-    : CyrilPlain | ConsLatin
-    ;
-
 whereFixed
-    : cons | Space
+    : CyrilPlain | Latin | Space | JsObj | Dict
     ;
 
 whereAlternative
@@ -62,8 +58,8 @@ CyrilPlain
     : [а-яА-ЯёЁ]+
     ;
 
-ConsLatin
-    : '[a-zA-Z]*'
+Latin
+    : '\''[a-zA-Z]+'\''
     ;
 
 Num

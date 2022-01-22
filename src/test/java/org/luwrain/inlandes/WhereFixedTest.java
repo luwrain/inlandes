@@ -18,7 +18,7 @@ import org.junit.*;
 
 public class WhereFixedTest extends Assert
 {
-    private final SyntaxParser p = new SyntaxParser();
+    private SyntaxParser p = null;
 
     @Test public void oneToThreeCyril()
     {
@@ -54,5 +54,23 @@ public class WhereFixedTest extends Assert
 	assertEquals("СИЖУ", w.items[0].toString());
 	assertEquals("НА", w.items[1].toString());
 	assertEquals("СТУЛЕ", w.items[2].toString());
+    }
+
+        @Test public void oneLatin()
+    {
+	RuleStatement[] r = p.parse("RULE WHERE 'Linux'");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+		WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertEquals("LINUX", w.items[0].toString());
+    }
+
+
+    @Before public void createParser()
+    {
+	p = new SyntaxParser();
     }
 }

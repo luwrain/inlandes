@@ -90,20 +90,22 @@ public class SyntaxParser
 	    if (fixed.Space() != null)
 				    return new WhereStatement.Fixed((token)->token.isSpace(), " ");
 
-	    
-	    if (fixed.cons() != null)
-	    {
-		final ConsContext cons = fixed.cons();
-		if (cons.CyrilPlain() != null)
+	    		if (fixed.CyrilPlain() != null)
 		{
-		    final String textUpper = cons.CyrilPlain().toString().toUpperCase();
-		    //		    return new WhereStatement.Fixed((token)->{ return token.isCyril() && noCaseEquals(token.getText(), cons.CyrilPlain().toString()); }, cons.CyrilPlain().toString().toUpperCase());
+		    final String textUpper = fixed.CyrilPlain().toString().toUpperCase();
 		    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toUpperCase().equals(textUpper)), textUpper);
 		}
-	    }
-	    return null;
-	}
-	return null;
+
+				    		if (fixed.Latin() != null)
+		{
+		    final String text = fixed.Latin().toString();
+		    final String textUpper = text.substring(1, text.length() - 1).toUpperCase();
+		    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toUpperCase().equals(textUpper)), textUpper);
+		}
+
+						
+	} //fixed
+	throw new RuntimeException(c.toString());
     }
 
         public RuleStatement[] parse(String text)

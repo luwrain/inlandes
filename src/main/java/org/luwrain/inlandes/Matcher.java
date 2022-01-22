@@ -56,7 +56,7 @@ static public final class Matching
 
     private final RuleStatement[] rules;
     private final List<Matching> matchings = new ArrayList<>();
-    private List<WhereIterator> current = null, next = null;
+    private ArrayList<WhereIterator> current = null, next = null;
     Token token = null;
     int tokenIndex = -1;
 
@@ -75,7 +75,7 @@ static public final class Matching
 	for(tokenIndex = 0;tokenIndex < tokens.length;tokenIndex++)
 	{
 	    this.token = tokens[tokenIndex];
-	    System.out.println("Checking " + token);
+	    //System.out.println("Checking " + token);
 	    	for(RuleStatement r: rules)
 	    a.add(new WhereIterator(this, r));
 	    while(!a.isEmpty())
@@ -83,11 +83,13 @@ static public final class Matching
 		for(WhereIterator i: a)
 		    i.check();
 		a = this.current;
-				System.out.println("it, " + a.size() + " items");
+		//System.out.println("it, " + a.size() + " items");
 		this.current = new ArrayList<>();
+		this.current.ensureCapacity(a.size());
 	    }
 	    a = this.next;
 	    this.next = new ArrayList<>();
+	    this.next.ensureCapacity(a.size());
 	}
 	this.token = null;
 	this.tokenIndex = -1;

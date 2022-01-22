@@ -22,18 +22,20 @@ public final class WhereIterator
 {
     static private final int NO_REF = -1;
 
-        private final Matching matching;
+        private final Matcher matcher;
+        private final RuleStatement rule;
     private final ArrayList<Level> levels = new ArrayList<>();
     private final int[] refsBegin, refsEnd;
 
-    public WhereIterator(Matching matching, WhereStatement whereStatement)
+    public WhereIterator(Matcher matcher, RuleStatement rule)
     {
-	if (matching == null)
-	    throw new NullPointerException("matching can't be null");
-	if (whereStatement == null)
-	    throw new NullPointerException("whereStatement can't be null");
-	this.matching = matching;
-	this.levels.add(new Level(whereStatement.items));
+	if (matcher == null)
+	    throw new NullPointerException("matcher can't be null");
+	if (rule == null)
+	    throw new NullPointerException("rule can't be null");
+	this.matcher = matcher;
+	this.rule = rule;
+	this.levels.add(new Level(rule.getWhere().items));
 	this.refsBegin = new int[10];
 		this.refsEnd = new int[10];
 		Arrays.fill(refsBegin, NO_REF);
@@ -44,9 +46,10 @@ public final class WhereIterator
     {
 	if (it == null)
 	    throw new NullPointerException("it can't be null");
-	if (it.matching == null)
-	    throw new NullPointerException("it.matching can't be null");
-	this.matching = it.matching;
+	if (it.matcher == null)
+	    throw new NullPointerException("it.matcher can't be null");
+	this.matcher = it.matcher;
+	this.rule = it.rule;
 	this.levels.ensureCapacity(it.levels.size());
 	for(Level l: it.levels)
 	    this.levels.add(l.clone());
@@ -61,13 +64,14 @@ public final class WhereIterator
 	{
 	    if (levels.size() == 1)
 	    {
-		matching.success(this);
+		matcher.success(this, rule, refsBegin, refsEnd);
 		return;
 	    }
 	    if (level.ref != NO_REF)
-		this.refsEnd[level.ref] = matching.tokenIndex;
+		this.refsEnd[level.ref] = matcher.tokenIndex;
 	    levels.remove(levels.size() - 1);
-	    matching.addCurrentPos(this);
+	    matcher.addCurrentPos(this);
+	    System.out.println("closed level");
 	    return;
 	}
 	final Item item = level.items[level.pos];
@@ -81,26 +85,31 @@ public final class WhereIterator
 final WhereIterator newIt = new WhereIterator(this);
 newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?item.getRef().num:NO_REF));
 		if (item.getRef() != null)
-		    newIt.refsBegin[item.getRef().num] = matching.tokenIndex;
-		matching.addCurrentPos(newIt);
+		    newIt.refsBegin[item.getRef().num] = matcher.tokenIndex;
+		matcher.addCurrentPos(newIt);
 	    }
 	    return;
 	}
 
 		if (item instanceof Block)
 		{
+		    	    level.pos++;
 		    final Block block = (Block)item;
 		    levels.add(new Level(block.items, item.getRef() != null?item.getRef().num:NO_REF));
 		    if (item.getRef() != null)
-			this.refsBegin[item.getRef().num] = matching.tokenIndex;
-		    matching.addCurrentPos(this);
+			this.refsBegin[item.getRef().num] = matcher.tokenIndex;
+		    matcher.addCurrentPos(this);
 		    return;
 		}
 
 	if (item instanceof Fixed)
 	{
 	    final Fixed fixed = (Fixed)item;
-	    fixed.match(matching.token);
+	    if (!fixed.match(matcher.token))
+		return;
+	    level.pos++;
+		matcher.addNextPos(this);
+	    return;
 	}
     }
 

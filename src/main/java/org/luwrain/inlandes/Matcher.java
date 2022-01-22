@@ -16,14 +16,14 @@ package org.luwrain.inlandes;
 
 import java.util.*;
 
-public final class Matching
+public final class Matcher
 {
     private final RuleStatement[] rules;
     private List<WhereIterator> current = null, next = null;
     Token token = null;
     int tokenIndex = -1;
 
-    public Matching(RuleStatement[] rules)
+    public Matcher(RuleStatement[] rules)
     {
 	if (rules == null)
 	    throw new NullPointerException("rules can't be null");
@@ -32,24 +32,32 @@ public final class Matching
 
     public void match(Token[] tokens)
     {
-	List<WhereIterator> a = new ArrayList<>();
-	for(RuleStatement r: rules)
-	    a.add(new WhereIterator(this, r.getWhere()));
+
 	this.current = new ArrayList<>();
 	this.next = new ArrayList<>();
-	for(Token t: tokens)
+		List<WhereIterator> a = new ArrayList<>();
+		System.out.println("proba");
+	for(tokenIndex = 0;tokenIndex < tokens.length;tokenIndex++)
 	{
-	    this.token = t;
+	    this.token = tokens[tokenIndex];
+	    System.out.println("Checking " + token);
+	    	for(RuleStatement r: rules)
+	    a.add(new WhereIterator(this, r));
 	    while(!a.isEmpty())
 	    {
 		for(WhereIterator i: a)
 		    i.check();
 		a = this.current;
+		System.out.println("it, " + a.size() + " items");
 		this.current = new ArrayList<>();
 	    }
 	    a = this.next;
 	    this.next = new ArrayList<>();
 	}
+	this.token = null;
+	this.tokenIndex = -1;
+	this.current = null;
+	this.next = null;
     }
 
     void addCurrentPos(WhereIterator it)
@@ -62,8 +70,12 @@ public final class Matching
 	this.next.add(it);
     }
 
-    void success(WhereIterator it)
+    void success(WhereIterator it, RuleStatement rule, int[] refsBegin, int[] refsEnd)
     {
+	System.out.println("OK");
+	System.out.println(Arrays.toString(refsBegin));
+	System.out.println(Arrays.toString(refsEnd));
+	
 	
     }
 }

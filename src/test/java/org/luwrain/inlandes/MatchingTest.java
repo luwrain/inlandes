@@ -20,18 +20,19 @@ import static org.luwrain.inlandes.util.Tokenizer.tokenize;
 
 public class MatchingTest extends Assert
 {
+        static private final Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
-    static private final Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
 
-    @Test public void blockCoupleWordsWithRef()
+
+    @Test public void blockSingleWordWithRef()
     {
-	final RuleStatement[] rr = parser.parse("RULE WHERE {прекрасный день}_1");
+	final RuleStatement[] rr = parser.parse("RULE WHERE {день}_1");
 	assertNotNull(rr);
 	assertEquals(1, rr.length);
 	assertNotNull(rr[0]);
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
-	final Matching m = new Matching(rr);
+	final Matcher m = new Matcher(rr);
 	m.match(TEXT);
     }
 

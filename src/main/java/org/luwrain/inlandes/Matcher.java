@@ -18,7 +18,44 @@ import java.util.*;
 
 public final class Matcher
 {
+        static public final int NO_REF = -1;
+
+static public final class Matching
+{
+    private final RuleStatement rule;
+    private final int[] refsBegin, refsEnd;
+    Matching(RuleStatement rule, int[] refsBegin, int[] refsEnd)
+    {
+	if (rule == null)
+	    throw new NullPointerException("rule can't be null");
+	this.rule = rule;
+	this.refsBegin = refsBegin.clone();
+	this.refsEnd = refsEnd.clone();
+    }
+    public RuleStatement getRule()
+    {
+	return this.rule;
+    }
+    public int getRefBegin(int refIndex)
+    {
+	if (refIndex < 0)
+	    throw new IllegalArgumentException("refIndex can't be negative");
+	if (refIndex >= 10)
+	    throw new IllegalArgumentException("refIndex can't be greater than 9");
+	return this.refsBegin[refIndex];
+    }
+        public int getRefEnd(int refIndex)
+    {
+	if (refIndex < 0)
+	    throw new IllegalArgumentException("refIndex can't be negative");
+	if (refIndex >= 10)
+	    throw new IllegalArgumentException("refIndex can't be greater than 9");
+	return this.refsEnd[refIndex];
+    }
+}
+
     private final RuleStatement[] rules;
+    private final List<Matching> matchings = new ArrayList<>();
     private List<WhereIterator> current = null, next = null;
     Token token = null;
     int tokenIndex = -1;
@@ -30,9 +67,8 @@ public final class Matcher
 	this.rules = rules.clone();
     }
 
-    public void match(Token[] tokens)
+    public Matching[] match(Token[] tokens)
     {
-
 	this.current = new ArrayList<>();
 	this.next = new ArrayList<>();
 		List<WhereIterator> a = new ArrayList<>();
@@ -58,6 +94,7 @@ public final class Matcher
 	this.tokenIndex = -1;
 	this.current = null;
 	this.next = null;
+	return matchings.toArray(new Matching[matchings.size()]);
     }
 
     void addCurrentPos(WhereIterator it)
@@ -72,10 +109,6 @@ public final class Matcher
 
     void success(WhereIterator it, RuleStatement rule, int[] refsBegin, int[] refsEnd)
     {
-	System.out.println("OK");
-	System.out.println(Arrays.toString(refsBegin));
-	System.out.println(Arrays.toString(refsEnd));
-	
-	
+	matchings.add(new Matching(rule, refsBegin, refsEnd));
     }
 }

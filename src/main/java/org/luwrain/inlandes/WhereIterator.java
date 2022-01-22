@@ -20,7 +20,7 @@ import org.luwrain.inlandes.WhereStatement.*;
 
 public final class WhereIterator
 {
-    static private final int NO_REF = -1;
+    static private final int NO_REF = Matcher.NO_REF;
 
         private final Matcher matcher;
         private final RuleStatement rule;

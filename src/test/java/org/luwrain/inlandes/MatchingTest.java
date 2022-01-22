@@ -14,13 +14,18 @@
 
 package org.luwrain.inlandes;
 
+import static java.util.Arrays.*;
+
 import org.junit.*;
 
-import static org.luwrain.inlandes.util.Tokenizer.tokenize;
+import org.luwrain.inlandes.Matcher.*;
+import static org.luwrain.inlandes.Matcher.NO_REF;
+import static org.luwrain.inlandes.util.Tokenizer.*;
+import static org.luwrain.inlandes.util.Token.*;
 
 public class MatchingTest extends Assert
 {
-        static private final Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
+        static private final org.luwrain.inlandes.util.Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
 
 
@@ -33,7 +38,13 @@ public class MatchingTest extends Assert
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
-	m.match(TEXT);
+	final Matching[] res = m.match(TEXT);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertFalse(res[0].getRefBegin(1) == NO_REF);
+		assertFalse(res[0].getRefEnd(1) == NO_REF);
+		assertEquals("день", text(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
     @Before public void createParser()

@@ -14,7 +14,7 @@
 
 package org.luwrain.inlandes.util;
 
-public final class Token
+public final class Token implements org.luwrain.inlandes.Token
 {
     public enum Type {
 	NUM,
@@ -36,6 +36,31 @@ public final class Token
 	    throw new IllegalArgumentException("text may not be empty");
 	this.type = type;
 	this.text = text;
+    }
+
+    @Override public boolean isLatin()
+    {
+	return type == Type.LATIN;
+    }
+
+    @Override public boolean isCyril()
+    {
+	return type == Type.CYRIL;
+    }
+
+    @Override public boolean isNum()
+    {
+	return type == Type.NUM;
+    }
+
+    @Override public boolean isPunc()
+    {
+	return type == Type.PUNC;
+    }
+
+    @Override public String getText()
+    {
+	return text;
     }
 
     @Override public String toString()
@@ -65,7 +90,7 @@ public final class Token
 	return Character.isUpperCase(text.charAt(text.length() - 1));
     }
 
-    static public String getText(Token[] tokens)
+    static public String text(Token[] tokens)
     {
 	if (tokens == null)
 	    return "";
@@ -74,7 +99,7 @@ public final class Token
 	    if (t != null)
 		b.append(t.text);
 	return new String(b);
-	    }
+    }
 
     static public int find(Token[] tokens, Token token)
     {
@@ -84,7 +109,7 @@ public final class Token
 	return -1;
     }
 
-        static public Token num(String text)
+    static public Token num(String text)
     {
 	return new Token(Type.NUM, text);
     }
@@ -94,13 +119,13 @@ public final class Token
 	return new Token(Type.PUNC, text);
     }
 
-        static public Token latin(String text)
+    static public Token latin(String text)
     {
 	return new Token(Type.LATIN, text);
     }
 
-            static public Token cyril(String text)
+    static public Token cyril(String text)
     {
 	return new Token(Type.CYRIL, text);
     }
-    }
+}

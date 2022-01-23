@@ -2,7 +2,8 @@
 
 DEST_DIR=/tmp/inlandes-bin-0.2.0
 rm -rf "$DEST_DIR"
-mkdir -p "$DEST_DIR/jar"
+mkdir -p "$DEST_DIR/jar" "$DEST_DIR/bin"
+cp inlandes "$DEST_DIR/bin/inlandes"
 cd ..
 cp target/*.jar target/lib/*.jar "$DEST_DIR/jar"
 cp LICENSE AUTHORS "$DEST_DIR"

@@ -1,0 +1,5 @@
+
+In order to install INlandes, put the files from this archive to the
+directory you want, set $INLANDES_HOME appropriately and add the bin/
+directory to $PATH. We assume that you have installed Java SE not
+older than 8, but Java SSE 11 is recommended.

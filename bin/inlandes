@@ -1,0 +1,7 @@
+#!/bin/bash -e
+# Michael Pozhidaev <msp@luwrain.org>
+
+THIS="${0##*/}"
+
+[ -z "$INLANDES_HOME" ] && echo "$THIS: the environment variable \$INLANDES_HOME is not set" >&2 && exit 1
+exec java -cp "$INLANDES_HOME/jar/*" org.luwrain.inlandes.cli.Main "$@"

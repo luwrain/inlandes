@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+DEST_DIR=/tmp/inlandes-bin-0.2.0
+rm -rf "$DEST_DIR"
+mkdir -p "$DEST_DIR/jar"
+cd ..
+cp target/*.jar target/lib/*.jar "$DEST_DIR/jar"
+cp LICENSE AUTHORS "$DEST_DIR"
+cd "$(dirname "$DEST_DIR")"
+NAME="$(basename "$DEST_DIR")"
+tar -c "$NAME/" | gzip > "$NAME.tar.gz"
+echo OK

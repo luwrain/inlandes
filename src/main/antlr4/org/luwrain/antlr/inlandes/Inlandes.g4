@@ -43,7 +43,7 @@ whereStatement
     ;
 
 assignment
-    : Ref '=' Js
+    : Ref '=' Str | Ref '=' Js
     ;
 
 operation
@@ -75,6 +75,11 @@ Punc
 Space
     : '.'
     ;
+
+Str
+    : '"'.*'"'
+    ;
+
 
 JsObj
     : '@'[a-aA-A][a-aA-A0-9_]*

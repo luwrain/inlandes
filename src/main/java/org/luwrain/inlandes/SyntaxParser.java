@@ -60,6 +60,11 @@ public class SyntaxParser
 		final String js = c.Js().toString();
 		rule.addOperation(new Assignment(new Ref(parseInt(c.Ref().toString().substring(1))), Assignment.ValueType.JS, js.substring(2, js.length() - 2)));
 	    }
+	    	    if (c.Str() != null)
+	    {
+		final String str = c.Str().toString();
+		rule.addOperation(new Assignment(new Ref(parseInt(c.Ref().toString().substring(1))), Assignment.ValueType.STRING, str.substring(1, str.length() - 1)));
+	    }
 	}
     }
 

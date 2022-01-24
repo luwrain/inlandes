@@ -21,6 +21,40 @@ import org.luwrain.inlandes.operations.*;
 
 public class AssignmentParseTest extends Assert
 {
+        @Test public void strEmpty()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = \"\";");
+	assertEquals(1, r.length);
+	assertEquals(1, r[0].operations.size());
+	final Operation op = r[0].operations.get(0);
+	assertNotNull(op);
+	assertTrue(op instanceof Assignment);
+	final Assignment a = (Assignment)op;
+	assertNotNull(a.ref);
+	assertNotNull(a.valueType);
+	assertNotNull(a.value);
+	assertEquals(1, a.ref.num);
+	assertEquals(Assignment.ValueType.STRING, a.valueType);
+	assertEquals("", a.value);
+    }
+
+@Test public void str()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = \"proba\";");
+	assertEquals(1, r.length);
+	assertEquals(1, r[0].operations.size());
+	final Operation op = r[0].operations.get(0);
+	assertNotNull(op);
+	assertTrue(op instanceof Assignment);
+	final Assignment a = (Assignment)op;
+	assertNotNull(a.ref);
+	assertNotNull(a.valueType);
+	assertNotNull(a.value);
+	assertEquals(1, a.ref.num);
+	assertEquals(Assignment.ValueType.STRING, a.valueType);
+	assertEquals("proba", a.value);
+	    }
+
     private SyntaxParser p = null;
 
     @Test public void jsEmpty()

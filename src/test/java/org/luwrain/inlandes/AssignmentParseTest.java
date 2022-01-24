@@ -55,7 +55,7 @@ public class AssignmentParseTest extends Assert
 	assertEquals(1, a.ref.num);
 	assertEquals(Assignment.ValueType.JS, a.valueType);
 	assertEquals("'proba'", a.value);
-	try (final Script s = a.createScript()) {
+	try (final Script s = new Script(a.value)) {
 	    final Object res = s.eval();
 	    assertNotNull(res);
 	    assertTrue(res instanceof Value);
@@ -81,7 +81,7 @@ public class AssignmentParseTest extends Assert
 	assertEquals(1, a.ref.num);
 	assertEquals(Assignment.ValueType.JS, a.valueType);
 		assertEquals("var r = ''; r += 'proba2'; r", a.value);
-	try (final Script s = a.createScript()) {
+	try (final Script s = new Script(a.value)) {
 	    final Object res = s.eval();
 	    assertNotNull(res);
 	    assertTrue(res instanceof Value);

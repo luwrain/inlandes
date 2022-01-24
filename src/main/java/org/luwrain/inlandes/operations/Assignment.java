@@ -15,10 +15,12 @@
 package org.luwrain.inlandes.operations;
 
 import org.luwrain.inlandes.*;
+import org.luwrain.inlandes.Matcher.Matching;
 
 public final class Assignment extends Operation
 {
     public enum ValueType { STRING, JS };
+
     public final Ref ref;
 public final ValueType valueType;
     public final String value;
@@ -36,8 +38,19 @@ public final ValueType valueType;
 	this.value = value;
     }
 
-    public Script createScript()
+    public Result perform(Matching matching)
     {
-	return new Script(value);
+final ReplacementToken newToken = new ReplacementToken(matching.getRefBegin(ref.num), matching.getRefEnd(ref.num), org.luwrain.inlandes.util.Token.latin("TEST"));
+return new Result(newToken);
+    }
+
+
+    static public final class Result
+    {
+	final ReplacementToken newToken;
+	Result(ReplacementToken newToken)
+	{
+	    this.newToken = newToken;
+	}
     }
 }

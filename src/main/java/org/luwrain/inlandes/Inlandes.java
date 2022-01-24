@@ -38,6 +38,8 @@ public final class Inlandes implements AutoCloseable
 
     public void process(Token[] tokens)
     {
+	final List<Token[]> history = new ArrayList<>();
+	history.add(tokens);
 	final Matcher m = new Matcher(rules.toArray(new RuleStatement[rules.size()]));
 	m.match(tokens);
 	

@@ -21,7 +21,9 @@ import org.luwrain.inlandes.operations.*;
 
 public class AssignmentParseTest extends Assert
 {
-        @Test public void strEmpty()
+    private SyntaxParser p = null;
+
+    @Test public void strEmpty()
     {
 	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = \"\";");
 	assertEquals(1, r.length);
@@ -38,7 +40,7 @@ public class AssignmentParseTest extends Assert
 	assertEquals("", a.value);
     }
 
-@Test public void str()
+    @Test public void str()
     {
 	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = \"proba\";");
 	assertEquals(1, r.length);
@@ -53,9 +55,7 @@ public class AssignmentParseTest extends Assert
 	assertEquals(1, a.ref.num);
 	assertEquals(Assignment.ValueType.STRING, a.valueType);
 	assertEquals("proba", a.value);
-	    }
-
-    private SyntaxParser p = null;
+    }
 
     @Test public void jsEmpty()
     {
@@ -74,7 +74,7 @@ public class AssignmentParseTest extends Assert
 	assertEquals("{}", a.value);
     }
 
-        @Test public void jsString()
+    @Test public void jsString()
     {
 	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = ``'proba'``;");
 	assertEquals(1, r.length);
@@ -93,14 +93,14 @@ public class AssignmentParseTest extends Assert
 	    final Object res = s.eval();
 	    assertNotNull(res);
 	    assertTrue(res instanceof Value);
-	    	final Value v = (Value)res;
-	assertFalse(v.isNull());
-	assertTrue(v.isString());
-	assertEquals("proba", v.asString());
+	    final Value v = (Value)res;
+	    assertFalse(v.isNull());
+	    assertTrue(v.isString());
+	    assertEquals("proba", v.asString());
 	}
     }
 
-            @Test public void jsStringComplex()
+    @Test public void jsStringComplex()
     {
 	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = ``var r = ''; r += 'proba2'; r``;");
 	assertEquals(1, r.length);
@@ -114,15 +114,15 @@ public class AssignmentParseTest extends Assert
 	assertNotNull(a.value);
 	assertEquals(1, a.ref.num);
 	assertEquals(Assignment.ValueType.JS, a.valueType);
-		assertEquals("var r = ''; r += 'proba2'; r", a.value);
+	assertEquals("var r = ''; r += 'proba2'; r", a.value);
 	try (final Script s = new Script(a.value)) {
 	    final Object res = s.eval();
 	    assertNotNull(res);
 	    assertTrue(res instanceof Value);
-	    	final Value v = (Value)res;
-	assertFalse(v.isNull());
-	assertTrue(v.isString());
-	assertEquals("proba2", v.asString());
+	    final Value v = (Value)res;
+	    assertFalse(v.isNull());
+	    assertTrue(v.isString());
+	    assertEquals("proba2", v.asString());
 	}
     }
 

@@ -42,7 +42,15 @@ public final ValueType valueType;
 
     private Token exec(Context context)
     {
-	return new TextToken("test");
+	switch(valueType)
+	{
+	case STRING:
+	    return new TextToken(value);
+	case JS:
+	    throw new RuntimeException("Not implemented");
+	default:
+	    return null;
+	}
     }
 
     public Execution getExecution(Matching matching)

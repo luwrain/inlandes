@@ -60,7 +60,7 @@ public class SyntaxParser
 		final String js = c.Js().toString();
 		rule.addOperation(new Assignment(new Ref(parseInt(c.Ref().toString().substring(1))), Assignment.ValueType.JS, js.substring(2, js.length() - 2)));
 	    }
-	    	    if (c.Str() != null)
+	    if (c.Str() != null)
 	    {
 		final String str = c.Str().toString();
 		rule.addOperation(new Assignment(new Ref(parseInt(c.Ref().toString().substring(1))), Assignment.ValueType.STRING, str.substring(1, str.length() - 1)));
@@ -93,22 +93,20 @@ public class SyntaxParser
 	    final WhereFixedContext fixed = c.whereFixed();
 
 	    if (fixed.Space() != null)
-				    return new WhereStatement.Fixed((token)->token.isSpace(), " ");
+		return new WhereStatement.Fixed((token)->token.isSpace(), " ", (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
 
 	    		if (fixed.CyrilPlain() != null)
 		{
 		    final String textUpper = fixed.CyrilPlain().toString().toUpperCase();
-		    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toUpperCase().equals(textUpper)), textUpper);
+		    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toUpperCase().equals(textUpper)), textUpper, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
 		}
 
 				    		if (fixed.Latin() != null)
 		{
 		    final String text = fixed.Latin().toString();
 		    final String textUpper = text.substring(1, text.length() - 1).toUpperCase();
-		    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toUpperCase().equals(textUpper)), textUpper);
+		    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toUpperCase().equals(textUpper)), textUpper, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
 		}
-
-						
 	} //fixed
 	throw new RuntimeException(c.toString());
     }

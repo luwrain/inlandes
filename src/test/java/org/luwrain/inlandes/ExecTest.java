@@ -19,7 +19,7 @@ import java.io.*;
 
 import org.junit.*;
 
-import org.luwrain.inlandes.Matcher.*;
+import static org.luwrain.inlandes.Token.*;
 import static org.luwrain.inlandes.util.Tokenizer.*;
 
 public class ExecTest extends Assert
@@ -28,17 +28,18 @@ public class ExecTest extends Assert
 
     @Test public void substOneToken()
     {
-	inlandes.loadText("RULE WHERE {ноутбуке}_1 DO _1 = ``'смартфоне'``;");
+	inlandes.loadText("RULE WHERE {ноутбуке}_1 DO _1 = \"смартфоне\";");
 	assertEquals(1, inlandes.getRuleCount());
 	assertNotNull(inlandes.getRule(0));
-	final Token[] res = inlandes.process("На том ноутбуке был странный процессор.");
+	final Token[] res = inlandes.process("В том ноутбуке был странный процессор.");
 	assertNotNull(res);
 	assertEquals(12, res.length);
-	assertEquals("На", res[0].getText());
+	assertEquals("В", res[0].getText());
 		assertEquals("том", res[2].getText());
 				assertEquals("процессор", res[10].getText());
 				assertNotNull(res[4]);
-				System.out.println("proba " + res[4].toString());
+				assertEquals("смартфоне", res[4].getText());
+				assertEquals("В том смартфоне был странный процессор.", concat(res));
     }
 
     @Before public void createInlandes()

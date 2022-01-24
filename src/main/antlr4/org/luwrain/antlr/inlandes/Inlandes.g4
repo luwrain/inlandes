@@ -35,7 +35,7 @@ whereBlock
     ;
 
 whereItem
-    : whereFixed | whereAlternative Ref? | whereBlock Ref?
+    : whereFixed Ref? | whereAlternative Ref? | whereBlock Ref?
     ;
 
 whereStatement

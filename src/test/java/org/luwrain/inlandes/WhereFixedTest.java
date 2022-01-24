@@ -20,7 +20,7 @@ public class WhereFixedTest extends Assert
 {
     private SyntaxParser p = null;
 
-    @Test public void oneToThreeCyril()
+    @Test public void oneToTwoCyril()
     {
 	RuleStatement[] r = p.parse("RULE WHERE табуретка");
 	WhereStatement w = null;
@@ -42,13 +42,15 @@ public class WhereFixedTest extends Assert
 	assertEquals(2, w.items.length);
 	assertEquals("ИДУ", w.items[0].toString());
 	assertEquals("ДОМОЙ", w.items[1].toString());
+    }
 
-	r = p.parse("RULE WHERE сижу на стуле");
-	w = null;
+        @Test public void ThreeCyril()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE сижу на стуле");
 	assertNotNull(r);
 	assertEquals(1, r.length);
 	assertNotNull(r[0]);
-	w = r[0].getWhere();
+	final WhereStatement w = r[0].getWhere();
 	assertNotNull(w);
 	assertEquals(3, w.items.length);
 	assertEquals("СИЖУ", w.items[0].toString());

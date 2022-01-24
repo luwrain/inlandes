@@ -40,6 +40,7 @@ public final class WhereIterator
 		this.refsEnd = new int[10];
 		Arrays.fill(refsBegin, NO_REF);
 		Arrays.fill(refsEnd, NO_REF);
+		refsBegin[0] = matcher.tokenIndex;
     }
 
     WhereIterator(WhereIterator it)

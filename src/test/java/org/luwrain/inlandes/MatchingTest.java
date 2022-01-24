@@ -29,7 +29,26 @@ public class MatchingTest extends Assert
     static private final org.luwrain.inlandes.Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
 
-        @Test public void fixedWithRef()
+    @Test public void fixed()
+    {
+	final RuleStatement[] rr = parser.parse("RULE WHERE день");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(1, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.match(TEXT);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertFalse(res[0].getRefBegin(0) == NO_REF);
+	assertFalse(res[0].getRefEnd(0) == NO_REF);
+	assertTrue(res[0].getRefEnd(0) > res[0].getRefBegin(01));
+	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+    }
+
+    @Test public void fixedWithRef()
     {
 	final RuleStatement[] rr = parser.parse("RULE WHERE день_1");
 	assertNotNull(rr);
@@ -47,7 +66,6 @@ public class MatchingTest extends Assert
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
 	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
-
 
     @Test public void blockSingleWordWithRef()
     {
@@ -68,7 +86,7 @@ public class MatchingTest extends Assert
 	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
-        @Test public void blockThreeWordsWithRef()
+    @Test public void blockThreeWordsWithRef()
     {
 	final RuleStatement[] rr = parser.parse("RULE WHERE {был . замечательный . день}_1");
 	assertNotNull(rr);
@@ -86,7 +104,6 @@ public class MatchingTest extends Assert
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
 	assertEquals("был замечательный день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
-
 
     @Test public void nestedBlocksSingleWordWithRef()
     {
@@ -110,7 +127,7 @@ public class MatchingTest extends Assert
 	}
     }
 
-	    @Test public void alternativeSingleWordWithRef()
+    @Test public void alternativeSingleWordWithRef()
     {
 	final RuleStatement[] rr = parser.parse("RULE WHERE (холодный прекрасный замечательный знойный)_1");
 	assertNotNull(rr);

@@ -26,7 +26,7 @@ public class ExecTest extends Assert
 {
     private Inlandes inlandes = null;
 
-    @Test public void substOneToken()
+    @Test public void substOneTokenWithRef()
     {
 	inlandes.loadText("RULE WHERE ноутбуке_1 DO _1 = \"смартфоне\";");
 	assertEquals(1, inlandes.getRuleCount());
@@ -35,24 +35,35 @@ public class ExecTest extends Assert
 	assertNotNull(res);
 	assertEquals(12, res.length);
 	assertEquals("В", res[0].getText());
-		assertEquals("том", res[2].getText());
-				assertEquals("процессор", res[10].getText());
-				assertNotNull(res[4]);
-				assertEquals("смартфоне", res[4].getText());
-				assertEquals("В том смартфоне был странный процессор.", concat(res));
+	assertEquals("том", res[2].getText());
+	assertEquals("процессор", res[10].getText());
+	assertNotNull(res[4]);
+	assertEquals("смартфоне", res[4].getText());
+	assertEquals("В том смартфоне был странный процессор.", concat(res));
     }
 
         @Test public void substEpoch()
     {
-	inlandes.loadText("RULE WHERE {до.н'.'.э'.'}_1 DO _1 = \"до нашей эры\";");
+	inlandes.loadText("RULE WHERE до . н '.' . э '.' DO _0 = \"до нашей эры\";");
 	assertEquals(1, inlandes.getRuleCount());
 	assertNotNull(inlandes.getRule(0));
 	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
 	assertNotNull(res);
 	assertEquals(11, res.length);
-				assertEquals("События II в. до нашей эры драматичны.", concat(res));
+	assertEquals("События II в. до нашей эры драматичны.", concat(res));
     }
 
+
+    @Test public void substEpochWithRef()
+    {
+	inlandes.loadText("RULE WHERE {до . н '.' . э '.'}_1 DO _1 = \"до нашей эры\";");
+	assertEquals(1, inlandes.getRuleCount());
+	assertNotNull(inlandes.getRule(0));
+	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
+	assertNotNull(res);
+	assertEquals(11, res.length);
+	assertEquals("События II в. до нашей эры драматичны.", concat(res));
+    }
 
     @Before public void createInlandes()
     {

@@ -110,6 +110,7 @@ static public final class Matching
 
     void success(WhereIterator it, RuleStatement rule, int[] refsBegin, int[] refsEnd)
     {
+	refsEnd[0] = tokenIndex;
 	matchings.add(new Matching(rule, refsBegin, refsEnd));
     }
 }

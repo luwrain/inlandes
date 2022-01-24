@@ -42,6 +42,18 @@ public class ExecTest extends Assert
 				assertEquals("В том смартфоне был странный процессор.", concat(res));
     }
 
+        @Test public void substEpoch()
+    {
+	inlandes.loadText("RULE WHERE {до.н'.'.э'.'}_1 DO _1 = \"до нашей эры\";");
+	assertEquals(1, inlandes.getRuleCount());
+	assertNotNull(inlandes.getRule(0));
+	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
+	assertNotNull(res);
+	assertEquals(11, res.length);
+				assertEquals("События II в. до нашей эры драматичны.", concat(res));
+    }
+
+
     @Before public void createInlandes()
     {
 	inlandes = new Inlandes();

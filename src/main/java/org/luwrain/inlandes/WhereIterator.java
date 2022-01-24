@@ -81,8 +81,8 @@ public final class WhereIterator
 	    final Alternative alt = (Alternative)item;
 	    for(int i = 0;i < alt.items.length;i++)
 	    {
-final WhereIterator newIt = new WhereIterator(this);
-newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?item.getRef().num:NO_REF));
+		final WhereIterator newIt = new WhereIterator(this);
+		newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?item.getRef().num:NO_REF));
 		if (item.getRef() != null)
 		    newIt.refsBegin[item.getRef().num] = matcher.tokenIndex;
 		matcher.addCurrentPos(newIt);
@@ -90,32 +90,29 @@ newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?ite
 	    return;
 	}
 
-		if (item instanceof Block)
-		{
-		    	    level.pos++;
-		    final Block block = (Block)item;
-		    levels.add(new Level(block.items, item.getRef() != null?item.getRef().num:NO_REF));
-		    if (item.getRef() != null)
-			this.refsBegin[item.getRef().num] = matcher.tokenIndex;
-		    matcher.addCurrentPos(this);
-		    return;
-		}
+	if (item instanceof Block)
+	{
+	    level.pos++;
+	    final Block block = (Block)item;
+	    levels.add(new Level(block.items, item.getRef() != null?item.getRef().num:NO_REF));
+	    if (item.getRef() != null)
+		this.refsBegin[item.getRef().num] = matcher.tokenIndex;
+	    matcher.addCurrentPos(this);
+	    return;
+	}
 
 	if (item instanceof Fixed)
 	{
 	    final Fixed fixed = (Fixed)item;
 	    if (!fixed.matcher.match(matcher.token))
 		return;
-
-	    		    if (item.getRef() != null)
-			    {
-			this.refsBegin[item.getRef().num] = matcher.tokenIndex;
-						this.refsEnd[item.getRef().num] = matcher.tokenIndex + 1;
-			    }
-
-			    
+	    if (item.getRef() != null)
+	    {
+		this.refsBegin[item.getRef().num] = matcher.tokenIndex;
+		this.refsEnd[item.getRef().num] = matcher.tokenIndex + 1;
+	    }
 	    level.pos++;
-		matcher.addNextPos(this);
+	    matcher.addNextPos(this);
 	    return;
 	}
     }
@@ -126,27 +123,27 @@ newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?ite
     }
 
     static private final class Level
-{
-    final Item[] items;
-    int pos;
-    final int ref;
-    Level(Item[] items, int pos, int ref)
     {
-	this.items = items;
-	this.pos = pos;
-	this.ref = ref;
+	final Item[] items;
+	int pos;
+	final int ref;
+	Level(Item[] items, int pos, int ref)
+	{
+	    this.items = items;
+	    this.pos = pos;
+	    this.ref = ref;
+	}
+	Level(Item[] items, int ref)
+	{
+	    this(items, 0, ref);
+	}
+	Level(Item[] items)
+	{
+	    this(items, 0, NO_REF);
+	}
+	@Override public Level clone()
+	{
+	    return new Level(items, pos, ref);
+	}
     }
-    Level(Item[] items, int ref)
-    {
-	this(items, 0, ref);
-    }
-    Level(Item[] items)
-    {
-	this(items, 0, NO_REF);
-    }
-    @Override public Level clone()
-    {
-	return new Level(items, pos, ref);
-    }
-}
 }

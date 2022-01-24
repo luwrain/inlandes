@@ -28,31 +28,31 @@ public final class WhereStatement
 	Ref getRef();
     }
 
-        static public final class Block implements Item
+    static public final class Block implements Item
+    {
+	final Item[] items;
+	final Ref ref;
+	Block(List<Item> items, Ref ref)
 	{
-	    final Item[] items;
-	    final Ref ref;
-	    Block(List<Item> items, Ref ref)
-	    {
-		this.items = items.toArray(new Item[items.size()]);
-		this.ref = ref;
-	    }
-	    Block(List<Item> items) { this(items, null); }
-	    @Override public Ref getRef() { return ref; }
+	    this.items = items.toArray(new Item[items.size()]);
+	    this.ref = ref;
 	}
+	Block(List<Item> items) { this(items, null); }
+	@Override public Ref getRef() { return ref; }
+    }
 
-            static public final class Alternative implements Item
+    static public final class Alternative implements Item
+    {
+	final Item[] items;
+	final Ref ref;
+	Alternative(List<Item> items, Ref ref)
 	{
-	    final Item[] items;
-	    final Ref ref;
-	    Alternative(List<Item> items, Ref ref)
-	    {
-		this.items = items.toArray(new Item[items.size()]);
-		this.ref = ref;
-	    }
-	    Alternative(List<Item> items) { this(items, null); }
-	    @Override public Ref getRef() { return ref; }
+	    this.items = items.toArray(new Item[items.size()]);
+	    this.ref = ref;
 	}
+	Alternative(List<Item> items) { this(items, null); }
+	@Override public Ref getRef() { return ref; }
+    }
 
     static public final class Fixed implements Item
     {
@@ -67,17 +67,13 @@ public final class WhereStatement
 	    this.hint = hint != null?hint:"";
 	    this.ref = ref;
 	}
-	//	public boolean match(Token token) { return matcher.match(token); }
 	@Override public Ref getRef() { return ref; }
-	@Override public String toString()
-	{
-	    return hint;
-	}
+	@Override public String toString() { return hint; }
     }
 
     final Item[] items ;
 
-    public WhereStatement(List<Item> items)
+    WhereStatement(List<Item> items)
     {
 	this.items = items.toArray(new Item[items.size()]);
     }

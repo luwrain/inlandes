@@ -23,7 +23,7 @@ doKeyword
     ;
 
 whereFixed
-    : CyrilPlain | Latin | Space | JsObj | Dict
+    : CyrilPlain | Latin | Space | Punc | JsObj | Dict
     ;
 
 whereAlternative
@@ -66,11 +66,9 @@ Num
     : [0-9]+
     ;
 
-/*
 Punc
-    : [.,?!:;$%@()_+=\-—–°£€/]
+    : '\''[.,?!:;$%@()_+=\-—–°£€/]'\''
     ;
-    */
 
 Space
     : '.'
@@ -79,7 +77,6 @@ Space
 Str
     : '"'.*'"'
     ;
-
 
 JsObj
     : '@'[a-aA-A][a-aA-A0-9_]*

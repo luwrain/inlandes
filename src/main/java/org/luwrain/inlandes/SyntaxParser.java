@@ -107,6 +107,15 @@ public class SyntaxParser
 		    final String textUpper = text.substring(1, text.length() - 1).toUpperCase();
 		    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toUpperCase().equals(textUpper)), textUpper, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
 		}
+
+										    		if (fixed.Punc() != null)
+		{
+		    final String t = fixed.Punc().toString();
+		    final String text = t.substring(1, t.length() - 1);
+		    return new WhereStatement.Fixed((token)->(token.isPunc() && token.getText().toUpperCase().equals(text)), text, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
+		}
+
+												
 	} //fixed
 	throw new RuntimeException(c.toString());
     }

@@ -14,8 +14,6 @@
 
 package org.luwrain.inlandes;
 
-import java.util.*;
-
 public interface Token
 {
     boolean isLatin();

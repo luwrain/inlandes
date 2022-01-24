@@ -18,11 +18,35 @@ import java.util.*;
 import static java.util.Arrays.*;
 import java.io.*;
 
-public final class Inlandes
+import org.graalvm.polyglot.*;
+
+import static org.luwrain.inlandes.util.Tokenizer.tokenize;
+
+public final class Inlandes implements AutoCloseable
 {
     private final Map<String, Set<String>> dicts = new HashMap<>();
     private final List<RuleStatement> rules = new ArrayList<>();
     private final SyntaxParser parser = new SyntaxParser();
+    private final Context context;
+
+    public Inlandes()
+    {
+		this.context = Context.newBuilder()
+	.allowExperimentalOptions(true)
+	.build();
+    }
+
+    public void process(Token[] tokens)
+    {
+	final Matcher m = new Matcher(rules.toArray(new RuleStatement[rules.size()]));
+	m.match(tokens);
+	
+    }
+
+    public void process(String text)
+    {
+	process(tokenize(text));
+    }
 
     public void loadStandardLibrary()
     {
@@ -34,7 +58,6 @@ public final class Inlandes
 	    throw new RuntimeException(e);
 	}
     }
-	
 
     public void loadFile(String fileName, String charset) throws IOException
     {
@@ -44,6 +67,11 @@ public final class Inlandes
     public void loadFile(String fileName) throws IOException
     {
 	loadFile(fileName, "UTF-8");
+    }
+
+    @Override public void close()
+    {
+	this.context.close();
     }
 
     private String readTextFile(String fileName, String charset) throws IOException
@@ -91,10 +119,4 @@ public final class Inlandes
 	    return res.toArray(new String[res.size()]);
 	}
     }
-
-    
-
-
-    
 }
-    

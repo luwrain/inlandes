@@ -14,6 +14,8 @@
 
 package org.luwrain.inlandes.operations;
 
+import org.graalvm.polyglot.*;
+    
 import org.luwrain.inlandes.*;
 import org.luwrain.inlandes.Matcher.Matching;
 
@@ -38,6 +40,11 @@ public final ValueType valueType;
 	this.value = value;
     }
 
+    private Token exec(Context context)
+    {
+	return new TextToken("test");
+    }
+
     public Execution getExecution(Matching matching)
     {
 	return new Execution(matching);
@@ -51,9 +58,9 @@ public final ValueType valueType;
 	    this.rangeFrom = matching.getRefBegin(ref.num);
 	    	    this.rangeTo = matching.getRefEnd(ref.num);
 	}
-	public ReplacementToken exec()
+	public org.luwrain.inlandes.Token exec(Context context)
 	{
-	    return null;//FIXME:
+	    return new ReplacementToken(rangeFrom , rangeTo, Assignment.this.exec(context));
 	}
     }
 }

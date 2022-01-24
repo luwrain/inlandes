@@ -22,4 +22,12 @@ public interface Token
     boolean isPunc();
     boolean isSpace();
     String getText();
+
+    static public String concat(Token[] tokens)
+    {
+	final StringBuilder b = new StringBuilder();
+	for(Token t: tokens)
+	    b.append(t.getText());
+	return new String(b);
+    }
 }

@@ -60,7 +60,7 @@ public final class Tokenizer extends AbstractTokenizer
 	qu.addFirst(Character.valueOf(ch));
     }
 
-    static public Token[] tokenize(String text)
+    static public org.luwrain.inlandes.Token[] tokenize(String text)
     {
 	if (text == null)
 	    throw new NullPointerException("text may not be null");

@@ -22,11 +22,11 @@ import org.junit.*;
 import org.luwrain.inlandes.Matcher.*;
 import static org.luwrain.inlandes.Matcher.NO_REF;
 import static org.luwrain.inlandes.util.Tokenizer.*;
-import static org.luwrain.inlandes.util.Token.*;
+import static org.luwrain.inlandes.Token.*;
 
 public class MatchingTest extends Assert
 {
-    static private final org.luwrain.inlandes.util.Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
+    static private final org.luwrain.inlandes.Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
 
     @Test public void blockSingleWordWithRef()
@@ -45,7 +45,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(1) == NO_REF);
 	assertFalse(res[0].getRefEnd(1) == NO_REF);
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
-	assertEquals("день", text(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
         @Test public void blockThreeWordsWithRef()
@@ -64,7 +64,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(1) == NO_REF);
 	assertFalse(res[0].getRefEnd(1) == NO_REF);
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
-	assertEquals("был замечательный день", text(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("был замечательный день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
 
@@ -86,7 +86,7 @@ public class MatchingTest extends Assert
 	    assertFalse(res[0].getRefBegin(i) == NO_REF);
 	    assertFalse(res[0].getRefEnd(i) == NO_REF);
 	    assertTrue(res[0].getRefEnd(i) > res[0].getRefBegin(i));
-	    assertEquals("день", text(copyOfRange(TEXT, res[0].getRefBegin(i), res[0].getRefEnd(i))));
+	    assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(i), res[0].getRefEnd(i))));
 	}
     }
 
@@ -106,7 +106,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(1) == NO_REF);
 	assertFalse(res[0].getRefEnd(1) == NO_REF);
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
-	assertEquals("замечательный", text(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("замечательный", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
     @Before public void createParser()

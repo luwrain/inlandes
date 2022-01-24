@@ -72,10 +72,12 @@ public final class Inlandes implements AutoCloseable
 	{
 	    if (a.rangeFrom == a.rangeTo)//Should never happen
 		continue;
-	    t[a.rangeFrom] = a.exec();
+	    t[a.rangeFrom] = a.exec(context);
 	    for(int i = a.rangeFrom + 1;i < a.rangeTo;i++)
 		t[i] = null;
-	    numRemoved += (a.rangeTo - a.rangeFrom - 1);
+	    numRemoved += (a.rangeTo - a.rangeFrom);
+	    if (t[a.rangeFrom] != null)
+		numRemoved--;
 	}
 	final ArrayList<Token> res = new ArrayList<>();
 	res.ensureCapacity(t.length - numRemoved);

@@ -33,10 +33,12 @@ public class ExecTest extends Assert
 	assertNotNull(inlandes.getRule(0));
 	final Token[] res = inlandes.process("На том ноутбуке был странный процессор.");
 	assertNotNull(res);
-	assertEquals(11, res.length);
+	assertEquals(12, res.length);
 	assertEquals("На", res[0].getText());
 		assertEquals("том", res[2].getText());
-				assertEquals("процессор", res[9].getText());
+				assertEquals("процессор", res[10].getText());
+				assertNotNull(res[4]);
+				System.out.println("proba " + res[4].toString());
     }
 
     @Before public void createInlandes()
@@ -48,5 +50,4 @@ public class ExecTest extends Assert
     {
 	inlandes.close();
     }
-    
 }

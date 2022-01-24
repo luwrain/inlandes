@@ -20,7 +20,7 @@ public abstract class AbstractTokenizer
 {
     static public final char NBSP = 160;
 
-    protected final List<Token> output = new ArrayList();
+    protected final List<org.luwrain.inlandes.Token> output = new ArrayList();
 
     abstract char getCh();
     abstract public boolean hasCh();
@@ -120,9 +120,9 @@ public abstract class AbstractTokenizer
 	output.add(new Token(Token.Type.PUNC, new Character(ch).toString()));
     }
 
-    public Token[] getOutput()
+    public org.luwrain.inlandes.Token[] getOutput()
     {
-	return output.toArray(new Token[output.size()]);
+	return output.toArray(new org.luwrain.inlandes.Token[output.size()]);
     }
 
         static public boolean isCyrChar(char ch)

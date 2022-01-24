@@ -120,15 +120,23 @@ public class SyntaxParser
 	throw new RuntimeException(c.toString());
     }
 
-        public RuleStatement[] parse(String text)
+    public RuleStatement[] parse(String text)
     {
+	final BaseErrorListener errors = new BaseErrorListener() {
+		@Override public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
+		{
+		    throw new RuntimeException(msg);
+		}
+	    };
 	final InlandesLexer l = new InlandesLexer(CharStreams.fromString(text));
+	l.removeErrorListeners();
+	l.addErrorListener(errors);
 	final CommonTokenStream tokens = new CommonTokenStream(l);
 	final InlandesParser p = new InlandesParser(tokens);
 	final ParseTree tree = p.notation();
 	final ParseTreeWalker walker = new ParseTreeWalker();
 	final Listener listener = new Listener();
 	walker.walk(listener, tree);
-		return listener.rules.toArray(new RuleStatement[listener.rules.size()]);
+	return listener.rules.toArray(new RuleStatement[listener.rules.size()]);
     }
 }

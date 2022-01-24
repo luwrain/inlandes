@@ -96,6 +96,12 @@ public class WhereFixedTest extends Assert
 	assertEquals(1, w.items[0].getRef().num);
     }
 
+    @Test(expected = RuntimeException.class) public void twoCharsPuncError()
+    {
+p.parse("RULE WHERE ',,'");
+    }
+
+
 
 
 

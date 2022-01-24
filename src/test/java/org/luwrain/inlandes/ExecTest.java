@@ -28,7 +28,7 @@ public class ExecTest extends Assert
 
     @Test public void substOneToken()
     {
-	inlandes.loadText("RULE WHERE {ноутбуке}_1 DO _1 = \"смартфоне\";");
+	inlandes.loadText("RULE WHERE ноутбуке_1 DO _1 = \"смартфоне\";");
 	assertEquals(1, inlandes.getRuleCount());
 	assertNotNull(inlandes.getRule(0));
 	final Token[] res = inlandes.process("В том ноутбуке был странный процессор.");

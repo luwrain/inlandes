@@ -68,6 +68,22 @@ public class WhereFixedTest extends Assert
 	assertEquals("LINUX", w.items[0].toString());
     }
 
+            @Test public void oneLatinWithRef()
+    {
+	RuleStatement[] r = p.parse("RULE WHERE 'Linux'_1");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+		WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertEquals("LINUX", w.items[0].toString());
+	assertNotNull(w.items[0].getRef());
+	assertEquals(1, w.items[0].getRef().num);
+    }
+
+
+
 
     @Before public void createParser()
     {

@@ -29,6 +29,26 @@ public class MatchingTest extends Assert
     static private final org.luwrain.inlandes.Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
 
+        @Test public void fixedWithRef()
+    {
+	final RuleStatement[] rr = parser.parse("RULE WHERE день_1");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(1, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.match(TEXT);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertFalse(res[0].getRefBegin(1) == NO_REF);
+	assertFalse(res[0].getRefEnd(1) == NO_REF);
+	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
+	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+    }
+
+
     @Test public void blockSingleWordWithRef()
     {
 	final RuleStatement[] rr = parser.parse("RULE WHERE {день}_1");

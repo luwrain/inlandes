@@ -104,8 +104,16 @@ newIt.levels.add(new Level(new Item[]{ alt.items[i] }, item.getRef() != null?ite
 	if (item instanceof Fixed)
 	{
 	    final Fixed fixed = (Fixed)item;
-	    if (!fixed.match(matcher.token))
+	    if (!fixed.matcher.match(matcher.token))
 		return;
+
+	    		    if (item.getRef() != null)
+			    {
+			this.refsBegin[item.getRef().num] = matcher.tokenIndex;
+						this.refsEnd[item.getRef().num] = matcher.tokenIndex + 1;
+			    }
+
+			    
 	    level.pos++;
 		matcher.addNextPos(this);
 	    return;

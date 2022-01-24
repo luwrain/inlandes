@@ -56,8 +56,8 @@ public final class WhereStatement
 
     static public final class Fixed implements Item
     {
-	private final Matcher matcher;
-	private final String hint;
+	final Matcher matcher;
+	final String hint;
 	final Ref ref;
 	Fixed(Matcher matcher, String hint, Ref ref)
 	{
@@ -67,8 +67,7 @@ public final class WhereStatement
 	    this.hint = hint != null?hint:"";
 	    this.ref = ref;
 	}
-	//Fixed(Matcher matcher, String hint) { this(matcher, hint, null); }
-	public boolean match(Token token) { return matcher.match(token); }
+	//	public boolean match(Token token) { return matcher.match(token); }
 	@Override public Ref getRef() { return ref; }
 	@Override public String toString()
 	{

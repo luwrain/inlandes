@@ -20,6 +20,8 @@ import java.io.*;
 
 import org.graalvm.polyglot.*;
 
+import org.luwrain.inlandes.Matcher.Matching;
+import org.luwrain.inlandes.operations.*;
 import static org.luwrain.inlandes.util.Tokenizer.tokenize;
 
 public final class Inlandes implements AutoCloseable
@@ -36,18 +38,51 @@ public final class Inlandes implements AutoCloseable
 	.build();
     }
 
-    public void process(Token[] tokens)
+    public Token[] process(Token[] tokens)
     {
 	final List<Token[]> history = new ArrayList<>();
 	history.add(tokens);
 	final Matcher m = new Matcher(rules.toArray(new RuleStatement[rules.size()]));
-	m.match(tokens);
-	
+	final Matching[] matchings = m.match(tokens);
+	if (matchings.length == 0)
+	    return history.get(history.size() - 1);
+	history.add(processMatchings(history.get(history.size() - 1), matchings));
+	return history.get(history.size() - 1);
     }
 
-    public void process(String text)
+    public Token[] process(String text)
     {
-	process(tokenize(text));
+	return process(tokenize(text));
+    }
+
+    private Token[] processMatchings(Token[] tokens, Matching[] matchings)
+    {
+	final List<Assignment.Execution> assignments = new ArrayList<>();
+	for(Matching m: matchings)
+	    for(Operation o: m.getRule().operations)
+		if (o instanceof Assignment)
+		{
+		    final Assignment a = (Assignment)o;
+		    assignments.add(a.getExecution(m));
+		}
+	//FIXME: handle collisions
+	final Token[] t = tokens.clone();
+	int numRemoved = 0;
+	for(Assignment.Execution a: assignments)
+	{
+	    if (a.rangeFrom == a.rangeTo)//Should never happen
+		continue;
+	    t[a.rangeFrom] = a.exec();
+	    for(int i = a.rangeFrom + 1;i < a.rangeTo;i++)
+		t[i] = null;
+	    numRemoved += (a.rangeTo - a.rangeFrom - 1);
+	}
+	final ArrayList<Token> res = new ArrayList<>();
+	res.ensureCapacity(t.length - numRemoved);
+	for(Token tt: t)
+	    if (tt != null)
+		res.add(tt);
+	return res.toArray(new Token[res.size()]);
     }
 
     public void loadStandardLibrary()
@@ -59,6 +94,11 @@ public final class Inlandes implements AutoCloseable
 	{
 	    throw new RuntimeException(e);
 	}
+    }
+
+    public void loadText(String rulesText)
+    {
+		rules.addAll(Arrays.asList(parser.parse(rulesText)));
     }
 
     public void loadFile(String fileName, String charset) throws IOException
@@ -74,6 +114,16 @@ public final class Inlandes implements AutoCloseable
     @Override public void close()
     {
 	this.context.close();
+    }
+
+    public int getRuleCount()
+    {
+	return rules.size();
+    }
+
+    public RuleStatement getRule(int index)
+    {
+	return rules.get(index);
     }
 
     private String readTextFile(String fileName, String charset) throws IOException

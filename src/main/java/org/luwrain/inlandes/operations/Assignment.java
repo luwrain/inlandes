@@ -38,19 +38,22 @@ public final ValueType valueType;
 	this.value = value;
     }
 
-    public Result perform(Matching matching)
+    public Execution getExecution(Matching matching)
     {
-final ReplacementToken newToken = new ReplacementToken(matching.getRefBegin(ref.num), matching.getRefEnd(ref.num), org.luwrain.inlandes.util.Token.latin("TEST"));
-return new Result(newToken);
+	return new Execution(matching);
     }
 
-
-    static public final class Result
+    public final class Execution
     {
-	final ReplacementToken newToken;
-	Result(ReplacementToken newToken)
+	public final int rangeFrom, rangeTo;
+	Execution(Matching matching)
 	{
-	    this.newToken = newToken;
+	    this.rangeFrom = matching.getRefBegin(ref.num);
+	    	    this.rangeTo = matching.getRefEnd(ref.num);
+	}
+	public ReplacementToken exec()
+	{
+	    return null;//FIXME:
 	}
     }
 }

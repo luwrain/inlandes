@@ -24,6 +24,7 @@ static public final class Matching
 {
     private final RuleStatement rule;
     private final int[] refsBegin, refsEnd;
+    final int rangeFrom, rangeTo, len;
     Matching(RuleStatement rule, int[] refsBegin, int[] refsEnd)
     {
 	if (rule == null)
@@ -31,6 +32,11 @@ static public final class Matching
 	this.rule = rule;
 	this.refsBegin = refsBegin.clone();
 	this.refsEnd = refsEnd.clone();
+	this.rangeFrom = refsBegin[0];
+	this.rangeTo = refsEnd[0];
+	this.len = rangeTo - rangeFrom;
+	if (len < 0)
+	    throw new IllegalArgumentException("Illegal range of the matching");
     }
     public RuleStatement getRule()
     {
@@ -52,6 +58,20 @@ static public final class Matching
 	    throw new IllegalArgumentException("refIndex can't be greater than 9");
 	return this.refsEnd[refIndex];
     }
+    public boolean overlaps(Matching m)
+    {
+	if (len == 0 || m.len == 0)
+	    return false;
+	if (inside(m.rangeFrom) || inside(m.rangeTo - 1))
+	    return true;
+	if (m.inside(rangeFrom) || m.inside(rangeTo - 1))
+	    return true;
+	return false;
+    }
+    private boolean inside(int pos)
+	{
+	    return pos >= rangeFrom && pos < rangeTo;
+	 }
 }
 
     private final RuleStatement[] rules;
@@ -67,8 +87,9 @@ static public final class Matching
 	this.rules = rules.clone();
     }
 
-    public Matching[] match(Token[] tokens)
+    public List<Matching> match(Token[] tokens)
     {
+	this.matchings.clear();
 	this.current = new ArrayList<>();
 	this.next = new ArrayList<>();
 		List<WhereIterator> a = new ArrayList<>();
@@ -95,8 +116,15 @@ static public final class Matching
 	this.tokenIndex = -1;
 	this.current = null;
 	this.next = null;
-	return matchings.toArray(new Matching[matchings.size()]);
+	return this.matchings;
     }
+
+    public Matching[] matchAsArray(Token[] tokens)
+    {
+	final List<Matching> res = match(tokens);
+	return res.toArray(new Matching[res.size()]);
+    }
+	
 
     void addCurrentPos(WhereIterator it)
     {

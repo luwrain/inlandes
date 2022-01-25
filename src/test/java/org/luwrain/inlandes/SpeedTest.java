@@ -41,7 +41,7 @@ public class SpeedTest extends Assert
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
 	final long startTime = System.currentTimeMillis();
-	final Matching[] res = m.match(tokens);
+	final Matching[] res = m.matchAsArray(tokens);
 	final long elapsed = System.currentTimeMillis() - startTime;
 	assertNotNull(res);
 	System.out.println("Processed " + String.valueOf(tokens.length) + " tokens in " + String.valueOf(elapsed) + "ms, " + String.valueOf(res.length) + " matching(s)");

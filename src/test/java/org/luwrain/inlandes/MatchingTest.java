@@ -38,7 +38,7 @@ public class MatchingTest extends Assert
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
-	final Matching[] res = m.match(TEXT);
+	final Matching[] res = m.matchAsArray(TEXT);
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);
@@ -57,7 +57,7 @@ public class MatchingTest extends Assert
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
-	final Matching[] res = m.match(TEXT);
+	final Matching[] res = m.matchAsArray(TEXT);
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);
@@ -76,7 +76,7 @@ public class MatchingTest extends Assert
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
-	final Matching[] res = m.match(TEXT);
+	final Matching[] res = m.matchAsArray(TEXT);
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);
@@ -95,7 +95,7 @@ public class MatchingTest extends Assert
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
-	final Matching[] res = m.match(TEXT);
+	final Matching[] res = m.matchAsArray(TEXT);
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);
@@ -114,7 +114,7 @@ public class MatchingTest extends Assert
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
-	final Matching[] res = m.match(TEXT);
+	final Matching[] res = m.matchAsArray(TEXT);
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);
@@ -136,7 +136,7 @@ public class MatchingTest extends Assert
 	assertNotNull(rr[0].getWhere());
 	assertEquals(1, rr[0].getWhere().items.length);
 	final Matcher m = new Matcher(rr);
-	final Matching[] res = m.match(TEXT);
+	final Matching[] res = m.matchAsArray(TEXT);
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);

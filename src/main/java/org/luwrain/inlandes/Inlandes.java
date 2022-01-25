@@ -43,7 +43,7 @@ public final class Inlandes implements AutoCloseable
 	final List<Token[]> history = new ArrayList<>();
 	history.add(tokens);
 	final Matcher m = new Matcher(rules.toArray(new RuleStatement[rules.size()]));
-	final Matching[] matchings = m.match(tokens);
+	final Matching[] matchings = handleCollisions(m.match(tokens));
 	if (matchings.length == 0)
 	    return history.get(history.size() - 1);
 	history.add(processMatchings(history.get(history.size() - 1), matchings));
@@ -53,6 +53,27 @@ public final class Inlandes implements AutoCloseable
     public Token[] process(String text)
     {
 	return process(tokenize(text));
+    }
+
+    private Matching[] handleCollisions(List<Matching> m)
+    {
+	for(int i = 0;i < m.size();i++)
+	    for(int j = i + 1;j < m.size();j++)
+	    {
+		final Matching mi = m.get(i), mj = m.get(j);
+		if (mi.overlaps(mj))
+		{
+		    if (mj.len < mi.len)
+		    {
+			m.set(i, null);
+			continue;
+		    }
+		    m.set(i, null);
+		    j = m.size();
+		}
+	    }
+	m.removeIf((i)->(i == null));
+	return m.toArray(new Matching[m.size()]);
     }
 
     private Token[] processMatchings(Token[] tokens, Matching[] matchings)
@@ -65,7 +86,6 @@ public final class Inlandes implements AutoCloseable
 		    final Assignment a = (Assignment)o;
 		    assignments.add(a.getExecution(m));
 		}
-	//FIXME: handle collisions
 	final Token[] t = tokens.clone();
 	int numRemoved = 0;
 	for(Assignment.Execution a: assignments)

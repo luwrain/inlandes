@@ -94,7 +94,5 @@ Js
     : '``'.+'``'
     ;
 
-WS
-    : ' '
-    -> skip
-    ;
+WS : [\n\r\t ] -> skip ; 
+//WS : [\t\s\r\n] -> skip ;

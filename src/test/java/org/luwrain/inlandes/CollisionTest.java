@@ -28,6 +28,7 @@ public class CollisionTest extends Assert
 {
     static private final Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
+    private Inlandes inlandes = new Inlandes();
 
     @Test public void overlapping()
     {
@@ -37,21 +38,55 @@ public class CollisionTest extends Assert
 	assertNotNull(rr);
 	assertEquals(2, rr.length);
 	assertNotNull(rr[0]);
-		assertNotNull(rr[1]);
-		final Matching[] res = new Matcher(rr).matchAsArray(TEXT);
+	assertNotNull(rr[1]);
+	final Matching[] res = new Matcher(rr).matchAsArray(TEXT);
 	assertNotNull(res);
 	assertEquals(2, res.length);
 	assertEquals(3, res[0].len);
 	assertEquals(3, res[1].len);
 	assertEquals("замечательный день", concat(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
-		assertEquals("день весны", concat(copyOfRange(TEXT, res[1].getRefBegin(0), res[1].getRefEnd(0))));
-		assertTrue(res[0].overlaps(res[1]));
-				assertTrue(res[1].overlaps(res[0]));
+	assertEquals("день весны", concat(copyOfRange(TEXT, res[1].getRefBegin(0), res[1].getRefEnd(0))));
+	assertTrue(res[0].overlaps(res[1]));
+	assertTrue(res[1].overlaps(res[0]));
     }
 
+    @Test public void adjacent()
+    {
+	final RuleStatement[] rr = parser.parse(
+						"RULE WHERE день . весны" +
+						"RULE WHERE замечательный . ");
+	assertNotNull(rr);
+	assertEquals(2, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[1]);
+	final Matching[] res = new Matcher(rr).matchAsArray(TEXT);
+	assertNotNull(res);
+	assertEquals(2, res.length);
+	assertEquals(2, res[0].len);
+	assertEquals(3, res[1].len);
+	assertEquals("замечательный ", concat(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals("день весны", concat(copyOfRange(TEXT, res[1].getRefBegin(0), res[1].getRefEnd(0))));
+	assertFalse(res[0].overlaps(res[1]));
+	assertFalse(res[1].overlaps(res[0]));
+    }
+
+    @Test public void handling()
+    {
+	inlandes.loadText("RULE WHERE до . н '.' . э '.' DO _0 = \"до нашей эры\";" +
+"RULE WHERE н '.' . э '.' DO _0 = \"не нашей эры\";");
+	final String res = concat(inlandes.process("Это было ещё до н. э. и не совсем так."));
+	assertNotNull(res);
+	assertEquals("Это было ещё до нашей эры и не совсем так.", res);
+    }
 
     @Before public void createParser()
     {
 	parser = new SyntaxParser();
+	inlandes = new Inlandes();
+    }
+
+    @After public void closeINlandes()
+    {
+	inlandes.close();
     }
 }

@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+inlandes -i input.txt epoch.rules  

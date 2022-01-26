@@ -123,14 +123,14 @@ public final class Inlandes implements AutoCloseable
 		rules.addAll(Arrays.asList(parser.parse(rulesText)));
     }
 
-    public void loadFile(String fileName, String charset) throws IOException
+    public void loadRulesFromFile(String fileName, String charset) throws IOException
     {
 	rules.addAll(Arrays.asList(parser.parse(readTextFile(fileName, charset))));
     }
 
-    public void loadFile(String fileName) throws IOException
+    public void loadRulesFromFile(String fileName) throws IOException
     {
-	loadFile(fileName, "UTF-8");
+	loadRulesFromFile(fileName, "UTF-8");
     }
 
     @Override public void close()

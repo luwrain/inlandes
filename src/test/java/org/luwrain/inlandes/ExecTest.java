@@ -28,7 +28,7 @@ public class ExecTest extends Assert
 
     @Test public void substOneTokenWithRef()
     {
-	inlandes.loadText("RULE WHERE ноутбуке_1 DO _1 = \"смартфоне\";");
+	inlandes.loadRules("RULE WHERE ноутбуке_1 DO _1 = \"смартфоне\";");
 	assertEquals(1, inlandes.getRuleCount());
 	assertNotNull(inlandes.getRule(0));
 	final Token[] res = inlandes.process("В том ноутбуке был странный процессор.");
@@ -44,7 +44,7 @@ public class ExecTest extends Assert
 
         @Test public void substEpoch()
     {
-	inlandes.loadText("RULE WHERE до . н '.' . э '.' DO _0 = \"до нашей эры\";");
+	inlandes.loadRules("RULE WHERE до . н '.' . э '.' DO _0 = \"до нашей эры\";");
 	assertEquals(1, inlandes.getRuleCount());
 	assertNotNull(inlandes.getRule(0));
 	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
@@ -56,7 +56,7 @@ public class ExecTest extends Assert
 
     @Test public void substEpochWithRef()
     {
-	inlandes.loadText("RULE WHERE {до . н '.' . э '.'}_1 DO _1 = \"до нашей эры\";");
+	inlandes.loadRules("RULE WHERE {до . н '.' . э '.'}_1 DO _1 = \"до нашей эры\";");
 	assertEquals(1, inlandes.getRuleCount());
 	assertNotNull(inlandes.getRule(0));
 	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");

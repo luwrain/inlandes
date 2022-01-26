@@ -72,8 +72,8 @@ public class CollisionTest extends Assert
 
     @Test public void handling()
     {
-	inlandes.loadText("RULE WHERE до . н '.' . э '.' DO _0 = \"до нашей эры\";" +
-"RULE WHERE н '.' . э '.' DO _0 = \"не нашей эры\";");
+	inlandes.loadRules("RULE WHERE до . н '.' . э '.' DO _0 = \"до нашей эры\";" +
+			  "RULE WHERE н '.' . э '.' DO _0 = \"не нашей эры\";");
 	final String res = concat(inlandes.process("Это было ещё до н. э. и не совсем так."));
 	assertNotNull(res);
 	assertEquals("Это было ещё до нашей эры и не совсем так.", res);

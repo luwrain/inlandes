@@ -63,9 +63,6 @@ public final class Inlandes implements AutoCloseable
 		final Matching mi = m.get(i), mj = m.get(j);
 		if (mi.overlaps(mj))
 		{
-		    System.out.println("proba: Collision found");
-		    System.out.println("mj=" + mj.len);
-		    System.out.println("mi=" + mi.len);
 		    if (mj.len < mi.len)
 		    {
 			m.set(j, null);
@@ -121,7 +118,7 @@ public final class Inlandes implements AutoCloseable
 	}
     }
 
-    public void loadText(String rulesText)
+    public void loadRules(String rulesText)
     {
 		rules.addAll(Arrays.asList(parser.parse(rulesText)));
     }

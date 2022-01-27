@@ -83,7 +83,7 @@ JsObj
     ;
 
 Dict
-    : '#'[a-aA-A][a-aA-A0-9_]*
+    : '#'[a-zA-Z][a-zA-Z0-9-]*
     ;
 
 Ref

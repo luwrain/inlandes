@@ -29,7 +29,17 @@ public class SyntaxParser
 {
 static private final String
     OPTIONAL_MARK = "?";
-    
+
+    	private final Map<String, Set<String>> dicts;
+	public SyntaxParser(Map<String, Set<String>> dicts)
+	{
+	    this.dicts = dicts;
+	}
+    public SyntaxParser()
+    {
+	this(new HashMap<>());
+    }
+
     private final class Listener extends InlandesBaseListener
     {
 	List<RuleStatement> rules = new ArrayList<RuleStatement>();
@@ -125,6 +135,19 @@ static private final String
 						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
 						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
+
+																						    		if (fixed.Dict() != null)
+		{
+		    final Set<String> dict = dicts.get(fixed.Dict().toString().substring(1));
+		    if (dict == null)
+			throw new RuntimeException("No such dict: " + fixed.Dict().toString());
+		    return new WhereStatement.Fixed((token)->dict.contains(token.getText()), fixed.Dict().toString(),
+						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+		}
+
+
+												
 	} //fixed
 	throw new RuntimeException(c.toString());
     }

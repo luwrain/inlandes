@@ -14,6 +14,8 @@
 
 package org.luwrain.inlandes;
 
+import java.util.*;
+
 import org.junit.*;
 
 public class WhereFixedTest extends Assert
@@ -100,6 +102,20 @@ public class WhereFixedTest extends Assert
 	assertTrue(w.items[0].isOptional());
     }
 
+                    @Test public void oneDictWithRefAndOptional()
+    {
+	RuleStatement[] r = p.parse("RULE WHERE #test-dict-_1?");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+		final WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertEquals("#test-dict-", w.items[0].toString());
+	assertNotNull(w.items[0].getRef());
+	assertEquals(1, w.items[0].getRef().num);
+	assertTrue(w.items[0].isOptional());
+    }
 
                 @Test public void onePuncWithRef()
     {
@@ -127,6 +143,8 @@ p.parse("RULE WHERE ',,'");
 
     @Before public void createParser()
     {
-	p = new SyntaxParser();
+	final HashMap<String, Set<String>> dicts = new HashMap<>();
+	dicts.put("test-dict-", new HashSet<>());
+	p = new SyntaxParser(dicts);
     }
 }

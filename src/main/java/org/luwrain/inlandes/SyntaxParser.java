@@ -27,6 +27,9 @@ import org.luwrain.inlandes.operations.*;
 
 public class SyntaxParser
 {
+static private final String
+    OPTIONAL_MARK = "?";
+    
     private final class Listener extends InlandesBaseListener
     {
 	List<RuleStatement> rules = new ArrayList<RuleStatement>();
@@ -76,7 +79,7 @@ public class SyntaxParser
 	    final List<WhereStatement.Item> items = new ArrayList<>();
 	    for(WhereItemContext i: block.whereItem()) 
 		items.add(createWhereItem(i));
-	    return new WhereStatement.Block(items, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
+	    return new WhereStatement.Block(items, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null, c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 	}
 
 	if (c.whereAlternative() != null)
@@ -85,7 +88,7 @@ public class SyntaxParser
 	    final List<WhereStatement.Item> items = new ArrayList<>();
 	    for(WhereItemContext i: alt.whereItem()) 
 		items.add(createWhereItem(i));
-	    return new WhereStatement.Alternative(items, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
+	    return new WhereStatement.Alternative(items, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null, c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 	}
 
 	if (c.whereFixed() != null)
@@ -93,29 +96,35 @@ public class SyntaxParser
 	    final WhereFixedContext fixed = c.whereFixed();
 
 	    if (fixed.Space() != null)
-		return new WhereStatement.Fixed((token)->token.isSpace(), " ", (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
+		return new WhereStatement.Fixed((token)->token.isSpace(), " ",
+						(c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+						c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 
 	    		if (fixed.CyrilPlain() != null)
 		{
 		    final String textUpper = fixed.CyrilPlain().toString().toUpperCase();
-		    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toUpperCase().equals(textUpper)), textUpper, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
+		    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().length() == textUpper.length() && token.getText().toUpperCase().equals(textUpper)), textUpper,
+						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
 
 				    		if (fixed.Latin() != null)
 		{
 		    final String text = fixed.Latin().toString();
 		    final String textUpper = text.substring(1, text.length() - 1).toUpperCase();
-		    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toUpperCase().equals(textUpper)), textUpper, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
+		    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toUpperCase().equals(textUpper)), textUpper,
+						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
 
 										    		if (fixed.Punc() != null)
 		{
 		    final String t = fixed.Punc().toString();
 		    final String text = t.substring(1, t.length() - 1);
-		    return new WhereStatement.Fixed((token)->(token.isPunc() && token.getText().toUpperCase().equals(text)), text, (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null);
+		    return new WhereStatement.Fixed((token)->(token.isPunc() && token.getText().toUpperCase().equals(text)), text,
+						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
-
-												
 	} //fixed
 	throw new RuntimeException(c.toString());
     }

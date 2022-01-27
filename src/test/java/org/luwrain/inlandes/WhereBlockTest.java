@@ -71,6 +71,29 @@ public class WhereBlockTest extends Assert
 		assertEquals("ДОМОЙ", i2.toString());
     }
 
+                @Test public void coupleWordsAndOptional()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE{ иду домой }?");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+	final WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertTrue(w.items[0] instanceof WhereStatement.Block);
+	final Block b = (Block)w.items[0];
+	assertTrue(b.isOptional());
+	assertEquals(2, b.items.length);
+	final Item i1 = b.items[0], i2 = b.items[1];
+	assertNotNull(i1);
+	assertNotNull(i2);
+	assertTrue(i1 instanceof Fixed);
+	assertTrue(i2 instanceof Fixed);
+	assertEquals("ИДУ", i1.toString());
+		assertEquals("ДОМОЙ", i2.toString());
+    }
+
+
                 @Test public void coupleWordsWithRef()
     {
 	final RuleStatement[] r = p.parse("RULE WHERE{ иду домой }_5");

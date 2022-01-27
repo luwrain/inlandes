@@ -35,7 +35,7 @@ whereBlock
     ;
 
 whereItem
-    : whereFixed Ref? | whereAlternative Ref? | whereBlock Ref?
+    : whereFixed Ref? Optional? | whereAlternative Ref? Optional? | whereBlock Ref? Optional?
     ;
 
 whereStatement
@@ -88,6 +88,10 @@ Dict
 
 Ref
     : '_'[0123456789]
+    ;
+
+Optional
+    : '?'
     ;
 
 Js

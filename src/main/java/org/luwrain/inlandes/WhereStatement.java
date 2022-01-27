@@ -26,32 +26,37 @@ public final class WhereStatement
     public interface Item
     {
 	Ref getRef();
+	boolean isOptional();
     }
 
     static public final class Block implements Item
     {
 	final Item[] items;
 	final Ref ref;
-	Block(List<Item> items, Ref ref)
+	final boolean optional;
+	Block(List<Item> items, Ref ref, boolean optional)
 	{
 	    this.items = items.toArray(new Item[items.size()]);
 	    this.ref = ref;
+	    this.optional = optional;
 	}
-	Block(List<Item> items) { this(items, null); }
 	@Override public Ref getRef() { return ref; }
+	@Override public boolean isOptional() { return this.optional; }
     }
 
     static public final class Alternative implements Item
     {
 	final Item[] items;
 	final Ref ref;
-	Alternative(List<Item> items, Ref ref)
+	final boolean optional;
+	Alternative(List<Item> items, Ref ref, boolean optional)
 	{
 	    this.items = items.toArray(new Item[items.size()]);
 	    this.ref = ref;
+	    this.optional = optional;
 	}
-	Alternative(List<Item> items) { this(items, null); }
 	@Override public Ref getRef() { return ref; }
+		@Override public boolean isOptional() { return this.optional; }
     }
 
     static public final class Fixed implements Item
@@ -59,16 +64,19 @@ public final class WhereStatement
 	final Matcher matcher;
 	final String hint;
 	final Ref ref;
-	Fixed(Matcher matcher, String hint, Ref ref)
+	final boolean optional;
+	Fixed(Matcher matcher, String hint, Ref ref, boolean optional)
 	{
 	    if (matcher == null)
 		throw new NullPointerException("matcher can't be null");
 	    this.matcher = matcher;
 	    this.hint = hint != null?hint:"";
 	    this.ref = ref;
+	    this.optional = optional;
 	}
 	@Override public Ref getRef() { return ref; }
 	@Override public String toString() { return hint; }
+		@Override public boolean isOptional() { return this.optional; }
     }
 
     final Item[] items ;

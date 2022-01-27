@@ -86,6 +86,40 @@ public class MatchingTest extends Assert
 	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
+    @Test public void optionalSpace()
+    {
+	final Token[]
+	text1 = tokenize("Это было давно, т. к. это было в прошлом году."),
+	text2 = tokenize("Это было давно, т.к. это было в прошлом году.");
+	final RuleStatement[] rr = parser.parse("RULE WHERE т '.' .? к '.'");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(5, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[]
+	res1 = m.matchAsArray(text1),
+	res2 = m.matchAsArray(text2);
+
+	assertNotNull(res1);
+	assertEquals(1, res1.length);
+	assertEquals(res1[0].getRule(), rr[0]);
+	assertFalse(res1[0].getRefBegin(0) == NO_REF);
+	assertFalse(res1[0].getRefEnd(0) == NO_REF);
+	assertTrue(res1[0].getRefEnd(0) > res1[0].getRefBegin(0));
+	assertEquals("т. к.", concat(copyOfRange(text1, res1[0].getRefBegin(0), res1[0].getRefEnd(0))));
+
+	assertNotNull(res2);
+	assertEquals(1, res2.length);
+	assertEquals(res2[0].getRule(), rr[0]);
+	assertFalse(res2[0].getRefBegin(0) == NO_REF);
+	assertFalse(res2[0].getRefEnd(0) == NO_REF);
+	assertTrue(res2[0].getRefEnd(0) > res2[0].getRefBegin(0));
+	assertEquals("т.к.", concat(copyOfRange(text2, res2[0].getRefBegin(0), res2[0].getRefEnd(0))));
+    }
+
+
     @Test public void blockThreeWordsWithRef()
     {
 	final RuleStatement[] rr = parser.parse("RULE WHERE {был . замечательный . день}_1");

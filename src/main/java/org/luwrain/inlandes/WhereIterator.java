@@ -54,7 +54,7 @@ public final class WhereIterator
 	this.levels.ensureCapacity(it.levels.size());
 	for(Level l: it.levels)
 	    this.levels.add(l.clone());
-	this.refsBegin = it.refsEnd.clone ();
+	this.refsBegin = it.refsBegin.clone ();
 	this.refsEnd = it.refsEnd.clone();
     }
 
@@ -74,7 +74,14 @@ public final class WhereIterator
 	    matcher.addCurrentPos(this);
 	    return;
 	}
+
 	final Item item = level.items[level.pos];
+	if (item.isOptional())
+	{
+	    		final WhereIterator newIt = new WhereIterator(this);
+			newIt.getLevel().pos++;
+			matcher.addCurrentPos(newIt);
+	}
 
 	if (item instanceof Alternative)
 	{

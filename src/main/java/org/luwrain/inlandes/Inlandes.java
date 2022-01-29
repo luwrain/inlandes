@@ -84,7 +84,7 @@ public final class Inlandes implements AutoCloseable
 		if (o instanceof Assignment)
 		{
 		    final Assignment a = (Assignment)o;
-		    assignments.add(a.getExecution(m));
+		    assignments.add(a.getExecution(tokens, m));
 		}
 	final Token[] t = tokens.clone();
 	int numRemoved = 0;

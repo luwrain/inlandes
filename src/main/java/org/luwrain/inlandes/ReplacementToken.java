@@ -16,11 +16,14 @@ package org.luwrain.inlandes;
 
 public final class ReplacementToken implements Token
 {
+    final Token[] sourceTokens;
     final int sourceRangeFrom, sourceRangeTo;
     final Token token;
 
-    public ReplacementToken(int sourceRangeFrom, int sourceRangeTo, Token token)
+    public ReplacementToken(Token[] sourceTokens, int sourceRangeFrom, int sourceRangeTo, Token token)
     {
+	if (sourceTokens == null)
+	    throw new NullPointerException("sourceTokens can't be null");
 	if (sourceRangeFrom < 0)
 	    throw new IllegalArgumentException("sourceRangeFrom can't be negative");
 	if (sourceRangeTo < 0)
@@ -29,6 +32,7 @@ public final class ReplacementToken implements Token
 	    throw new IllegalArgumentException("sourceRangeFrom must be less or equal than sourceRangeTo");
 	if (token == null)
 	    throw new NullPointerException("token can't be null");
+	this.sourceTokens = sourceTokens.clone();
 	this.sourceRangeFrom = sourceRangeFrom;
 	this.sourceRangeTo = sourceRangeTo;
 	this.token = token;
@@ -41,4 +45,17 @@ public final class ReplacementToken implements Token
     @Override public boolean isSpace() { return token.isSpace(); }
     @Override public String getText() { return token.getText(); }
     @Override public String toString() { return token.toString(); }
+
+    public String getSourceText()
+    {
+	final StringBuilder b = new StringBuilder();
+	for(int i = sourceRangeFrom;i < sourceRangeTo;i++)
+	    if (sourceTokens[i] instanceof ReplacementToken)
+	{
+	    final ReplacementToken r = (ReplacementToken)sourceTokens[i];
+	    b.append(r.getSourceText());
+	} else
+		b.append(sourceTokens[i].getText());
+	return new String(b);
+    }
 }

@@ -53,22 +53,24 @@ public final ValueType valueType;
 	}
     }
 
-    public Execution getExecution(Matching matching)
+    public Execution getExecution(Token[] tokens, Matching matching)
     {
-	return new Execution(matching);
+	return new Execution(tokens, matching);
     }
 
     public final class Execution
     {
+	private final Token[] tokens;
 	public final int rangeFrom, rangeTo;
-	Execution(Matching matching)
+	Execution(Token[] tokens, Matching matching)
 	{
+	    this.tokens = tokens;
 	    this.rangeFrom = matching.getRefBegin(ref.num);
 	    	    this.rangeTo = matching.getRefEnd(ref.num);
 	}
 	public org.luwrain.inlandes.Token exec(Context context)
 	{
-	    return new ReplacementToken(rangeFrom , rangeTo, Assignment.this.exec(context));
+	    return new ReplacementToken(tokens, rangeFrom , rangeTo, Assignment.this.exec(context));
 	}
     }
 }

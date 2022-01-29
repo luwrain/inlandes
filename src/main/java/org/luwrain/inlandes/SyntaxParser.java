@@ -152,10 +152,25 @@ static private final String
 						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
 
+																																														    		if (fixed.Cl() != null)
+																																																    return createClassFilter(fixed.Cl().toString().substring(1),
+																																																			     						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 
-												
 	} //fixed
 	throw new RuntimeException(c.toString());
+    }
+
+    private WhereStatement.Fixed createClassFilter(String className, Ref ref, boolean optional)
+    {
+	switch(className)
+			{
+			case "num":
+			    return new WhereStatement.Fixed((token)->token.isNum(),
+							    "/" + className, ref, optional);
+    default:
+	throw new RuntimeException("Unknown token class: " + className);
+			}
     }
 
     public RuleStatement[] parse(String text)

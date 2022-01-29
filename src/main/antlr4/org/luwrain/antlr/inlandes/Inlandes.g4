@@ -27,7 +27,7 @@ stageKeyword
     ;
 
 whereFixed
-    : CyrilPlain | Latin | Space | Punc | JsObj | Dict
+    : CyrilPlain | Latin | Space | Punc | JsObj | Dict | Cl
     ;
 
 whereAlternative
@@ -87,7 +87,11 @@ Str
     ;
 
 JsObj
-    : '@'[a-aA-A][a-aA-A0-9_]*
+    : '@'[a-zA-Z][a-zA-Z0-9_]*
+    ;
+
+Cl
+    : '/'[a-z][a-z-]*
     ;
 
 Dict

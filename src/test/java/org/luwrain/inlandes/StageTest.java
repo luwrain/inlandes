@@ -29,6 +29,7 @@ public class StageTest extends Assert
 	assertEquals(1, r.length);
 	assertNotNull(r[0]);
 	assertEquals(5, r[0].getStageNum());
+	assertFalse(r[0].isDefaultStageNum());
     }
 
     @Test public void negative()
@@ -38,5 +39,16 @@ public class StageTest extends Assert
 	assertEquals(1, r.length);
 	assertNotNull(r[0]);
 	assertEquals(-5, r[0].getStageNum());
+	assertFalse(r[0].isDefaultStageNum());
     }
-	}
+
+    @Test public void def()
+    {
+	final RuleStatement[] r = p.parse("RULE");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+	assertEquals(0, r[0].getStageNum());
+	assertTrue(r[0].isDefaultStageNum());
+    }
+}

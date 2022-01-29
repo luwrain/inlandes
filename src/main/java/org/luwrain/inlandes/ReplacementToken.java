@@ -17,8 +17,8 @@ package org.luwrain.inlandes;
 public final class ReplacementToken implements Token
 {
     final Token[] sourceTokens;
-    final int sourceRangeFrom, sourceRangeTo;
-    final Token token;
+    public final int sourceRangeFrom, sourceRangeTo;
+    public final Token token;
 
     public ReplacementToken(Token[] sourceTokens, int sourceRangeFrom, int sourceRangeTo, Token token)
     {

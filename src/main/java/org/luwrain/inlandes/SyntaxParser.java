@@ -30,14 +30,16 @@ public class SyntaxParser
 static private final String
     OPTIONAL_MARK = "?";
 
+        private final ScriptEngine scriptEngine;
     	private final Map<String, Set<String>> dicts;
-	public SyntaxParser(Map<String, Set<String>> dicts)
+    public SyntaxParser(ScriptEngine scriptEngine, Map<String, Set<String>> dicts)
 	{
+	    this.scriptEngine = scriptEngine;
 	    this.dicts = dicts;
 	}
     public SyntaxParser()
     {
-	this(new HashMap<>());
+	this(null, new HashMap<>());
     }
 
     private final class Listener extends InlandesBaseListener

@@ -27,24 +27,37 @@ import static org.luwrain.inlandes.util.Tokenizer.tokenize;
 public final class Inlandes implements AutoCloseable
 {
     private final Map<String, Set<String>> dicts = new HashMap<>();
-    private final List<RuleStatement> rules = new ArrayList<>();
-    private final SyntaxParser parser = new SyntaxParser();
+    private final SortedMap<Integer, List<RuleStatement>> rules = new TreeMap<>();
+    private final List<RuleStatement> rulesList = new ArrayList<>();
+    private final SyntaxParser parser;
     private final ScriptEngine scriptEngine;
+    private int currentStageNum = 0;
+
+    public Inlandes(ScriptEngine scriptEngine)
+    {
+	if (scriptEngine == null)
+	    throw new NullPointerException("scriptEngine can't be null");
+	this.scriptEngine = scriptEngine;
+	this.parser = new SyntaxParser(scriptEngine, dicts);
+    }
 
     public Inlandes()
     {
-	this.scriptEngine = new GraalVmEngine();
-	    }
+	this(new GraalVmEngine());
+    }
 
     public Token[] process(Token[] tokens)
     {
 	final List<Token[]> history = new ArrayList<>();
 	history.add(tokens);
-	final Matcher m = new Matcher(rules.toArray(new RuleStatement[rules.size()]));
-	final Matching[] matchings = handleCollisions(m.match(tokens));
-	if (matchings.length == 0)
-	    return history.get(history.size() - 1);
-	history.add(processMatchings(history.get(history.size() - 1), matchings));
+	for(Map.Entry<Integer, List<RuleStatement>> e: rules.entrySet())
+	{
+	    final Matcher m = new Matcher(e.getValue().toArray(new RuleStatement[e.getValue().size()]));
+	    final Matching[] matchings = handleCollisions(m.match(tokens));
+	    if (matchings.length == 0)
+		continue;
+	    history.add(processMatchings(history.get(history.size() - 1), matchings));
+	}
 	return history.get(history.size() - 1);
     }
 
@@ -118,12 +131,29 @@ public final class Inlandes implements AutoCloseable
 
     public void loadRules(String rulesText)
     {
-		rules.addAll(Arrays.asList(parser.parse(rulesText)));
+	final RuleStatement[] rr = parser.parse(rulesText);
+	rulesList.addAll(asList(rr));
+	for(RuleStatement r: rr)
+	{
+	    if (r.isDefaultStageNum())
+		r.setStageNum(currentStageNum);
+	    currentStageNum = r.getStageNum();
+	    final Integer num = new Integer(currentStageNum);
+	    List<RuleStatement> l = rules.get(num);
+	    if (l != null)
+	    {
+		l.add(r);
+		continue;
+	    }
+	    l = new ArrayList<>();
+	    l.add(r);
+	    rules.put(num , l);
+	}
     }
 
     public void loadRulesFromFile(String fileName, String charset) throws IOException
     {
-	rules.addAll(Arrays.asList(parser.parse(readTextFile(fileName, charset))));
+	loadRules(readTextFile(fileName, charset));
     }
 
     public void loadRulesFromFile(String fileName) throws IOException
@@ -138,12 +168,12 @@ public final class Inlandes implements AutoCloseable
 
     public int getRuleCount()
     {
-	return rules.size();
+	return rulesList.size();
     }
 
     public RuleStatement getRule(int index)
     {
-	return rules.get(index);
+	return rulesList.get(index);
     }
 
     private String readTextFile(String fileName, String charset) throws IOException

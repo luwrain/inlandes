@@ -18,7 +18,7 @@ import org.luwrain.inlandes.*;
 
 public final class ScriptObjectToken implements Token
 {
-    private final Object obj;
+    public final Object obj;
 
     ScriptObjectToken(Object obj)
     {

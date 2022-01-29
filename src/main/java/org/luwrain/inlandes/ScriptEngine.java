@@ -17,4 +17,5 @@ package org.luwrain.inlandes;
 public interface ScriptEngine extends AutoCloseable
 {
     Object eval(String text);
+    boolean isObjWithTrueValue(Object obj, String valueName);
 }

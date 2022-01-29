@@ -15,6 +15,7 @@
 package org.luwrain.inlandes;
 
 import org.graalvm.polyglot.*;
+import org.luwrain.inlandes.operations.*;
 
 public class GraalVmEngine implements ScriptEngine
 {
@@ -35,5 +36,34 @@ public class GraalVmEngine implements ScriptEngine
     @Override public void close()
     {
 	context.close();
+    }
+
+        @Override public boolean isObjWithTrueValue(Object obj, String valueName)
+    {
+	if (obj == null)
+	    throw new NullPointerException("obj can't be null");
+	if (valueName == null)
+	    throw new NullPointerException("valueName can't be null");
+	if (valueName.isEmpty())
+	    throw new IllegalArgumentException("valueName can't be empty");
+	if (obj instanceof Value)
+	{
+	    final Value value = (Value)obj;
+	    final Value v = value.getMember(valueName);
+	    if (v == null || v.isNull() || !v.isBoolean())
+		return false;
+	    return v.asBoolean();
+	}
+	if (obj instanceof ScriptObjectToken)
+	{
+	    final ScriptObjectToken token = (ScriptObjectToken)obj;
+	    return this.isObjWithTrueValue(token.obj, valueName);
+	}
+	if (obj instanceof ReplacementToken)
+	{
+	    final ReplacementToken token = (ReplacementToken)obj;
+	    return this.isObjWithTrueValue(token.token, valueName);
+	}
+	return false;
     }
 }

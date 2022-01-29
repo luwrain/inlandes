@@ -145,6 +145,6 @@ p.parse("RULE WHERE ',,'");
     {
 	final HashMap<String, Set<String>> dicts = new HashMap<>();
 	dicts.put("test-dict-", new HashSet<>());
-	p = new SyntaxParser(dicts);
+	p = new SyntaxParser(null, dicts);
     }
 }

@@ -29,14 +29,12 @@ public final class Inlandes implements AutoCloseable
     private final Map<String, Set<String>> dicts = new HashMap<>();
     private final List<RuleStatement> rules = new ArrayList<>();
     private final SyntaxParser parser = new SyntaxParser();
-    private final Context context;
+    private final ScriptEngine scriptEngine;
 
     public Inlandes()
     {
-		this.context = Context.newBuilder()
-	.allowExperimentalOptions(true)
-	.build();
-    }
+	this.scriptEngine = new GraalVmEngine();
+	    }
 
     public Token[] process(Token[] tokens)
     {
@@ -92,7 +90,7 @@ public final class Inlandes implements AutoCloseable
 	{
 	    if (a.rangeFrom == a.rangeTo)//Should never happen
 		continue;
-	    t[a.rangeFrom] = a.exec(context);
+	    t[a.rangeFrom] = a.exec(scriptEngine);
 	    for(int i = a.rangeFrom + 1;i < a.rangeTo;i++)
 		t[i] = null;
 	    numRemoved += (a.rangeTo - a.rangeFrom);
@@ -133,9 +131,9 @@ public final class Inlandes implements AutoCloseable
 	loadRulesFromFile(fileName, "UTF-8");
     }
 
-    @Override public void close()
+    @Override public void close() throws Exception
     {
-	this.context.close();
+	this.scriptEngine.close();
     }
 
     public int getRuleCount()

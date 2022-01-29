@@ -65,12 +65,24 @@ public class ExecTest extends Assert
 	assertEquals("События II в. до нашей эры драматичны.", concat(res));
     }
 
+        @Test public void jsObj()
+    {
+	inlandes.loadRules("RULE WHERE до . н '.' . э '.' DO _0 = ``({name: 'jstest'})``;");
+	assertEquals(1, inlandes.getRuleCount());
+	assertNotNull(inlandes.getRule(0));
+	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
+	assertNotNull(res);
+	assertEquals(11, res.length);
+	assertEquals("События II в. {name: \"jstest\"} драматичны.", concat(res));
+    }
+
+
     @Before public void createInlandes()
     {
 	inlandes = new Inlandes();
     }
 
-    @After public void closeInlandes()
+    @After public void closeInlandes() throws Exception
     {
 	inlandes.close();
     }

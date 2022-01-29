@@ -14,7 +14,26 @@
 
 package org.luwrain.inlandes;
 
-public interface ScriptEngine extends AutoCloseable
+import org.graalvm.polyglot.*;
+
+public class GraalVmEngine implements ScriptEngine
 {
-    Object eval(String text);
+    	private final Context context;
+
+    public GraalVmEngine()
+    {
+		this.context = Context.newBuilder()
+	.allowExperimentalOptions(true)
+	.build();
+    }
+
+    @Override public Object eval(String text)
+    {
+	return context.eval("js", text);
+    }
+
+    @Override public void close()
+    {
+	context.close();
+    }
 }

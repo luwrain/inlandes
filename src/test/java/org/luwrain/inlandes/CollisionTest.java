@@ -85,7 +85,7 @@ public class CollisionTest extends Assert
 	inlandes = new Inlandes();
     }
 
-    @After public void closeINlandes()
+    @After public void closeINlandes() throws Exception
     {
 	inlandes.close();
     }

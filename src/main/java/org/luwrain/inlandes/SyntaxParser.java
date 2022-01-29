@@ -66,6 +66,10 @@ static private final String
 		res.add(createWhereItem(i));
 	    this.rule.setWhere(new WhereStatement(res));
 	}
+		@Override public void exitStageStatement(StageStatementContext c)
+	{
+	    rule.setStageNum(parseInt(c.Num().toString().trim()));
+	}
 	@Override public void exitAssignment(AssignmentContext c)
 	{
 	    if (c.Js() != null)

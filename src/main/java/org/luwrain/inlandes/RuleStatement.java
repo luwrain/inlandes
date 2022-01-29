@@ -19,6 +19,8 @@ import java.util.*;
 public final class RuleStatement
 {
     private WhereStatement where = null;
+    private int stageNum = 0;
+    private boolean defaultStageNum = true;
     final List<Operation> operations = new ArrayList<>();
 
     public void setWhere(WhereStatement where)
@@ -38,5 +40,21 @@ public final class RuleStatement
 	if (op == null)
 	    throw new NullPointerException("op can't be null");
 	this.operations.add(op);
+    }
+
+    void setStageNum(int stageNum)
+    {
+	this.stageNum = stageNum;
+	this.defaultStageNum = false;
+    }
+
+    public int getStageNum()
+    {
+	return stageNum;
+    }
+
+    public boolean isDefaultStageNum()
+    {
+	return defaultStageNum;
     }
 }

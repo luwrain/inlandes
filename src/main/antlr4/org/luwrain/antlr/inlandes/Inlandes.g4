@@ -7,7 +7,7 @@ notation
     ;
 
 ruleStatement
-    : ruleKeyword whereStatement? doStatement?
+    : ruleKeyword stageStatement? whereStatement? doStatement?
     ;
 
 ruleKeyword
@@ -20,6 +20,10 @@ whereKeyword
 
 doKeyword
     : 'DO' | 'Do' | 'do'
+    ;
+
+stageKeyword
+    : 'STAGE' | 'Stage' | 'stage'
     ;
 
 whereFixed
@@ -54,6 +58,10 @@ doStatement
     : doKeyword operation+
     ;
 
+stageStatement
+    : stageKeyword Num
+    ;
+
 CyrilPlain
     : [а-яА-ЯёЁ]+
     ;
@@ -63,7 +71,7 @@ Latin
     ;
 
 Num
-    : [0-9]+
+    : '-'?[0-9]+
     ;
 
 Punc

@@ -26,6 +26,8 @@ import static org.luwrain.inlandes.util.Tokenizer.tokenize;
 
 public final class Inlandes implements AutoCloseable
 {
+    static private final int NO_REF = Matcher.NO_REF;
+
     private final Map<String, Set<String>> dicts = new HashMap<>();
     private final SortedMap<Integer, List<RuleStatement>> rules = new TreeMap<>();
     private final List<RuleStatement> rulesList = new ArrayList<>();
@@ -89,18 +91,18 @@ public final class Inlandes implements AutoCloseable
 
     private Token[] processMatchings(Token[] tokens, Matching[] matchings)
     {
-	final List<Assignment.Execution> assignments = new ArrayList<>();
+	final List<Operation.Execution> execs = new ArrayList<>();
 	for(Matching m: matchings)
 	    for(Operation o: m.getRule().operations)
-		if (o instanceof Assignment)
-		{
-		    final Assignment a = (Assignment)o;
-		    assignments.add(a.getExecution(tokens, m));
-		}
+		execs.add(o.getExecution(tokens, m));
 	final Token[] t = tokens.clone();
 	int numRemoved = 0;
-	for(Assignment.Execution a: assignments)
+	for(Operation.Execution a: execs)
 	{
+	    if (a.rangeFrom == NO_REF || a.rangeTo == NO_REF)
+	    {
+		continue;
+	    }
 	    if (a.rangeFrom == a.rangeTo)//Should never happen
 		continue;
 	    t[a.rangeFrom] = a.exec(scriptEngine);

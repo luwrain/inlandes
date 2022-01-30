@@ -73,24 +73,18 @@ public final ValueType valueType;
 	return res;
     }
 
-    public Execution getExecution(Token[] tokens, Matching matching)
+    @Override public Execution getExecution(Token[] tokens, Matching matching)
     {
 	return new Execution(tokens, matching);
     }
 
-    public final class Execution
+    public final class Execution extends Operation.Execution
     {
-	private final Token[] tokens;
-	private final Matching matching;
-	public final int rangeFrom, rangeTo;
 	Execution(Token[] tokens, Matching matching)
 	{
-	    this.tokens = tokens;
-	    this.matching = matching;
-	    this.rangeFrom = matching.getRefBegin(ref.num);
-	    	    this.rangeTo = matching.getRefEnd(ref.num);
+	    super(tokens, matching, matching.getRefBegin(ref.num), matching.getRefEnd(ref.num));
 	}
-	public org.luwrain.inlandes.Token exec(ScriptEngine scriptEngine)
+	@Override public org.luwrain.inlandes.Token exec(ScriptEngine scriptEngine)
 	{
 	    return new ReplacementToken(tokens, rangeFrom , rangeTo, Assignment.this.exec(tokens, matching, scriptEngine));
 	}

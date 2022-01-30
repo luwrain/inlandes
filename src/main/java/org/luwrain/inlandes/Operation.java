@@ -16,15 +16,17 @@ package org.luwrain.inlandes;
 
 import org.luwrain.inlandes.Matcher.Matching;
 
-public class Operation
+public abstract class Operation
 {
     static public final int NO_REF = Matcher.NO_REF;
+
+    abstract public Execution getExecution(Token[] tokens, Matching matching);
 
     static public abstract class Execution
     {
 	protected final Token[] tokens;
 	protected final Matching matching;
-	final int rangeFrom, rangeTo;
+	public final int rangeFrom, rangeTo;
 	public Execution(Token[] tokens, Matching matching, int rangeFrom, int rangeTo)
 	{
 	    this.tokens = tokens;

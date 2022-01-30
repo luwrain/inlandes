@@ -60,19 +60,13 @@ public final class Action extends Operation
 	return new Execution(tokens, matching);
     }
 
-    public final class Execution
+    public final class Execution extends Operation.Execution
     {
-	private final Token[] tokens;
-	private final Matching matching;
-	Execution(Token[] tokens, Matching matching)
+	Execution(Token[] tokens, Matching matching) { super(tokens, matching); }
+	@Override public org.luwrain.inlandes.Token exec(ScriptEngine scriptEngine)
 	{
-	    this.tokens = tokens;
-	    this.matching = matching;
-	}
-	public org.luwrain.inlandes.Token exec(ScriptEngine scriptEngine)
-	{
-Action.this.exec(tokens, matching, scriptEngine);
-return null;
+	    Action.this.exec(tokens, matching, scriptEngine);
+	    return null;
 	}
     }
 }

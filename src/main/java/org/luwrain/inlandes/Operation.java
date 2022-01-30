@@ -14,6 +14,28 @@
 
 package org.luwrain.inlandes;
 
+import org.luwrain.inlandes.Matcher.Matching;
+
 public class Operation
 {
+    static public final int NO_REF = Matcher.NO_REF;
+
+    static public abstract class Execution
+    {
+	protected final Token[] tokens;
+	protected final Matching matching;
+	final int rangeFrom, rangeTo;
+	public Execution(Token[] tokens, Matching matching, int rangeFrom, int rangeTo)
+	{
+	    this.tokens = tokens;
+	    this.matching = matching;
+	    this.rangeFrom = rangeFrom;
+	    this.rangeTo = rangeTo;
+	}
+	public Execution(Token[] tokens, Matching matching)
+	{
+	    this(tokens, matching, NO_REF, NO_REF);
+	}
+	abstract public Token exec(ScriptEngine scriptEngine);
+    }
 }

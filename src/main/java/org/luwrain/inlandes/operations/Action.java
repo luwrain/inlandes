@@ -34,7 +34,7 @@ public final class Action extends Operation
 
     private void exec(Token[] tokens, Matching matching, ScriptEngine scriptEngine)
     {
-	//	    return new ScriptObjectToken(scriptEngine.eval(value, createBindings(tokens, matching, scriptEngine)));
+	scriptEngine.eval(text, createBindings(tokens, matching, scriptEngine));
     }
 
     private Map<String, Object> createBindings(Token[] tokens, Matching matching, ScriptEngine scriptEngine)

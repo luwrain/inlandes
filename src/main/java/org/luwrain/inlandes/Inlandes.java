@@ -55,10 +55,11 @@ public final class Inlandes implements AutoCloseable
 	for(Map.Entry<Integer, List<RuleStatement>> e: rules.entrySet())
 	{
 	    final Matcher m = new Matcher(e.getValue().toArray(new RuleStatement[e.getValue().size()]));
-	    final Matching[] matchings = handleCollisions(m.match(tokens));
+	    final Token[] t = history.get(history.size() - 1);
+	    final Matching[] matchings = handleCollisions(m.match(t));
 	    if (matchings.length == 0)
 		continue;
-	    history.add(processMatchings(history.get(history.size() - 1), matchings));
+	    history.add(processMatchings(t, matchings));
 	}
 	return history.get(history.size() - 1);
     }
@@ -101,6 +102,7 @@ public final class Inlandes implements AutoCloseable
 	{
 	    if (a.rangeFrom == NO_REF || a.rangeTo == NO_REF)
 	    {
+		a.exec(scriptEngine);
 		continue;
 	    }
 	    if (a.rangeFrom == a.rangeTo)//Should never happen
@@ -166,6 +168,11 @@ public final class Inlandes implements AutoCloseable
     @Override public void close() throws Exception
     {
 	this.scriptEngine.close();
+    }
+
+    public int getStageCount()
+    {
+	return rules.size();
     }
 
     public int getRuleCount()

@@ -72,6 +72,11 @@ static private final String
 	{
 	    rule.setStageNum(parseInt(c.Num().toString().trim()));
 	}
+	@Override public void exitAction(ActionContext c)
+	{
+	    final String js = c.Js().toString();
+	    rule.addOperation(new Action(js.substring(2, js.length() - 2)));
+	}
 	@Override public void exitAssignment(AssignmentContext c)
 	{
 	    if (c.Js() != null)

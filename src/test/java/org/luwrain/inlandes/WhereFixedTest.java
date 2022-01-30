@@ -145,6 +145,20 @@ public class WhereFixedTest extends Assert
 	assertEquals(1, w.items[0].getRef().num);
     }
 
+                        @Test public void jsObjWithRef()
+    {
+	RuleStatement[] r = p.parse("RULE WHERE @test _1");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+		WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertEquals("@test", w.items[0].toString());
+	assertNotNull(w.items[0].getRef());
+	assertEquals(1, w.items[0].getRef().num);
+    }
+
     @Test(expected = RuntimeException.class) public void twoCharsPuncError()
     {
 p.parse("RULE WHERE ',,'");
@@ -154,6 +168,6 @@ p.parse("RULE WHERE ',,'");
     {
 	final HashMap<String, Set<String>> dicts = new HashMap<>();
 	dicts.put("test-dict-", new HashSet<>());
-	p = new SyntaxParser(null, dicts);
+	p = new SyntaxParser(new GraalVmEngine(), dicts);
     }
 }

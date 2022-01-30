@@ -87,6 +87,32 @@ public class ExecTest extends Assert
 	assertEquals("События II в. _до н. э._ драматичны.", concat(res));
     }
 
+                @Test public void bindingObj()
+    {
+	inlandes.loadRules("RULE WHERE /num_1 . г'.' DO _0 = ``({value: _1, year: true, needCase: true})``;");
+	assertEquals(1, inlandes.getRuleCount());
+	assertNotNull(inlandes.getRule(0));
+	final Token[] res = inlandes.process("Достижения в 1980 г. приобрели значительный масштаб.");
+	assertNotNull(res);
+	assertEquals(12, res.length);
+	assertEquals("Достижения в {value: \"1980\", year: true, needCase: true} приобрели значительный масштаб.", concat(res));
+    }
+
+                    @Ignore @Test public void bindingObjTwoStages()
+    {
+	inlandes.loadRules(
+			   "RULE STAGE 1 WHERE /num_1 . г'.' DO _0 = ``({value: _1, year: true, needCase: true})``;" +
+			   "RULE STAGE 2 WHERE в @needCase_1 DO ``_1.grCase = 'GR_PRE';``");
+	assertEquals(1, inlandes.getRuleCount());
+	assertNotNull(inlandes.getRule(0));
+	final Token[] res = inlandes.process("Достижения в 1980 г. приобрели значительный масштаб.");
+	assertNotNull(res);
+	assertEquals(12, res.length);
+	assertEquals("Достижения в {value: \"1980\", year: true, needCase: true} приобрели значительный масштаб.", concat(res));
+    }
+
+
+
 
 
     @Before public void createInlandes()

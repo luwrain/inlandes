@@ -152,6 +152,14 @@ static private final String
 						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
 
+																																														    		if (fixed.JsObj() != null)
+		{
+		    return new WhereStatement.Fixed((token)->scriptEngine.isObjWithTrueValue(token, fixed.JsObj().toString().substring(1)), fixed.JsObj().toString(),
+						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+		}
+
+
 																																														    		if (fixed.Cl() != null)
 																																																    return createClassFilter(fixed.Cl().toString().substring(1),
 																																																			     						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,

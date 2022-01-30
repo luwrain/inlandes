@@ -50,8 +50,12 @@ assignment
     : Ref '=' Str | Ref '=' Js
     ;
 
+action
+    : Js
+    ;
+
 operation
-    : assignment ';'
+    : assignment ';' | action ';'
     ;
 
 doStatement
@@ -107,8 +111,7 @@ Optional
     ;
 
 Js
-    : '``'.+'``'
+    : '``' ( '\\' [btnfr`\\] | ~[\r\n\\`] )* '``'
     ;
 
 WS : [\n\r\t ] -> skip ; 
-//WS : [\t\s\r\n] -> skip ;

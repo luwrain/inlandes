@@ -18,7 +18,9 @@ import java.util.*;
 
 public final class Matcher
 {
-        static public final int NO_REF = -1;
+        static public final int
+	    REF_NUM = 10,
+	    NO_REF = -1;
 
 static public final class Matching
 {

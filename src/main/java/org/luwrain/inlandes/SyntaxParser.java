@@ -164,13 +164,13 @@ static private final String
     private WhereStatement.Fixed createClassFilter(String className, Ref ref, boolean optional)
     {
 	switch(className)
-			{
-			case "num":
-			    return new WhereStatement.Fixed((token)->token.isNum(),
-							    "/" + className, ref, optional);
-    default:
-	throw new RuntimeException("Unknown token class: " + className);
-			}
+	{
+	case "num":
+	    return new WhereStatement.Fixed((token)->token.isNum(),
+					    "/" + className, ref, optional);
+	default:
+	    throw new RuntimeException("Unknown token class: " + className);
+	}
     }
 
     public RuleStatement[] parse(String text)

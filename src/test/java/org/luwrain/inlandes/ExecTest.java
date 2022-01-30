@@ -76,6 +76,18 @@ public class ExecTest extends Assert
 	assertEquals("События II в. {name: \"jstest\"} драматичны.", concat(res));
     }
 
+            @Test public void binding()
+    {
+	inlandes.loadRules("RULE WHERE до . н '.' . э '.' DO _0 = ``'_' + _0 + '_'``;");
+	assertEquals(1, inlandes.getRuleCount());
+	assertNotNull(inlandes.getRule(0));
+	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
+	assertNotNull(res);
+	assertEquals(11, res.length);
+	assertEquals("События II в. _до н. э._ драматичны.", concat(res));
+    }
+
+
 
     @Before public void createInlandes()
     {

@@ -14,6 +14,7 @@
 
 package org.luwrain.inlandes;
 
+import java.util.*;
 import org.graalvm.polyglot.*;
 import org.luwrain.inlandes.operations.*;
 
@@ -28,9 +29,18 @@ public class GraalVmEngine implements ScriptEngine
 	.build();
     }
 
-    @Override public Object eval(String text)
+    @Override public Object eval(String text, Map<String, Object> bindings)
     {
-	return context.eval("js", text);
+	final Value b = 		context.getBindings("js");
+	try {
+	    for(Map.Entry<String, Object> e: bindings.entrySet())
+		b.putMember(e.getKey(), e.getValue());
+	    return context.eval("js", text);
+	}
+	finally {
+	    for(Map.Entry<String, Object> e: bindings.entrySet())
+		b.removeMember(e.getKey());
+	}
     }
 
     @Override public void close()
@@ -65,5 +75,14 @@ public class GraalVmEngine implements ScriptEngine
 	    return this.isObjWithTrueValue(token.token, valueName);
 	}
 	return false;
+    }
+
+        @Override public Object createBindingObj(Token token)
+    {
+	if (token instanceof ScriptObjectToken)
+	    return (Value)((ScriptObjectToken)token).obj;
+	if (token instanceof ReplacementToken)
+	    return createBindingObj(((ReplacementToken)token).token);
+	return token.getText();
     }
 }

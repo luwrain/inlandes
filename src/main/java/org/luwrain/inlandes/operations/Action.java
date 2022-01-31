@@ -34,25 +34,7 @@ public final class Action extends Operation
 
     private void exec(Token[] tokens, Matching matching, ScriptEngine scriptEngine)
     {
-	scriptEngine.eval(text, createBindings(tokens, matching, scriptEngine));
-    }
-
-    private Map<String, Object> createBindings(Token[] tokens, Matching matching, ScriptEngine scriptEngine)
-    {
-	final Map<String, Object> res = new HashMap<>();
-	for(int i = 0;i < Matcher.REF_NUM;i++)
-	{
-	    final int refBegin = matching.getRefBegin(i), refEnd = matching.getRefEnd(i);
-	    if (refBegin == refEnd)
-		continue;
-	    if (refEnd > refBegin + 1)
-	    {
-		res.put("_" + String.valueOf(i), concat(copyOfRange(tokens, refBegin, refEnd)));
-		continue;
-	    }
-	    res.put("_" + String.valueOf(i), scriptEngine.createBindingObj(tokens[refBegin]));
-	}
-	return res;
+	scriptEngine.eval(text, scriptEngine.createBindings(tokens, matching));
     }
 
     @Override public Execution getExecution(Token[] tokens, Matching matching)

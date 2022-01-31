@@ -20,5 +20,5 @@ public interface ScriptEngine extends AutoCloseable
 {
     Object eval(String text, Map<String, Object> bindings);
     boolean isObjWithTrueValue(Object obj, String valueName);
-    Object createBindingObj(Token token);
+    Map<String, Object> createBindings(Token[] tokens, Matcher.Matching matching);
 }

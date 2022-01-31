@@ -15,8 +15,13 @@
 package org.luwrain.inlandes;
 
 import java.util.*;
+import static java.util.Arrays.*;
+
 import org.graalvm.polyglot.*;
+
+import org.luwrain.inlandes.Matcher.Matching;
 import org.luwrain.inlandes.operations.*;
+import static org.luwrain.inlandes.Token.*;
 
 public class GraalVmEngine implements ScriptEngine
 {
@@ -42,6 +47,25 @@ public class GraalVmEngine implements ScriptEngine
 		b.removeMember(e.getKey());
 	}
     }
+
+        @Override public Map<String, Object> createBindings(Token[] tokens, Matching matching)
+    {
+	final Map<String, Object> res = new HashMap<>();
+	for(int i = 0;i < Matcher.REF_NUM;i++)
+	{
+	    final int refBegin = matching.getRefBegin(i), refEnd = matching.getRefEnd(i);
+	    if (refBegin == refEnd)
+		continue;
+	    if (refEnd > refBegin + 1)
+	    {
+		res.put("_" + String.valueOf(i), concat(copyOfRange(tokens, refBegin, refEnd)));
+		continue;
+	    }
+	    res.put("_" + String.valueOf(i), createBindingObj(tokens[refBegin]));
+	}
+	return res;
+    }
+
 
     @Override public void close()
     {
@@ -77,7 +101,7 @@ public class GraalVmEngine implements ScriptEngine
 	return false;
     }
 
-        @Override public Object createBindingObj(Token token)
+        private Object createBindingObj(Token token)
     {
 	if (token instanceof ScriptObjectToken)
 	    return (Value)((ScriptObjectToken)token).obj;

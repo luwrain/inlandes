@@ -89,7 +89,7 @@ public class ExecTest extends Assert
 
                 @Test public void bindingObj()
     {
-	inlandes.loadRules("RULE WHERE /num_1 . г'.' DO _0 = ``({value: _1, year: true, needCase: true})``;");
+	inlandes.loadRules("RULE WHERE \\num_1 . г'.' DO _0 = ``({value: _1, year: true, needCase: true})``;");
 	assertEquals(1, inlandes.getRuleCount());
 	assertNotNull(inlandes.getRule(0));
 	final Token[] res = inlandes.process("Достижения в 1980 г. приобрели значительный масштаб.");
@@ -101,7 +101,7 @@ public class ExecTest extends Assert
     @Test public void bindingObjTwoStages()
     {
 	inlandes.loadRules(
-			   "RULE STAGE 1 WHERE /num_1 . г'.' DO _0 = ``({value: _1, year: true, needCase: true})``; " +   
+			   "RULE STAGE 1 WHERE \\num_1 . г'.' DO _0 = ``({value: _1, year: true, needCase: true})``; " +   
 			   "RULE STAGE 2 WHERE в . @needCase _1 DO ``_1.grCase = 'GR_PRE';``;");
 	assertEquals(2, inlandes.getRuleCount());
 	assertEquals(2, inlandes.getStageCount());

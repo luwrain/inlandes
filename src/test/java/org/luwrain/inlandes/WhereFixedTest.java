@@ -133,7 +133,7 @@ public class WhereFixedTest extends Assert
 
                     @Test public void numClassWithRef()
     {
-	RuleStatement[] r = p.parse("RULE WHERE /num_1");
+	RuleStatement[] r = p.parse("RULE WHERE \\num_1");
 	assertNotNull(r);
 	assertEquals(1, r.length);
 	assertNotNull(r[0]);

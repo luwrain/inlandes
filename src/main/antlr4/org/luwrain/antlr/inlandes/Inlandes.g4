@@ -95,7 +95,7 @@ JsObj
     ;
 
 Cl
-    : '/'[a-z][a-z-]*
+    : '\\'[a-z][a-z-]*
     ;
 
 Dict

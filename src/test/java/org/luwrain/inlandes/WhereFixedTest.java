@@ -140,7 +140,7 @@ public class WhereFixedTest extends Assert
 		WhereStatement w = r[0].getWhere();
 	assertNotNull(w);
 	assertEquals(1, w.items.length);
-	assertEquals("/num", w.items[0].toString());
+	assertEquals("\\num", w.items[0].toString());
 	assertNotNull(w.items[0].getRef());
 	assertEquals(1, w.items[0].getRef().num);
     }

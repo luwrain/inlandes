@@ -178,9 +178,51 @@ static private final String
     {
 	switch(className)
 	{
+	case "any":
+	    return new WhereStatement.Fixed((token)->true,
+					    "/" + className, ref, optional);
+	case "char":
+	    return new WhereStatement.Fixed((token)->(token.getText().length() == 1),
+					    "\\" + className, ref, optional);
+	case "char-cyril-lower":
+	    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().length() == 1 && Character.isLowerCase(token.getText().charAt(0))),
+					    "\\" + className, ref, optional);
+	case "char-cyril-upper":
+	    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().length() == 1 && Character.isUpperCase(token.getText().charAt(0))),
+					    "\\" + className, ref, optional);
+	case "char-latin-lower":
+	    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().length() == 1 && Character.isLowerCase(token.getText().charAt(0))),
+					    "\\" + className, ref, optional);
+	case "char-latin-upper":
+	    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().length() == 1 && Character.isUpperCase(token.getText().charAt(0))),
+					    "\\" + className, ref, optional);
+	case "char-lower":
+	    return new WhereStatement.Fixed((token)->(token.getText().length() == 1 && Character.isLowerCase(token.getText().charAt(0))),
+					    "\\" + className, ref, optional);
+	case "char-upper":
+	    return new WhereStatement.Fixed((token)->(token.getText().length() == 1 && Character.isUpperCase(token.getText().charAt(0))),
+					    "\\" + className, ref, optional);
+	case "cyril":
+	    return new WhereStatement.Fixed((token)->token.isCyril(),
+					    "\\" + className, ref, optional);
+	case "cyril-lower":
+	    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toLowerCase().equals(token.getText())),
+					    "\\" + className, ref, optional);
+	case "cyril-upper":
+	    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toUpperCase().equals(token.getText())),
+					    "\\" + className, ref, optional);
+	case "latin":
+	    return new WhereStatement.Fixed((token)->token.isLatin(),
+					    "\\" + className, ref, optional);
+	case "latin-lower":
+	    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toLowerCase().equals(token.getText())),
+					    "\\" + className, ref, optional);
+	case "latin-upper":
+	    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toUpperCase().equals(token.getText())),
+					    "\\" + className, ref, optional);
 	case "num":
 	    return new WhereStatement.Fixed((token)->token.isNum(),
-					    "/" + className, ref, optional);
+					    "\\" + className, ref, optional);
 	default:
 	    throw new RuntimeException("Unknown token class: " + className);
 	}

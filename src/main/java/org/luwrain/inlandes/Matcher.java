@@ -98,9 +98,9 @@ static public final class Matching
 	for(tokenIndex = 0;tokenIndex < tokens.length;tokenIndex++)
 	{
 	    this.token = tokens[tokenIndex];
-	    //System.out.println("Checking " + token);
-	    	for(RuleStatement r: rules)
-	    a.add(new WhereIterator(this, r));
+	    for(RuleStatement r: rules)
+		if (r.getWhere() != null)
+		    a.add(new WhereIterator(this, r));
 	    while(!a.isEmpty())
 	    {
 		for(WhereIterator i: a)

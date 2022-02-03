@@ -159,6 +159,34 @@ public class WhereFixedTest extends Assert
 	assertEquals(1, w.items[0].getRef().num);
     }
 
+    @Test public void lemmaCyrilWithRef()
+    {
+	RuleStatement[] r = p.parse("RULE WHERE `дом`_1");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+	WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertEquals("`дом`", w.items[0].toString());
+	assertNotNull(w.items[0].getRef());
+	assertEquals(1, w.items[0].getRef().num);
+    }
+
+        @Test public void lemmaLatinWithRef()
+    {
+	RuleStatement[] r = p.parse("RULE WHERE `house`_1");
+	assertNotNull(r);
+	assertEquals(1, r.length);
+	assertNotNull(r[0]);
+	WhereStatement w = r[0].getWhere();
+	assertNotNull(w);
+	assertEquals(1, w.items.length);
+	assertEquals("`house`", w.items[0].toString());
+	assertNotNull(w.items[0].getRef());
+	assertEquals(1, w.items[0].getRef().num);
+    }
+
     @Test(expected = RuntimeException.class) public void twoCharsPuncError()
     {
 p.parse("RULE WHERE ',,'");
@@ -166,8 +194,14 @@ p.parse("RULE WHERE ',,'");
 
     @Before public void createParser()
     {
+	final Lang lang = new Lang(){
+		@Override public boolean isWordWithLemma(String word, String lemma)
+		{
+		    return word.toUpperCase().equals("ДОМУ") && lemma.toUpperCase().equals("ДОМ");
+		}
+	    };
 	final HashMap<String, Set<String>> dicts = new HashMap<>();
 	dicts.put("test-dict-", new HashSet<>());
-	p = new SyntaxParser(new GraalVmEngine(), dicts);
+	p = new SyntaxParser(new GraalVmEngine(), lang, dicts);
     }
 }

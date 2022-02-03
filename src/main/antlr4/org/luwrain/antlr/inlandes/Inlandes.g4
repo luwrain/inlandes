@@ -27,7 +27,7 @@ stageKeyword
     ;
 
 whereFixed
-    : CyrilPlain | Latin | Space | Punc | JsObj | Dict | Cl
+    : CyrilPlain | Latin | Space | Punc | JsObj | Dict | Cl | LemmaCyril | LemmaLatin
     ;
 
 whereAlternative
@@ -73,6 +73,17 @@ CyrilPlain
 Latin
     : '\''[a-zA-Z]+'\''
     ;
+
+LemmaCyril
+    : '`'[а-яА-Я-]+'`'
+    ;
+
+
+LemmaLatin
+    : '`'[a-zA-Z-]+'`'
+    ;
+
+
 
 Num
     : '-'?[0-9]+

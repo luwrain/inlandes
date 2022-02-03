@@ -83,6 +83,8 @@ public class GraalVmEngine implements ScriptEngine
 	if (obj instanceof Value)
 	{
 	    final Value value = (Value)obj;
+	    	    	    if (!value.hasMembers())
+		return false;
 	    final Value v = value.getMember(valueName);
 	    if (v == null || v.isNull() || !v.isBoolean())
 		return false;

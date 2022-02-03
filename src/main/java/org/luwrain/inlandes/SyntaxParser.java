@@ -31,15 +31,17 @@ static private final String
     OPTIONAL_MARK = "?";
 
         private final ScriptEngine scriptEngine;
+    private final Lang lang;
     	private final Map<String, Set<String>> dicts;
-    public SyntaxParser(ScriptEngine scriptEngine, Map<String, Set<String>> dicts)
+    public SyntaxParser(ScriptEngine scriptEngine, Lang lang, Map<String, Set<String>> dicts)
 	{
 	    this.scriptEngine = scriptEngine;
+	    this.lang = lang;
 	    this.dicts = dicts;
 	}
     public SyntaxParser()
     {
-	this(null, new HashMap<>());
+	this(null, null, new HashMap<>());
     }
 
     private final class Listener extends InlandesBaseListener
@@ -157,8 +159,32 @@ static private final String
 						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
 
+																								if (fixed.LemmaCyril() != null)
+																								{
+																								    if (lang == null)
+																									throw new IllegalStateException("No lang, you can't use lemmas in your rules");
+																								    final String l = fixed.LemmaCyril().toString();
+																								    final String lemma = l.substring(1, l.length() - 1);
+																								    return new WhereStatement.Fixed((token)->(token.isCyril() && lang.isWordWithLemma(token.getText(), lemma)), fixed.LemmaCyril().toString(),
+																												    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+																												    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+																								}
+
+																																																if (fixed.LemmaLatin() != null)
+																								{
+																								    if (lang == null)
+																									throw new IllegalStateException("No lang, you can't use lemmas in your rules");
+																								    final String l = fixed.LemmaLatin().toString();
+																								    final String lemma = l.substring(1, l.length() - 1);
+																								    return new WhereStatement.Fixed((token)->(token.isLatin() && lang.isWordWithLemma(token.getText(), lemma)), fixed.LemmaLatin().toString(),
+																												    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+																												    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+																								}
+
 																																														    		if (fixed.JsObj() != null)
 		{
+		    if (scriptEngine == null)
+			throw new IllegalStateException("No script engine, you can't use JavaScript references in your rules");
 		    return new WhereStatement.Fixed((token)->scriptEngine.isObjWithTrueValue(token, fixed.JsObj().toString().substring(1)), fixed.JsObj().toString(),
 						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
 						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
@@ -179,7 +205,7 @@ static private final String
 	switch(className)
 	{
 	case "any":
-	    return new WhereStatement.Fixed((token)->true,
+	    return new WhereStatement.Fixed((token)->(!(token instanceof ReplacementToken)),
 					    "/" + className, ref, optional);
 	case "char":
 	    return new WhereStatement.Fixed((token)->(token.getText().length() == 1),

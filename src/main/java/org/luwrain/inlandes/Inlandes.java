@@ -33,19 +33,23 @@ public final class Inlandes implements AutoCloseable
     private final List<RuleStatement> rulesList = new ArrayList<>();
     private final SyntaxParser parser;
     private final ScriptEngine scriptEngine;
+    private final Lang lang;
     private int currentStageNum = 0;
 
-    public Inlandes(ScriptEngine scriptEngine)
+    public Inlandes(ScriptEngine scriptEngine, Lang lang)
     {
 	if (scriptEngine == null)
 	    throw new NullPointerException("scriptEngine can't be null");
+	if (lang == null)
+	    throw new NullPointerException("lang can't be null");
 	this.scriptEngine = scriptEngine;
-	this.parser = new SyntaxParser(scriptEngine, dicts);
+	this.lang = lang;
+	this.parser = new SyntaxParser(scriptEngine, lang, dicts);
     }
 
     public Inlandes()
     {
-	this(new GraalVmEngine());
+	this(new GraalVmEngine(), new DictLang());
     }
 
     public Token[] process(Token[] tokens)

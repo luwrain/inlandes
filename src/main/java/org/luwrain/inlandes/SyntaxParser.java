@@ -149,52 +149,51 @@ static private final String
 						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 		}
 
-																						    		if (fixed.Dict() != null)
-		{
-		    final Set<String> dict = dicts.get(fixed.Dict().toString().substring(1));
-		    if (dict == null)
-			throw new RuntimeException("No such dict: " + fixed.Dict().toString());
-		    return new WhereStatement.Fixed((token)->dict.contains(token.getText()), fixed.Dict().toString(),
-						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
-						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
-		}
+												if (fixed.Dict() != null)
+												{
+												    final Set<String> dict = dicts.get(fixed.Dict().toString().substring(1));
+												    if (dict == null)
+													throw new RuntimeException("No such dict: " + fixed.Dict().toString());
+												    return new WhereStatement.Fixed((token)->dict.contains(token.getText()), fixed.Dict().toString(),
+																    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+																    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+												}
 
-																								if (fixed.LemmaCyril() != null)
-																								{
-																								    if (lang == null)
-																									throw new IllegalStateException("No lang, you can't use lemmas in your rules");
-																								    final String l = fixed.LemmaCyril().toString();
-																								    final String lemma = l.substring(1, l.length() - 1);
-																								    return new WhereStatement.Fixed((token)->(token.isCyril() && lang.isWordWithLemma(token.getText(), lemma)), fixed.LemmaCyril().toString(),
-																												    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
-																												    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
-																								}
+												if (fixed.LemmaCyril() != null)
+												{
+												    if (lang == null)
+													throw new IllegalStateException("No lang, you can't use lemmas in your rules");
+												    final String l = fixed.LemmaCyril().toString();
+												    final String lemma = l.substring(1, l.length() - 1);
+												    return new WhereStatement.Fixed((token)->(token.isCyril() && lang.isWordWithLemma(token.getText(), lemma)), fixed.LemmaCyril().toString(),
+																    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+																    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+												}
 
-																																																if (fixed.LemmaLatin() != null)
-																								{
-																								    if (lang == null)
-																									throw new IllegalStateException("No lang, you can't use lemmas in your rules");
-																								    final String l = fixed.LemmaLatin().toString();
-																								    final String lemma = l.substring(1, l.length() - 1);
-																								    return new WhereStatement.Fixed((token)->(token.isLatin() && lang.isWordWithLemma(token.getText(), lemma)), fixed.LemmaLatin().toString(),
-																												    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
-																												    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
-																								}
+												if (fixed.LemmaLatin() != null)
+												{
+												    if (lang == null)
+													throw new IllegalStateException("No lang, you can't use lemmas in your rules");
+												    final String l = fixed.LemmaLatin().toString();
+												    final String lemma = l.substring(1, l.length() - 1);
+												    return new WhereStatement.Fixed((token)->(token.isLatin() && lang.isWordWithLemma(token.getText(), lemma)), fixed.LemmaLatin().toString(),
+																    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+																    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+												}
 
-																																														    		if (fixed.JsObj() != null)
-		{
-		    if (scriptEngine == null)
-			throw new IllegalStateException("No script engine, you can't use JavaScript references in your rules");
-		    return new WhereStatement.Fixed((token)->scriptEngine.isObjWithTrueValue(token, fixed.JsObj().toString().substring(1)), fixed.JsObj().toString(),
-						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
-						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
-		}
+												if (fixed.JsObj() != null)
+												{
+												    if (scriptEngine == null)
+													throw new IllegalStateException("No script engine, you can't use JavaScript references in your rules");
+												    return new WhereStatement.Fixed((token)->scriptEngine.isObjWithTrueValue(token, fixed.JsObj().toString().substring(1)), fixed.JsObj().toString(),
+																    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+																    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+												}
 
-
-																																														    		if (fixed.Cl() != null)
-																																																    return createClassFilter(fixed.Cl().toString().substring(1),
-																																																			     						    (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
-						    c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
+												if (fixed.Cl() != null)
+												    return createClassFilter(fixed.Cl().toString().substring(1),
+															     (c.Ref() != null)?new Ref(parseInt(c.Ref().toString().substring(1))):null,
+															     c.Optional() != null && c.Optional().toString().equals(OPTIONAL_MARK));
 
 	} //fixed
 	throw new RuntimeException(c.toString());

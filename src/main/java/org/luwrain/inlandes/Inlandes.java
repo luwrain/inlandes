@@ -126,6 +126,15 @@ public final class Inlandes implements AutoCloseable
 	return res.toArray(new Token[res.size()]);
     }
 
+    public void addDict(String dictName, List<String> items)
+    {
+	if (dictName == null)
+	    throw new NullPointerException("dictName can't be null");
+	if (dictName.trim().isEmpty())
+	    throw new IllegalArgumentException("dictName can't be empty");
+	dicts.put(dictName.trim(), new HashSet(items));
+    }
+
     public void loadStandardLibrary()
     {
 	try {

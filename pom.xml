@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.luwrain</groupId>
   <artifactId>luwrain-inlandes</artifactId>
-  <version>0.1.0</version>
-  <name>Inlandes: Intellectual language description</name>
-  <description>A library for NLP by high-level descriptive notation</description>
+  <version>0.2.0</version>
+  <name>Inlandes</name>
+  <description>A declarative language for text processing</description>
   <url>https://luwrain.org/?lang=en</url>
     <properties>
     <maven.compiler.target>1.8</maven.compiler.target>

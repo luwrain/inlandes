@@ -18,6 +18,7 @@ import java.util.*;
 import static java.util.Arrays.*;
 
 import org.graalvm.polyglot.*;
+import org.graalvm.polyglot.proxy.*;
 
 import org.luwrain.inlandes.Matcher.Matching;
 import org.luwrain.inlandes.operations.*;
@@ -32,6 +33,7 @@ public class GraalVmEngine implements ScriptEngine
 		this.context = Context.newBuilder()
 	.allowExperimentalOptions(true)
 	.build();
+		context.getBindings("js").putMember("Inlandes", new InlandesObj());
     }
 
     @Override public Object eval(String text, Map<String, Object> bindings)
@@ -110,5 +112,16 @@ public class GraalVmEngine implements ScriptEngine
 	if (token instanceof ReplacementToken)
 	    return createBindingObj(((ReplacementToken)token).token);
 	return token.getText();
+    }
+
+    static public final class InlandesObj
+    {
+	@HostAccess.Export
+	public ProxyExecutable getRomanNum = (ProxyExecutable)this::getRomanNumImpl;
+	public Object getRomanNumImpl(Value[] args)
+	{
+	    System.out.println("proba " + args[0].asString());
+	    return new Integer(5);
+	}
     }
 }

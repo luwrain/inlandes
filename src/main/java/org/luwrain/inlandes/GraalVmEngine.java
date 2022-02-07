@@ -120,7 +120,6 @@ public class GraalVmEngine implements ScriptEngine
 	public ProxyExecutable getRomanNum = (ProxyExecutable)this::getRomanNumImpl;
 	public Object getRomanNumImpl(Value[] args)
 	{
-	    System.out.println("proba " + args[0].asString());
 	    return new Integer(5);
 	}
     }

@@ -197,6 +197,25 @@ public class MatchingTest extends Assert
 	assertEquals("Лондон", concat(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
     }
 
+            @Test public void lastToken2()
+    {
+	final Token[] text = tokenize("число томских семей, получающих выплату на первенца, выросло за год на 2 тыс.");
+	final RuleStatement[] rr = parser.parse("RULE WHERE \\num.?тыс'.'");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(4, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.matchAsArray(text);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertEquals("2 тыс.", concat(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+    }
+
+    
+
 
     @Before public void createParser()
     {

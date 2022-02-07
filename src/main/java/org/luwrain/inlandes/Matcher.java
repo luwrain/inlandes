@@ -114,6 +114,8 @@ static public final class Matching
 	    this.next = new ArrayList<>();
 	    this.next.ensureCapacity(a.size());
 	}
+			for(WhereIterator i: a)
+			    i.onFinishing();
 	this.token = null;
 	this.tokenIndex = -1;
 	this.current = null;
@@ -126,7 +128,6 @@ static public final class Matching
 	final List<Matching> res = match(tokens);
 	return res.toArray(new Matching[res.size()]);
     }
-	
 
     void addCurrentPos(WhereIterator it)
     {

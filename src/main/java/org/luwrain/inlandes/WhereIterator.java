@@ -125,6 +125,14 @@ public final class WhereIterator
 	}
     }
 
+    void onFinishing()
+    {
+	for(Level l: levels)
+	    if (!l.finished())
+		return;
+			matcher.success(this, rule, refsBegin, refsEnd);
+    }
+
     private Level getLevel()
     {
 	return this.levels.get(this.levels.size() - 1);
@@ -148,6 +156,10 @@ public final class WhereIterator
 	Level(Item[] items)
 	{
 	    this(items, 0, NO_REF);
+	}
+	boolean finished()
+	{
+	    return pos >= items.length;
 	}
 	@Override public Level clone()
 	{

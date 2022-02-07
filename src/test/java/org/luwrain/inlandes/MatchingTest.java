@@ -180,6 +180,24 @@ public class MatchingTest extends Assert
 	assertEquals("замечательный", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
+        @Test public void lastToken()
+    {
+	final Token[] text = tokenize("Томск Лондон");
+	final RuleStatement[] rr = parser.parse("RULE WHERE Лондон");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(1, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.matchAsArray(text);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertEquals("Лондон", concat(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+    }
+
+
     @Before public void createParser()
     {
 	parser = new SyntaxParser();

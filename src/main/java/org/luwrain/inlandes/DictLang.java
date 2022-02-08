@@ -16,7 +16,7 @@ package org.luwrain.inlandes;
 
 public class DictLang implements Lang
 {
-    @Override public boolean isWordWithLemma(String word, String lemma)
+    @Override public boolean isWordWithLemma(Token token, String lemma)
     {
 	return false;
     }

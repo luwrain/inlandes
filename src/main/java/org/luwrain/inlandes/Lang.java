@@ -16,5 +16,5 @@ package org.luwrain.inlandes;
 
 public interface Lang
 {
-    boolean isWordWithLemma(String word, String lemma);
+    boolean isWordWithLemma(Token token, String lemma);
 }

@@ -230,6 +230,9 @@ static private final String
 	case "cyril":
 	    return new WhereStatement.Fixed((token)->token.isCyril(),
 					    "\\" + className, ref, optional);
+	case "cyril-cap":
+	    return new WhereStatement.Fixed((token)->(token.isCyril() && !token.getText().isEmpty() && Character.isUpperCase(token.getText().charAt(0))),
+					    "\\" + className, ref, optional);
 	case "cyril-lower":
 	    return new WhereStatement.Fixed((token)->(token.isCyril() && token.getText().toLowerCase().equals(token.getText())),
 					    "\\" + className, ref, optional);
@@ -238,6 +241,9 @@ static private final String
 					    "\\" + className, ref, optional);
 	case "latin":
 	    return new WhereStatement.Fixed((token)->token.isLatin(),
+					    "\\" + className, ref, optional);
+	case "latin-cap":
+	    return new WhereStatement.Fixed((token)->(token.isLatin() && !token.getText().isEmpty() && Character.isUpperCase(token.getText().charAt(0))),
 					    "\\" + className, ref, optional);
 	case "latin-lower":
 	    return new WhereStatement.Fixed((token)->(token.isLatin() && token.getText().toLowerCase().equals(token.getText())),

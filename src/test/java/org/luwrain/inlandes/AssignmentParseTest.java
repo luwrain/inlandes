@@ -57,6 +57,33 @@ public class AssignmentParseTest extends Assert
 	assertEquals("proba", a.value);
     }
 
+    @Test public void twoStrings()
+    {
+	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = \"proba\";_2 = \"proba2\";");
+	assertEquals(1, r.length);
+	assertEquals(2, r[0].operations.size());
+	Operation op = r[0].operations.get(0);
+	assertNotNull(op);
+	assertTrue(op instanceof Assignment);
+	Assignment a = (Assignment)op;
+	assertNotNull(a.ref);
+	assertNotNull(a.valueType);
+	assertNotNull(a.value);
+	assertEquals(1, a.ref.num);
+	assertEquals(Assignment.ValueType.STRING, a.valueType);
+	assertEquals("proba", a.value);
+	op = r[0].operations.get(1);
+	assertNotNull(op);
+	assertTrue(op instanceof Assignment);
+	a = (Assignment)op;
+	assertNotNull(a.ref);
+	assertNotNull(a.valueType);
+	assertNotNull(a.value);
+	assertEquals(2, a.ref.num);
+	assertEquals(Assignment.ValueType.STRING, a.valueType);
+	assertEquals("proba2", a.value);
+    }
+
     @Test public void jsEmpty()
     {
 	final RuleStatement[] r = p.parse("RULE WHERE иду DO _1 = ``{}``;");

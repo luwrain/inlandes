@@ -195,9 +195,9 @@ p.parse("RULE WHERE ',,'");
     @Before public void createParser()
     {
 	final Lang lang = new Lang(){
-		@Override public boolean isWordWithLemma(String word, String lemma)
+		@Override public boolean isWordWithLemma(Token word, String lemma)
 		{
-		    return word.toUpperCase().equals("ДОМУ") && lemma.toUpperCase().equals("ДОМ");
+		    return word.getText().toUpperCase().equals("ДОМУ") && lemma.toUpperCase().equals("ДОМ");
 		}
 	    };
 	final HashMap<String, Set<String>> dicts = new HashMap<>();

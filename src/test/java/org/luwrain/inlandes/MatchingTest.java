@@ -45,7 +45,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(0) == NO_REF);
 	assertFalse(res[0].getRefEnd(0) == NO_REF);
 	assertTrue(res[0].getRefEnd(0) > res[0].getRefBegin(01));
-	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals("день", concatText(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
     }
 
     @Test public void fixedWithRef()
@@ -64,7 +64,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(1) == NO_REF);
 	assertFalse(res[0].getRefEnd(1) == NO_REF);
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
-	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("день", concatText(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
     @Test public void blockSingleWordWithRef()
@@ -83,7 +83,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(1) == NO_REF);
 	assertFalse(res[0].getRefEnd(1) == NO_REF);
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
-	assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("день", concatText(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
     @Test public void optionalSpace()
@@ -108,7 +108,7 @@ public class MatchingTest extends Assert
 	assertFalse(res1[0].getRefBegin(0) == NO_REF);
 	assertFalse(res1[0].getRefEnd(0) == NO_REF);
 	assertTrue(res1[0].getRefEnd(0) > res1[0].getRefBegin(0));
-	assertEquals("т. к.", concat(copyOfRange(text1, res1[0].getRefBegin(0), res1[0].getRefEnd(0))));
+	assertEquals("т. к.", concatText(copyOfRange(text1, res1[0].getRefBegin(0), res1[0].getRefEnd(0))));
 
 	assertNotNull(res2);
 	assertEquals(1, res2.length);
@@ -116,7 +116,7 @@ public class MatchingTest extends Assert
 	assertFalse(res2[0].getRefBegin(0) == NO_REF);
 	assertFalse(res2[0].getRefEnd(0) == NO_REF);
 	assertTrue(res2[0].getRefEnd(0) > res2[0].getRefBegin(0));
-	assertEquals("т.к.", concat(copyOfRange(text2, res2[0].getRefBegin(0), res2[0].getRefEnd(0))));
+	assertEquals("т.к.", concatText(copyOfRange(text2, res2[0].getRefBegin(0), res2[0].getRefEnd(0))));
     }
 
 
@@ -136,7 +136,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(1) == NO_REF);
 	assertFalse(res[0].getRefEnd(1) == NO_REF);
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
-	assertEquals("был замечательный день", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("был замечательный день", concatText(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
     @Test public void nestedBlocksSingleWordWithRef()
@@ -157,7 +157,7 @@ public class MatchingTest extends Assert
 	    assertFalse(res[0].getRefBegin(i) == NO_REF);
 	    assertFalse(res[0].getRefEnd(i) == NO_REF);
 	    assertTrue(res[0].getRefEnd(i) > res[0].getRefBegin(i));
-	    assertEquals("день", concat(copyOfRange(TEXT, res[0].getRefBegin(i), res[0].getRefEnd(i))));
+	    assertEquals("день", concatText(copyOfRange(TEXT, res[0].getRefBegin(i), res[0].getRefEnd(i))));
 	}
     }
 
@@ -177,7 +177,7 @@ public class MatchingTest extends Assert
 	assertFalse(res[0].getRefBegin(1) == NO_REF);
 	assertFalse(res[0].getRefEnd(1) == NO_REF);
 	assertTrue(res[0].getRefEnd(1) > res[0].getRefBegin(1));
-	assertEquals("замечательный", concat(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("замечательный", concatText(copyOfRange(TEXT, res[0].getRefBegin(1), res[0].getRefEnd(1))));
     }
 
         @Test public void lastToken()
@@ -194,7 +194,7 @@ public class MatchingTest extends Assert
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);
-	assertEquals("Лондон", concat(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals("Лондон", concatText(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
     }
 
             @Test public void lastToken2()
@@ -211,7 +211,7 @@ public class MatchingTest extends Assert
 	assertNotNull(res);
 	assertEquals(1, res.length);
 	assertEquals(res[0].getRule(), rr[0]);
-	assertEquals("2 тыс.", concat(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals("2 тыс.", concatText(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
     }
 
     

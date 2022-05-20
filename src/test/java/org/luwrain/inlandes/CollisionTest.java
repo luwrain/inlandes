@@ -44,8 +44,8 @@ public class CollisionTest extends Assert
 	assertEquals(2, res.length);
 	assertEquals(3, res[0].len);
 	assertEquals(3, res[1].len);
-	assertEquals("замечательный день", concat(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
-	assertEquals("день весны", concat(copyOfRange(TEXT, res[1].getRefBegin(0), res[1].getRefEnd(0))));
+	assertEquals("замечательный день", concatText(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals("день весны", concatText(copyOfRange(TEXT, res[1].getRefBegin(0), res[1].getRefEnd(0))));
 	assertTrue(res[0].overlaps(res[1]));
 	assertTrue(res[1].overlaps(res[0]));
     }
@@ -64,8 +64,8 @@ public class CollisionTest extends Assert
 	assertEquals(2, res.length);
 	assertEquals(2, res[0].len);
 	assertEquals(3, res[1].len);
-	assertEquals("замечательный ", concat(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
-	assertEquals("день весны", concat(copyOfRange(TEXT, res[1].getRefBegin(0), res[1].getRefEnd(0))));
+	assertEquals("замечательный ", concatText(copyOfRange(TEXT, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals("день весны", concatText(copyOfRange(TEXT, res[1].getRefBegin(0), res[1].getRefEnd(0))));
 	assertFalse(res[0].overlaps(res[1]));
 	assertFalse(res[1].overlaps(res[0]));
     }
@@ -74,7 +74,7 @@ public class CollisionTest extends Assert
     {
 	inlandes.loadRules("RULE WHERE до . н '.' . э '.' DO _0 = \"до нашей эры\";" +
 			  "RULE WHERE н '.' . э '.' DO _0 = \"не нашей эры\";");
-	final String res = concat(inlandes.process("Это было ещё до н. э. и не совсем так."));
+	final String res = concatText(inlandes.process("Это было ещё до н. э. и не совсем так."));
 	assertNotNull(res);
 	assertEquals("Это было ещё до нашей эры и не совсем так.", res);
     }

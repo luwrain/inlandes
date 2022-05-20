@@ -60,7 +60,7 @@ public class GraalVmEngine implements ScriptEngine
 		continue;
 	    if (refEnd > refBegin + 1)
 	    {
-		res.put("_" + String.valueOf(i), concat(copyOfRange(tokens, refBegin, refEnd)));
+		res.put("_" + String.valueOf(i), concatText(copyOfRange(tokens, refBegin, refEnd)));
 		continue;
 	    }
 	    res.put("_" + String.valueOf(i), createBindingObj(tokens[refBegin]));

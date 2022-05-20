@@ -30,7 +30,7 @@ public final class  Main
 	String line = r.readLine();
 	while (line != null)
 	{
-	    System.out.println(concat(inlandes.process(line)));
+	    System.out.println(concatText(inlandes.process(line)));
 	    line = r.readLine();
 	}
     }

@@ -23,7 +23,7 @@ public interface Token
     boolean isSpace();
     String getText();
 
-    static public String concat(Token[] tokens)
+    static public String concatText(Token[] tokens)
     {
 	final StringBuilder b = new StringBuilder();
 	for(Token t: tokens)

@@ -39,7 +39,7 @@ public class ExecTest extends Assert
 	assertEquals("процессор", res[10].getText());
 	assertNotNull(res[4]);
 	assertEquals("смартфоне", res[4].getText());
-	assertEquals("В том смартфоне был странный процессор.", concat(res));
+	assertEquals("В том смартфоне был странный процессор.", concatText(res));
     }
 
         @Test public void substEpoch()
@@ -50,7 +50,7 @@ public class ExecTest extends Assert
 	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
 	assertNotNull(res);
 	assertEquals(11, res.length);
-	assertEquals("События II в. до нашей эры драматичны.", concat(res));
+	assertEquals("События II в. до нашей эры драматичны.", concatText(res));
     }
 
 
@@ -62,7 +62,7 @@ public class ExecTest extends Assert
 	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
 	assertNotNull(res);
 	assertEquals(11, res.length);
-	assertEquals("События II в. до нашей эры драматичны.", concat(res));
+	assertEquals("События II в. до нашей эры драматичны.", concatText(res));
     }
 
         @Test public void jsObj()
@@ -73,7 +73,7 @@ public class ExecTest extends Assert
 	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
 	assertNotNull(res);
 	assertEquals(11, res.length);
-	assertEquals("События II в. {name: \"jstest\"} драматичны.", concat(res));
+	assertEquals("События II в. {name: \"jstest\"} драматичны.", concatText(res));
     }
 
             @Test public void binding()
@@ -84,7 +84,7 @@ public class ExecTest extends Assert
 	final Token[] res = inlandes.process("События II в. до н. э. драматичны.");
 	assertNotNull(res);
 	assertEquals(11, res.length);
-	assertEquals("События II в. _до н. э._ драматичны.", concat(res));
+	assertEquals("События II в. _до н. э._ драматичны.", concatText(res));
     }
 
                 @Test public void bindingObj()
@@ -95,7 +95,7 @@ public class ExecTest extends Assert
 	final Token[] res = inlandes.process("Достижения в 1980 г. приобрели значительный масштаб.");
 	assertNotNull(res);
 	assertEquals(12, res.length);
-	assertEquals("Достижения в {value: \"1980\", year: true, needCase: true} приобрели значительный масштаб.", concat(res));
+	assertEquals("Достижения в {value: \"1980\", year: true, needCase: true} приобрели значительный масштаб.", concatText(res));
     }
 
     @Test public void bindingObjTwoStages()
@@ -109,7 +109,7 @@ public class ExecTest extends Assert
 	final Token[] res = inlandes.process("Достижения в 1980 г. приобрели значительный масштаб.");
 	assertNotNull(res);
 	assertEquals(12, res.length);
-	assertEquals("Достижения в {value: \"1980\", year: true, needCase: true, grCase: \"GR_PRE\"} приобрели значительный масштаб.", concat(res));
+	assertEquals("Достижения в {value: \"1980\", year: true, needCase: true, grCase: \"GR_PRE\"} приобрели значительный масштаб.", concatText(res));
     }
 
     @Before public void createInlandes()

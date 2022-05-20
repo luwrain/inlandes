@@ -76,9 +76,17 @@ public final class Inlandes implements AutoCloseable
     private Matching[] handleCollisions(List<Matching> m)
     {
 	for(int i = 0;i < m.size();i++)
+	{
+
+	    final Matching mi = m.get(i);
+	    //The item could be deleted on previous collisions
+	    if (mi == null)
+		continue;
 	    for(int j = i + 1;j < m.size();j++)
 	    {
-		final Matching mi = m.get(i), mj = m.get(j);
+		final Matching mj = m.get(j);
+		if (mj == null)
+		    continue;
 		if (mi.overlaps(mj))
 		{
 		    if (mj.len < mi.len)
@@ -90,6 +98,7 @@ public final class Inlandes implements AutoCloseable
 		    j = m.size();
 		}
 	    }
+	}
 	m.removeIf((i)->(i == null));
 	return m.toArray(new Matching[m.size()]);
     }

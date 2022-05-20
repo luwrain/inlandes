@@ -78,8 +78,10 @@ static public final class Matching
 
     private final RuleStatement[] rules;
     private final List<Matching> matchings = new ArrayList<>();
-    private ArrayList<WhereIterator> current = null, next = null;
-    Token token = null;
+    private ArrayList<WhereIterator>
+	current = null,
+	next = null;
+    Token token = null; //The current token to be checked against all iterators
     int tokenIndex = -1;
 
     public Matcher(RuleStatement[] rules)
@@ -131,11 +133,15 @@ static public final class Matching
 
     void addCurrentPos(WhereIterator it)
     {
+	if (it == null)
+	    throw new NullPointerException("it can't be null");
 	this.current.add(it);
     }
 
     void addNextPos(WhereIterator it)
     {
+		if (it == null)
+	    throw new NullPointerException("it can't be null");
 	this.next.add(it);
     }
 

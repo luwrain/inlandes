@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2023 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -58,16 +58,19 @@ public final class WhereIterator
 	this.refsEnd = it.refsEnd.clone();
     }
 
-    public void check()
+    void check()
     {
 	final Level level = getLevel();
+	//If we are reaching the end of the current block
 	if (level.pos >= level.items.length)
 	{
+	    //If it's a top-level block, we signal about new matching
 	    if (levels.size() == 1)
 	    {
 		matcher.success(this, rule, refsBegin, refsEnd);
 		return;
 	    }
+	    //If the block has a reference mark, we have to save the position of the ending index
 	    if (level.ref != NO_REF)
 		this.refsEnd[level.ref] = matcher.tokenIndex;
 	    levels.remove(levels.size() - 1);
@@ -159,7 +162,13 @@ public final class WhereIterator
 	}
 	boolean finished()
 	{
-	    return pos >= items.length;
+	    //The level considered as finished if there are no more unprocessed items or all of them are optional
+	    if (pos >= items.length)
+		return true;
+	    for(int i = pos;i < items.length;i++)
+		if (!items[i].isOptional())
+		    return false;
+	    	return true;
 	}
 	@Override public Level clone()
 	{

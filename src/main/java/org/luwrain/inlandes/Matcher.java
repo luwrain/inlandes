@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2023 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -94,34 +94,42 @@ static public final class Matching
     public List<Matching> match(Token[] tokens)
     {
 	this.matchings.clear();
-	this.current = new ArrayList<>();
-	this.next = new ArrayList<>();
-		List<WhereIterator> a = new ArrayList<>();
-	for(tokenIndex = 0;tokenIndex < tokens.length;tokenIndex++)
-	{
-	    this.token = tokens[tokenIndex];
-	    for(RuleStatement r: rules)
-		if (r.getWhere() != null)
-		    a.add(new WhereIterator(this, r));
-	    while(!a.isEmpty())
-	    {
-		for(WhereIterator i: a)
-		    i.check();
-		a = this.current;
-		//System.out.println("it, " + a.size() + " items");
-		this.current = new ArrayList<>();
-		this.current.ensureCapacity(a.size());
-	    }
-	    a = this.next;
+	try {
+	    this.current = new ArrayList<>();
 	    this.next = new ArrayList<>();
-	    this.next.ensureCapacity(a.size());
-	}
-			for(WhereIterator i: a)
+	    List<WhereIterator> a = new ArrayList<>();
+	    for(tokenIndex = 0;tokenIndex < tokens.length;tokenIndex++)
+	    {
+		if (!this.current.isEmpty())
+		    throw new IllegalStateException("The list of the current iterators must be empty before checking of new token");
+		if (!this.next.isEmpty())
+		    throw new IllegalStateException("The list of the next iterators must be empty before checking of new token");
+		this.token = tokens[tokenIndex];
+		for(RuleStatement r: rules)
+		    if (r.getWhere() != null)
+			a.add(new WhereIterator(this, r));
+		while(!a.isEmpty())
+		{
+		    for(final WhereIterator i: a)
+			i.check();
+		    a = this.current;
+		    this.current = new ArrayList<>();
+		    this.current.ensureCapacity(a.size());
+		}
+		a = this.next;
+		this.next = new ArrayList<>();
+		this.next.ensureCapacity(a.size());
+	    }
+	    //All tokens have been processed
+	    for(WhereIterator i: a)
 			    i.onFinishing();
-	this.token = null;
-	this.tokenIndex = -1;
-	this.current = null;
-	this.next = null;
+	}
+	finally {
+	    this.token = null;
+	    this.tokenIndex = -1;
+	    this.current = null;
+	    this.next = null;
+	}
 	return this.matchings;
     }
 

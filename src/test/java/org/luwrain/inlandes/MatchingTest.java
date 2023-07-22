@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2023 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -119,7 +119,6 @@ public class MatchingTest extends Assert
 	assertEquals("т.к.", concatText(copyOfRange(text2, res2[0].getRefBegin(0), res2[0].getRefEnd(0))));
     }
 
-
     @Test public void blockThreeWordsWithRef()
     {
 	final RuleStatement[] rr = parser.parse("RULE WHERE {был . замечательный . день}_1");
@@ -214,8 +213,41 @@ public class MatchingTest extends Assert
 	assertEquals("2 тыс.", concatText(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
     }
 
-    
+    @Test public void optionalLast()
+    {
+	final Token[] text = tokenize("В Астраханской области загорелся мусор на площади 3 кв. м");
+	final RuleStatement[] rr = parser.parse("RULE WHERE \\num.?кв'.'.?м'.'?");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(7, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.matchAsArray(text);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertEquals("3 кв. м", concatText(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+    }
 
+    @Test public void optionalLastWithDot()
+    {
+	final Token[] text = tokenize("В Астраханской области загорелся мусор на площади 3 кв. м.");
+	final RuleStatement[] rr = parser.parse("RULE WHERE \\num.?кв'.'.?м'.'?");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(7, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.matchAsArray(text);
+	assertNotNull(res);
+	assertEquals(2, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	assertEquals("3 кв. м", concatText(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals(res[1].getRule(), rr[0]);
+	assertEquals("3 кв. м.", concatText(copyOfRange(text, res[1].getRefBegin(0), res[1].getRefEnd(0))));
+    }
 
     @Before public void createParser()
     {

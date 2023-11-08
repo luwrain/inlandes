@@ -8,7 +8,7 @@
     </parent>
   <groupId>org.luwrain</groupId>
   <artifactId>luwrain-inlandes</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1</version>
   <name>Inlandes</name>
   <description>A declarative language for text processing</description>
   <url>https://github.com/luwrain/inlandes/</url>

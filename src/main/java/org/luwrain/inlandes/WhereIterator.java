@@ -133,7 +133,13 @@ public final class WhereIterator
 	for(Level l: levels)
 	    if (!l.finished())
 		return;
-			matcher.success(this, rule, refsBegin, refsEnd);
+	for(int i = 1;i < levels.size();i++)//Skipping the first level since it's the whole input
+	{
+	    final Level l = levels.get(i);
+	    if (l.finished() && l.ref != NO_REF)
+		refsEnd[l.ref] = matcher.tokenIndex;
+	}
+	matcher.success(this, rule, refsBegin, refsEnd);
     }
 
     private Level getLevel()

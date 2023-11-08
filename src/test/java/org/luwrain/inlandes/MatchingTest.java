@@ -249,6 +249,30 @@ public class MatchingTest extends Assert
 	assertEquals("3 кв. м.", concatText(copyOfRange(text, res[1].getRefBegin(0), res[1].getRefEnd(0))));
     }
 
+    @Test public void nestedBlocksAtTheEnd()
+    {
+	final Token[] text = tokenize("августа 1916 года");
+	final RuleStatement[] rr = parser.parse("RULE WHERE (августа) . {\\num_2 .? (года {г}) }_1 DO _1 = \"PROBA\";");
+	assertNotNull(rr);
+	assertEquals(1, rr.length);
+	assertNotNull(rr[0]);
+	assertNotNull(rr[0].getWhere());
+	assertEquals(3, rr[0].getWhere().items.length);
+	final Matcher m = new Matcher(rr);
+	final Matching[] res = m.matchAsArray(text);
+	assertNotNull(res);
+	assertEquals(1, res.length);
+	assertEquals(res[0].getRule(), rr[0]);
+	for(int i = 0;i < 3;i++)
+	{
+	    assertTrue(res[0].getRefBegin(i) != -1);
+	    assertTrue(res[0].getRefEnd(i) != -1);
+	}
+	assertEquals("августа 1916 года", concatText(copyOfRange(text, res[0].getRefBegin(0), res[0].getRefEnd(0))));
+	assertEquals("1916 года", concatText(copyOfRange(text, res[0].getRefBegin(1), res[0].getRefEnd(1))));
+	assertEquals("1916", concatText(copyOfRange(text, res[0].getRefBegin(2), res[0].getRefEnd(2))));
+    }
+
     @Before public void createParser()
     {
 	parser = new SyntaxParser();

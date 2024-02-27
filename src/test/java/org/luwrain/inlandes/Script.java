@@ -31,7 +31,11 @@ public final class Script implements AutoCloseable
     public Object eval(Bindings bindings)
     {
 	close();
+			final Engine engine = Engine.newBuilder()
+	.option("engine.WarnInterpreterOnly", "false")
+	.build();
 	this.context = Context.newBuilder()
+	.engine(engine)
 	.allowExperimentalOptions(true)
 	.build();
 	if (bindings != null)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -30,7 +30,11 @@ public class GraalVmEngine implements ScriptEngine
 
     public GraalVmEngine()
     {
-		this.context = Context.newBuilder()
+		final Engine engine = Engine.newBuilder()
+	.option("engine.WarnInterpreterOnly", "false")
+	.build();
+		this.context = Context.newBuilder("js")
+		.engine(engine)
 	.allowExperimentalOptions(true)
 	.build();
 		context.getBindings("js").putMember("Inlandes", new InlandesObj());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,14 +17,15 @@ package org.luwrain.inlandes;
 import static java.util.Arrays.*;
 import java.io.*;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.luwrain.inlandes.Matcher.*;
 import static org.luwrain.inlandes.Matcher.NO_REF;
 import static org.luwrain.inlandes.util.Tokenizer.*;
 import static org.luwrain.inlandes.Token.*;
 
-public class CollisionTest extends Assert
+public class CollisionTest
 {
     static private final Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
@@ -79,13 +80,13 @@ public class CollisionTest extends Assert
 	assertEquals("Это было ещё до нашей эры и не совсем так.", res);
     }
 
-    @Before public void createParser()
+    @BeforeEach public void createParser()
     {
 	parser = new SyntaxParser();
 	inlandes = new Inlandes();
     }
 
-    @After public void closeINlandes() throws Exception
+    @AfterEach public void closeINlandes() throws Exception
     {
 	inlandes.close();
     }

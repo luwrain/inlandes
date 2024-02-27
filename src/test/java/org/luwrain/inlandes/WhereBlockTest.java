@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -14,11 +14,12 @@
 
 package org.luwrain.inlandes;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.luwrain.inlandes.WhereStatement.*;
 
-public class WhereBlockTest extends Assert
+public class WhereBlockTest
 {
     private final SyntaxParser p = new SyntaxParser();
 
@@ -146,6 +147,6 @@ public class WhereBlockTest extends Assert
 
         @Test public void blockSpaces() { p.parse("RULE WHERE { домой }"); }
             @Test public void blockNoSpaces() { p.parse("RULE WHERE{домой}"); }
-    @Test(expected = RuntimeException.class) public void blockUnbalancedRightError() { p.parse("RULE WHERE { иду домой }}"); }
-        @Test(expected = RuntimeException.class) public void blockUnbalancedLeftError() { p.parse("RULE WHERE {{ иду домой }"); }
+    @Test public void blockUnbalancedRightError() { assertThrows(RuntimeException.class, ()->p.parse("RULE WHERE { иду домой }}")); }
+    @Test public void blockUnbalancedLeftError() { assertThrows(RuntimeException.class, ()->p.parse("RULE WHERE {{ иду домой }")); }
 }

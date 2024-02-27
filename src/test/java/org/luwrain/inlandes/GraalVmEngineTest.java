@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,7 +15,8 @@
 package org.luwrain.inlandes;
 
 import java.util.*;
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.graalvm.polyglot.*;
 
@@ -24,7 +25,7 @@ import static org.luwrain.inlandes.Matcher.NO_REF;
 import static org.luwrain.inlandes.util.Tokenizer.*;
 import static org.luwrain.inlandes.Token.*;
 
-public class GraalVmEngineTest extends Assert
+public class GraalVmEngineTest
 {
     private GraalVmEngine engine = null;
 
@@ -39,12 +40,12 @@ public class GraalVmEngineTest extends Assert
 	assertEquals(5, value.asInt());
 	    }
 
-    @Before public void createEngine()
+    @BeforeEach public void createEngine()
     {
 	engine = new GraalVmEngine();
     }
 
-    @After public void closeEngine() throws Exception
+    @AfterEach public void closeEngine() throws Exception
     {
 	engine.close();
     }

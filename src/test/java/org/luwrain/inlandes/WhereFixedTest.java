@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -16,9 +16,10 @@ package org.luwrain.inlandes;
 
 import java.util.*;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class WhereFixedTest extends Assert
+public class WhereFixedTest
 {
     private SyntaxParser p = null;
 
@@ -187,12 +188,12 @@ public class WhereFixedTest extends Assert
 	assertEquals(1, w.items[0].getRef().num);
     }
 
-    @Test(expected = RuntimeException.class) public void twoCharsPuncError()
+    @Test void twoCharsPuncError()
     {
-p.parse("RULE WHERE ',,'");
+	assertThrows(RuntimeException.class, ()->p.parse("RULE WHERE ',,'"));
     }
 
-    @Before public void createParser()
+    @BeforeEach public void createParser()
     {
 	final Lang lang = new Lang(){
 		@Override public boolean isWordWithLemma(Token word, String lemma)

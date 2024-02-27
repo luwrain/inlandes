@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,12 +17,13 @@ package org.luwrain.inlandes;
 import static java.util.Arrays.*;
 import java.io.*;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import static org.luwrain.inlandes.Token.*;
 import static org.luwrain.inlandes.util.Tokenizer.*;
 
-public class ExecTest extends Assert
+public class ExecTest
 {
     private Inlandes inlandes = null;
 
@@ -112,12 +113,12 @@ public class ExecTest extends Assert
 	assertEquals("Достижения в {value: \"1980\", year: true, needCase: true, grCase: \"GR_PRE\"} приобрели значительный масштаб.", concatText(res));
     }
 
-    @Before public void createInlandes()
+    @BeforeEach public void createInlandes()
     {
 	inlandes = new Inlandes();
     }
 
-    @After public void closeInlandes() throws Exception
+    @AfterEach public void closeInlandes() throws Exception
     {
 	inlandes.close();
     }

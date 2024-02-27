@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,13 +17,14 @@ package org.luwrain.inlandes;
 import static java.util.Arrays.*;
 import java.io.*;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.luwrain.inlandes.Matcher.*;
 import static org.luwrain.inlandes.util.Tokenizer.*;
 import static org.luwrain.inlandes.util.Token.*;
 
-public class SpeedTest extends Assert
+public class SpeedTest
 {
     private SyntaxParser parser = null;
 
@@ -70,7 +71,7 @@ public class SpeedTest extends Assert
 	}
     }
 
-    @Before public void createParser()
+    @BeforeEach public void createParser()
     {
 	parser = new SyntaxParser();
     }

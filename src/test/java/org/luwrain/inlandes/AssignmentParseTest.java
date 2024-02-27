@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -15,11 +15,12 @@
 package org.luwrain.inlandes;
 
 import org.graalvm.polyglot.*;
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.luwrain.inlandes.operations.*;
 
-public class AssignmentParseTest extends Assert
+public class AssignmentParseTest
 {
     private SyntaxParser p = null;
 
@@ -153,7 +154,7 @@ public class AssignmentParseTest extends Assert
 	}
     }
 
-    @Before public void createParser()
+    @BeforeEach public void createParser()
     {
 	this.p = new SyntaxParser();
     }

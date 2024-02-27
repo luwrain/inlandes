@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 Michael Pozhidaev <msp@luwrain.org>
+ * Copyright 2021-2024 Michael Pozhidaev <msp@luwrain.org>
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License. You may obtain a copy of the License at
@@ -17,14 +17,15 @@ package org.luwrain.inlandes;
 import static java.util.Arrays.*;
 import java.io.*;
 
-import org.junit.*;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.luwrain.inlandes.Matcher.*;
 import static org.luwrain.inlandes.Matcher.NO_REF;
 import static org.luwrain.inlandes.util.Tokenizer.*;
 import static org.luwrain.inlandes.Token.*;
 
-public class MatchingTest extends Assert
+public class MatchingTest
 {
     static private final org.luwrain.inlandes.Token[] TEXT = tokenize("Это был замечательный день весны, который создавал настроение и вдохновлял на прекрасное.");
     private SyntaxParser parser = null;
@@ -273,7 +274,7 @@ public class MatchingTest extends Assert
 	assertEquals("1916", concatText(copyOfRange(text, res[0].getRefBegin(2), res[0].getRefEnd(2))));
     }
 
-    @Before public void createParser()
+    @BeforeEach public void createParser()
     {
 	parser = new SyntaxParser();
     }

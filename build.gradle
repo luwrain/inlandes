@@ -1,0 +1,53 @@
+plugins {
+  id 'java-library'
+  id 'antlr'
+}
+
+def antlrOutputDirInlandes = file("$buildDir/generated/org/luwrain/antlr/inlandes")
+
+dependencies {
+  antlr 'org.antlr:antlr4:4.13.1'
+  implementation 'org.antlr:antlr4:4.13.1'
+  implementation 'org.antlr:antlr4-runtime:4.13.1'
+  implementation libraries.graalvm
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+  testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+}
+
+tasks.named('generateGrammarSource') {
+  enabled = true 
+}
+
+task generateInlandesGrammar(type: org.gradle.api.plugins.antlr.AntlrTask) {
+	source = fileTree('src/main/antlr4/org/luwrain/antlr/inlandes') {
+		include '*.g4'
+	}
+	outputDirectory = antlrOutputDirInlandes
+	arguments += ['-visitor', '-long-messages', '-package', 'org.luwrain.antlr.inlandes']
+}
+
+tasks.named('compileJava') {
+	dependsOn generateInlandesGrammar
+}
+
+/*
+tasks.named('compileTestJava') {
+	dependsOn generateParser
+}
+*/
+
+tasks.test {
+	useJUnitPlatform()
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java', "$buildDir/generated"]
+		}
+	}
+}
+jar {
+ archiveBaseName.set('luwrain-grammar')
+  archiveVersion.set(null)
+}

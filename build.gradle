@@ -6,9 +6,9 @@ plugins {
 def antlrOutputDirInlandes = file("$buildDir/generated/org/luwrain/antlr/inlandes")
 
 dependencies {
-  antlr 'org.antlr:antlr4:4.13.1'
-  implementation 'org.antlr:antlr4:4.13.1'
-  implementation 'org.antlr:antlr4-runtime:4.13.1'
+  antlr libraries.antlr
+  implementation libraries.antlr
+    implementation libraries.antlrrt
   implementation libraries.graalvm
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'

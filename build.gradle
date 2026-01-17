@@ -8,11 +8,15 @@ def antlrOutputDirInlandes = file("$buildDir/generated/org/luwrain/antlr/inlande
 dependencies {
   antlr libraries.antlr
   implementation libraries.antlr
-    implementation libraries.antlrrt
+  implementation libraries.antlrrt
   implementation libraries.graalvm
   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
 }
+
+java { toolchain { languageVersion = JavaLanguageVersion.of(17) } }
+
+
 
 tasks.named('generateGrammarSource') {
   enabled = true 
@@ -29,12 +33,6 @@ task generateInlandesGrammar(type: org.gradle.api.plugins.antlr.AntlrTask) {
 tasks.named('compileJava') {
 	dependsOn generateInlandesGrammar
 }
-
-/*
-tasks.named('compileTestJava') {
-	dependsOn generateParser
-}
-*/
 
 tasks.test {
 	useJUnitPlatform()
